@@ -1,0 +1,65 @@
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Dish } from '@/types/menu';
+
+interface DishCardProps {
+  dish: Dish;
+  onClick: () => void;
+}
+
+const DishCard = ({ dish, onClick }: DishCardProps) => {
+  return (
+    <Card 
+      className="group cursor-pointer overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+      onClick={onClick}
+    >
+      <div className="relative overflow-hidden">
+        <img 
+          src={dish.image} 
+          alt={dish.name}
+          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+        />
+        {!dish.available && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <Badge variant="destructive" className="text-sm">
+              No Disponible
+            </Badge>
+          </div>
+        )}
+        <div className="absolute top-3 right-3">
+          <Badge 
+            variant={dish.category === 'appetizer' ? 'secondary' : dish.category === 'main' ? 'default' : 'outline'}
+            className="bg-white/90 text-xs"
+          >
+            {dish.category === 'appetizer' ? 'Entrante' : dish.category === 'main' ? 'Principal' : 'Postre'}
+          </Badge>
+        </div>
+      </div>
+      
+      <CardContent className="p-6">
+        <div className="space-y-3">
+          <div className="flex items-start justify-between">
+            <h3 className="text-xl font-semibold text-foreground group-hover:text-spanish-red transition-colors">
+              {dish.name}
+            </h3>
+            <span className="text-lg font-bold text-spanish-red">
+              €{dish.price.toFixed(2)}
+            </span>
+          </div>
+          
+          <p className="text-muted-foreground line-clamp-2">
+            {dish.description}
+          </p>
+          
+          <div className="pt-2">
+            <span className="text-sm text-spanish-orange font-medium">
+              Ver detalles →
+            </span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default DishCard;
