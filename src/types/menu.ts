@@ -2,7 +2,7 @@ export interface Dish {
   id: string;
   name: string;
   description: string;
-  fullDescription: string;
+  full_description: string;
   ingredients: string[];
   price: number;
   image: string;

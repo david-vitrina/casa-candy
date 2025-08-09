@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -45,6 +49,37 @@ const Header = () => {
             >
               Contacto
             </Button>
+            {user ? (
+              <div className="flex items-center space-x-4">
+                {isAdmin && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate('/admin')}
+                    className="hover:text-spanish-red transition-colors"
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    Admin
+                  </Button>
+                )}
+                <Button
+                  variant="ghost"
+                  onClick={signOut}
+                  className="hover:text-spanish-red transition-colors"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Salir
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="ghost"
+                onClick={() => navigate('/auth')}
+                className="hover:text-spanish-red transition-colors"
+              >
+                <User className="w-4 h-4 mr-2" />
+                Acceder
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -83,6 +118,46 @@ const Header = () => {
               >
                 Contacto
               </Button>
+              {user ? (
+                <>
+                  {isAdmin && (
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => {
+                        navigate('/admin');
+                        setIsMenuOpen(false);
+                      }}
+                      className="justify-start hover:text-spanish-red"
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Admin
+                    </Button>
+                  )}
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => {
+                      signOut();
+                      setIsMenuOpen(false);
+                    }}
+                    className="justify-start hover:text-spanish-red"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Salir
+                  </Button>
+                </>
+              ) : (
+                <Button 
+                  variant="ghost" 
+                  onClick={() => {
+                    navigate('/auth');
+                    setIsMenuOpen(false);
+                  }}
+                  className="justify-start hover:text-spanish-red"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Acceder
+                </Button>
+              )}
             </div>
           </nav>
         )}

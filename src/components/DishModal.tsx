@@ -61,7 +61,7 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
             <div>
               <h4 className="text-lg font-semibold mb-2">Descripción</h4>
               <p className="text-muted-foreground leading-relaxed">
-                {dish.fullDescription}
+                {dish.full_description}
               </p>
             </div>
             

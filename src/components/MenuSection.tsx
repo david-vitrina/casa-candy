@@ -1,17 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import DishCard from './DishCard';
 import DishModal from './DishModal';
-import { menuItems } from '@/data/menu';
 import { Dish } from '@/types/menu';
+import { supabase } from '@/integrations/supabase/client';
 
 const MenuSection = () => {
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [filter, setFilter] = useState<'all' | 'appetizer' | 'main' | 'dessert'>('all');
+  const [dishes, setDishes] = useState<Dish[]>([]);
+
+  useEffect(() => {
+    fetchDishes();
+  }, []);
+
+  const fetchDishes = async () => {
+    const { data, error } = await supabase
+      .from('dishes')
+      .select('*')
+      .eq('available', true)
+      .order('name');
+    
+    if (!error && data) {
+      setDishes(data as Dish[]);
+    }
+  };
 
   const filteredItems = filter === 'all' 
-    ? menuItems 
-    : menuItems.filter(item => item.category === filter);
+    ? dishes 
+    : dishes.filter(item => item.category === filter);
 
   const filterButtons = [
     { key: 'all', label: 'Todos los Platos' },
