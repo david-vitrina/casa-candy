@@ -26,13 +26,18 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
             </Badge>
           </div>
         )}
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 right-3 flex gap-2">
           <Badge 
             variant={dish.category === 'appetizer' ? 'secondary' : dish.category === 'main' ? 'default' : 'outline'}
             className="bg-white/90 text-xs"
           >
             {dish.category === 'appetizer' ? 'Entrante' : dish.category === 'main' ? 'Principal' : 'Postre'}
           </Badge>
+          {dish.discount_percentage && dish.discount_percentage > 0 && (
+            <Badge className="bg-green-600 text-white text-xs">
+              -{dish.discount_percentage}%
+            </Badge>
+          )}
         </div>
       </div>
       
@@ -42,9 +47,23 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
             <h3 className="text-xl font-semibold text-foreground group-hover:text-spanish-red transition-colors">
               {dish.name}
             </h3>
-            <span className="text-lg font-bold text-spanish-red">
-              €{dish.price.toFixed(2)}
-            </span>
+            <div className="text-right">
+              {dish.discount_percentage && dish.discount_percentage > 0 ? (
+                <div>
+                  <span className="text-sm text-gray-500 line-through">
+                    €{dish.price.toFixed(2)}
+                  </span>
+                  <br />
+                  <span className="text-lg font-bold text-spanish-red">
+                    €{(dish.price * (1 - dish.discount_percentage / 100)).toFixed(2)}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-lg font-bold text-spanish-red">
+                  €{dish.price.toFixed(2)}
+                </span>
+              )}
+            </div>
           </div>
           
           <p className="text-muted-foreground line-clamp-2">

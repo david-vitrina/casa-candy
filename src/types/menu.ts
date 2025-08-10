@@ -8,4 +8,5 @@ export interface Dish {
   image: string;
   category: 'appetizer' | 'main' | 'dessert';
   available: boolean;
+  discount_percentage?: number;
 }

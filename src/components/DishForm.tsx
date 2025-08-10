@@ -18,6 +18,7 @@ interface Dish {
   image: string;
   category: 'appetizer' | 'main' | 'dessert';
   available: boolean;
+  discount_percentage?: number;
 }
 
 interface DishFormProps {
@@ -35,7 +36,8 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
     price: '',
     image: '',
     category: 'appetizer' as 'appetizer' | 'main' | 'dessert',
-    available: true
+    available: true,
+    discount_percentage: ''
   });
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -50,7 +52,8 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         price: dish.price.toString(),
         image: dish.image,
         category: dish.category,
-        available: dish.available
+        available: dish.available,
+        discount_percentage: dish.discount_percentage?.toString() || ''
       });
     }
   }, [dish]);
@@ -68,7 +71,8 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         price: parseFloat(formData.price),
         image: formData.image,
         category: formData.category,
-        available: formData.available
+        available: formData.available,
+        discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0
       };
 
       let error;
@@ -163,7 +167,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="price">Precio (€)</Label>
                   <Input
@@ -173,6 +177,20 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                     required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="discount_percentage">Descuento (%)</Label>
+                  <Input
+                    id="discount_percentage"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    value={formData.discount_percentage}
+                    onChange={(e) => setFormData({ ...formData, discount_percentage: e.target.value })}
+                    placeholder="0"
                   />
                 </div>
 

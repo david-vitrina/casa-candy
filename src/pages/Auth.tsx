@@ -7,11 +7,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, user } = useAuth();
   const { toast } = useToast();
 
   if (user) {
@@ -23,9 +22,7 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      const { error } = isLogin 
-        ? await signIn(email, password)
-        : await signUp(email, password);
+      const { error } = await signIn(email, password);
 
       if (error) {
         toast({
@@ -35,14 +32,9 @@ const Auth = () => {
         });
       } else {
         toast({
-          title: isLogin ? "Bienvenido" : "Cuenta creada",
-          description: isLogin 
-            ? "Has iniciado sesión correctamente" 
-            : "Revisa tu email para confirmar tu cuenta"
+          title: "Bienvenido",
+          description: "Has iniciado sesión correctamente"
         });
-        if (!isLogin) {
-          setIsLogin(true);
-        }
       }
     } catch (error) {
       toast({
@@ -63,7 +55,7 @@ const Auth = () => {
             David Burger
           </CardTitle>
           <p className="text-muted-foreground">
-            {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
+            Iniciar Sesión
           </p>
         </CardHeader>
         <CardContent>
@@ -91,22 +83,9 @@ const Auth = () => {
               className="w-full bg-gradient-to-r from-spanish-red to-spanish-orange"
               disabled={loading}
             >
-              {loading ? 'Cargando...' : (isLogin ? 'Iniciar Sesión' : 'Crear Cuenta')}
+              {loading ? 'Cargando...' : 'Iniciar Sesión'}
             </Button>
           </form>
-          
-          <div className="mt-4 text-center">
-            <Button
-              variant="link"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-spanish-red"
-            >
-              {isLogin 
-                ? '¿No tienes cuenta? Regístrate' 
-                : '¿Ya tienes cuenta? Inicia sesión'
-              }
-            </Button>
-          </div>
         </CardContent>
       </Card>
     </div>
