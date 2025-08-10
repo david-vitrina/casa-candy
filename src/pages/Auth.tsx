@@ -35,6 +35,10 @@ const Auth = () => {
           title: "Bienvenido",
           description: "Has iniciado sesión correctamente"
         });
+        // Force page reload to ensure fresh state
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
       }
     } catch (error) {
       toast({
