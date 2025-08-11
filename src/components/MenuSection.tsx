@@ -1,30 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import DishCard from './DishCard';
 import DishModal from './DishModal';
 import { Dish } from '@/types/menu';
-import { supabase } from '@/integrations/supabase/client';
+import { useMenuItems } from '@/hooks/useMenuItems';
 
 const MenuSection = () => {
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [filter, setFilter] = useState<'all' | 'appetizer' | 'main' | 'dessert'>('all');
-  const [dishes, setDishes] = useState<Dish[]>([]);
-
-  useEffect(() => {
-    fetchDishes();
-  }, []);
-
-  const fetchDishes = async () => {
-    const { data, error } = await supabase
-      .from('dishes')
-      .select('*')
-      .eq('available', true)
-      .order('name');
-    
-    if (!error && data) {
-      setDishes(data as Dish[]);
-    }
-  };
+  const { dishes, loading } = useMenuItems();
 
   const filteredItems = filter === 'all' 
     ? dishes 
@@ -36,6 +20,18 @@ const MenuSection = () => {
     { key: 'main', label: 'Principales' },
     { key: 'dessert', label: 'Postres' }
   ] as const;
+
+  if (loading) {
+    return (
+      <section id="menu" className="py-20 bg-gradient-to-b from-background to-warm-cream/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-xl text-muted-foreground">Cargando menú...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="menu" className="py-20 bg-gradient-to-b from-background to-warm-cream/30">
