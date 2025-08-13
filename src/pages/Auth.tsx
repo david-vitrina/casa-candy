@@ -14,7 +14,7 @@ const Auth = () => {
   const { toast } = useToast();
 
   if (user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/admin" replace />;
   }
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -37,7 +37,7 @@ const Auth = () => {
         });
         // Force page reload to ensure fresh state
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/admin';
         }, 1000);
       }
     } catch (error) {

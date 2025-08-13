@@ -50,26 +50,14 @@ const Header = () => {
               Contacto
             </Button>
             {user ? (
-              <div className="flex items-center space-x-4">
-                {isAdmin && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => navigate('/admin')}
-                    className="hover:text-spanish-red transition-colors"
-                  >
-                    <Settings className="w-4 h-4 mr-2" />
-                    Admin
-                  </Button>
-                )}
-                <Button
-                  variant="ghost"
-                  onClick={signOut}
-                  className="hover:text-spanish-red transition-colors"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Salir
-                </Button>
-              </div>
+              <Button
+                variant="ghost"
+                onClick={signOut}
+                className="hover:text-spanish-red transition-colors"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Salir
+              </Button>
             ) : (
               <Button
                 variant="ghost"
@@ -119,32 +107,17 @@ const Header = () => {
                 Contacto
               </Button>
               {user ? (
-                <>
-                  {isAdmin && (
-                    <Button 
-                      variant="ghost" 
-                      onClick={() => {
-                        navigate('/admin');
-                        setIsMenuOpen(false);
-                      }}
-                      className="justify-start hover:text-spanish-red"
-                    >
-                      <Settings className="w-4 h-4 mr-2" />
-                      Admin
-                    </Button>
-                  )}
-                  <Button 
-                    variant="ghost" 
-                    onClick={() => {
-                      signOut();
-                      setIsMenuOpen(false);
-                    }}
-                    className="justify-start hover:text-spanish-red"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Salir
-                  </Button>
-                </>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => {
+                    signOut();
+                    setIsMenuOpen(false);
+                  }}
+                  className="justify-start hover:text-spanish-red"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Salir
+                </Button>
               ) : (
                 <Button 
                   variant="ghost" 
