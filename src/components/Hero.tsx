@@ -8,6 +8,13 @@ const Hero = () => {
     }
   };
 
+  const scrollToContact = () => {
+    const element = document.getElementById('contacto');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="inicio" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Background gradient */}
@@ -44,6 +51,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
+              onClick={scrollToContact}
               className="border-spanish-red text-spanish-red hover:bg-spanish-red hover:text-white transition-all duration-300 px-8 py-3"
             >
               Hacer Reserva
