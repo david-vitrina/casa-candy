@@ -1,6 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { GradientText } from '@/components/ui/gradient-text';
+import { GradientIcon } from '@/components/ui/gradient-icon';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 const ContactSection = () => {
   return (
@@ -9,9 +11,7 @@ const ContactSection = () => {
         {/* Header */}
         <div className="text-center space-y-4 mb-12">
           <h2 className="text-4xl md:text-5xl font-bold">
-            <span className="bg-gradient-to-r from-spanish-red to-spanish-orange bg-clip-text text-transparent">
-              Contacto
-            </span>
+            <GradientText>Contacto</GradientText>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             ¿Tienes alguna pregunta o quieres hacer una reserva? Estamos aquí para ayudarte
@@ -27,9 +27,9 @@ const ContactSection = () => {
             
             <div className="space-y-4">
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-spanish-red to-spanish-orange rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-6 w-6 text-white" />
-                </div>
+                <GradientIcon variant="red-orange" className="flex-shrink-0">
+                  <MapPin className="h-6 w-6" />
+                </GradientIcon>
                 <div>
                   <h4 className="font-semibold text-foreground">Dirección</h4>
                   <p className="text-muted-foreground">
@@ -40,9 +40,9 @@ const ContactSection = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-spanish-orange to-spanish-gold rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Phone className="h-6 w-6 text-white" />
-                </div>
+                <GradientIcon variant="orange-gold" className="flex-shrink-0">
+                  <Phone className="h-6 w-6" />
+                </GradientIcon>
                 <div>
                   <h4 className="font-semibold text-foreground">Teléfono</h4>
                   <p className="text-muted-foreground">
@@ -52,9 +52,9 @@ const ContactSection = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-spanish-gold to-spanish-red rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail className="h-6 w-6 text-white" />
-                </div>
+                <GradientIcon variant="gold-red" className="flex-shrink-0">
+                  <Mail className="h-6 w-6" />
+                </GradientIcon>
                 <div>
                   <h4 className="font-semibold text-foreground">Email</h4>
                   <p className="text-muted-foreground">
@@ -64,9 +64,9 @@ const ContactSection = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-spanish-red to-spanish-orange rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Clock className="h-6 w-6 text-white" />
-                </div>
+                <GradientIcon variant="red-orange" className="flex-shrink-0">
+                  <Clock className="h-6 w-6" />
+                </GradientIcon>
                 <div>
                   <h4 className="font-semibold text-foreground">Horarios</h4>
                   <div className="text-muted-foreground">
@@ -132,12 +132,12 @@ const ContactSection = () => {
                   />
                 </div>
                 
-                <Button 
+                <GradientButton 
                   type="submit"
-                  className="w-full bg-gradient-to-r from-spanish-red to-spanish-orange hover:from-spanish-red/90 hover:to-spanish-orange/90 text-white font-semibold py-3"
+                  className="w-full py-3"
                 >
                   Enviar Mensaje
-                </Button>
+                </GradientButton>
               </form>
             </CardContent>
           </Card>

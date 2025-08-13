@@ -1,19 +1,9 @@
-import { Button } from '@/components/ui/button';
+import { scrollToMenu, scrollToContact } from '@/utils/scroll';
+import { GradientText } from '@/components/ui/gradient-text';
+import { GradientIcon } from '@/components/ui/gradient-icon';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 const Hero = () => {
-  const scrollToMenu = () => {
-    const element = document.getElementById('menu');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const scrollToContact = () => {
-    const element = document.getElementById('contacto');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section id="inicio" className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -28,9 +18,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Main heading */}
           <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            <span className="bg-gradient-to-r from-spanish-red via-spanish-orange to-spanish-gold bg-clip-text text-transparent">
-              David Burger
-            </span>
+            <GradientText variant="primary">David Burger</GradientText>
           </h1>
           
           {/* Subtitle */}
@@ -41,45 +29,45 @@ const Hero = () => {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-            <Button 
+            <GradientButton 
               size="lg" 
               onClick={scrollToMenu}
-              className="bg-gradient-to-r from-spanish-red to-spanish-orange hover:from-spanish-red/90 hover:to-spanish-orange/90 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105"
+              className="px-8 py-3 rounded-lg"
             >
               Ver Nuestro Menú
-            </Button>
-            <Button 
-              variant="outline" 
+            </GradientButton>
+            <GradientButton 
+              variant="outline-spanish"
               size="lg"
               onClick={scrollToContact}
-              className="border-spanish-red text-spanish-red hover:bg-spanish-red hover:text-white transition-all duration-300 px-8 py-3"
+              className="px-8 py-3"
             >
               Hacer Reserva
-            </Button>
+            </GradientButton>
           </div>
           
           {/* Features */}
           <div className="grid md:grid-cols-3 gap-8 mt-16">
             <div className="text-center space-y-3">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-spanish-red to-spanish-orange rounded-full flex items-center justify-center">
-                <span className="text-2xl text-white">🥘</span>
-              </div>
+              <GradientIcon variant="red-orange" size="lg" className="mx-auto">
+                <span className="text-2xl">🥘</span>
+              </GradientIcon>
               <h3 className="text-lg font-semibold">Platos Tradicionales</h3>
               <p className="text-muted-foreground">Recetas auténticas transmitidas de generación en generación</p>
             </div>
             
             <div className="text-center space-y-3">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-spanish-orange to-spanish-gold rounded-full flex items-center justify-center">
-                <span className="text-2xl text-white">🌟</span>
-              </div>
+              <GradientIcon variant="orange-gold" size="lg" className="mx-auto">
+                <span className="text-2xl">🌟</span>
+              </GradientIcon>
               <h3 className="text-lg font-semibold">Ingredientes Premium</h3>
               <p className="text-muted-foreground">Solo utilizamos los mejores productos españoles</p>
             </div>
             
             <div className="text-center space-y-3">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-spanish-gold to-spanish-red rounded-full flex items-center justify-center">
-                <span className="text-2xl text-white">👨‍🍳</span>
-              </div>
+              <GradientIcon variant="gold-red" size="lg" className="mx-auto">
+                <span className="text-2xl">👨‍🍳</span>
+              </GradientIcon>
               <h3 className="text-lg font-semibold">Preparación Artesanal</h3>
               <p className="text-muted-foreground">Cada plato preparado con técnicas tradicionales</p>
             </div>

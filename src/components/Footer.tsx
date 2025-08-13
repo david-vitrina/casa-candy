@@ -1,3 +1,5 @@
+import { GradientText } from '@/components/ui/gradient-text';
+
 const Footer = () => {
   return (
     <footer className="bg-deep-burgundy text-white py-12">
@@ -5,8 +7,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-spanish-gold to-spanish-orange bg-clip-text text-transparent">
-              David Burger
+            <h3 className="text-2xl font-bold">
+              <GradientText variant="gold">David Burger</GradientText>
             </h3>
             <p className="text-white/80">
               Auténticos sabores españoles en el corazón de Madrid. 

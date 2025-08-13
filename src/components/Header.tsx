@@ -3,18 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { scrollToSection } from '@/utils/scroll';
+import { GradientText } from '@/components/ui/gradient-text';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMenuOpen(false);
-    }
+  const handleScrollToSection = (sectionId: string) => {
+    scrollToSection(sectionId, () => setIsMenuOpen(false));
   };
 
   return (
@@ -22,29 +20,29 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="text-2xl font-bold bg-gradient-to-r from-spanish-red to-spanish-orange bg-clip-text text-transparent">
-            David Burger
+          <div className="text-2xl font-bold">
+            <GradientText variant="primary">David Burger</GradientText>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Button 
               variant="ghost" 
-              onClick={() => scrollToSection('inicio')}
+              onClick={() => handleScrollToSection('inicio')}
               className="hover:text-spanish-red transition-colors"
             >
               Inicio
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => scrollToSection('menu')}
+              onClick={() => handleScrollToSection('menu')}
               className="hover:text-spanish-red transition-colors"
             >
               Menú
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => scrollToSection('contacto')}
+              onClick={() => handleScrollToSection('contacto')}
               className="hover:text-spanish-red transition-colors"
             >
               Contacto
@@ -87,21 +85,21 @@ const Header = () => {
             <div className="flex flex-col space-y-2">
               <Button 
                 variant="ghost" 
-                onClick={() => scrollToSection('inicio')}
+                onClick={() => handleScrollToSection('inicio')}
                 className="justify-start hover:text-spanish-red"
               >
                 Inicio
               </Button>
               <Button 
                 variant="ghost" 
-                onClick={() => scrollToSection('menu')}
+                onClick={() => handleScrollToSection('menu')}
                 className="justify-start hover:text-spanish-red"
               >
                 Menú
               </Button>
               <Button 
                 variant="ghost" 
-                onClick={() => scrollToSection('contacto')}
+                onClick={() => handleScrollToSection('contacto')}
                 className="justify-start hover:text-spanish-red"
               >
                 Contacto
