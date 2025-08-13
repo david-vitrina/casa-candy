@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +13,7 @@ import { Dish } from '@/types/menu';
 // Usar la interfaz importada en lugar de duplicarla
 
 const Admin = () => {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading, signOut } = useAuth();
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -143,13 +143,23 @@ const Admin = () => {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-spanish-red to-spanish-orange bg-clip-text text-transparent">
             Administrador de Menú
           </h1>
-          <Button
-            onClick={() => setShowForm(true)}
-            className="bg-gradient-to-r from-spanish-red to-spanish-orange"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Agregar Plato
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              onClick={signOut}
+              variant="outline"
+              className="border-spanish-red text-spanish-red hover:bg-spanish-red hover:text-white"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Cerrar Sesión
+            </Button>
+            <Button
+              onClick={() => setShowForm(true)}
+              className="bg-gradient-to-r from-spanish-red to-spanish-orange"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Agregar Plato
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
