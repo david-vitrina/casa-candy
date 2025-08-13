@@ -8,18 +8,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import DishForm from '@/components/DishForm';
+import { Dish } from '@/types/menu';
 
-interface Dish {
-  id: string;
-  name: string;
-  description: string;
-  full_description: string;
-  ingredients: string[];
-  price: number;
-  image: string;
-  category: 'appetizer' | 'main' | 'dessert';
-  available: boolean;
-}
+// Usar la interfaz importada en lugar de duplicarla
 
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();

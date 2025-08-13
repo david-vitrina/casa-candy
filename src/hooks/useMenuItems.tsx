@@ -37,11 +37,9 @@ export const useMenuItems = () => {
         setDishes(dishesWithLocalImages);
       } else {
         // Fallback a datos locales si no hay datos en Supabase
-        console.warn('No se pudieron cargar datos de Supabase, usando datos locales');
         setDishes(menuItems.filter(item => item.available));
       }
     } catch (error) {
-      console.error('Error al cargar platos:', error);
       // Fallback a datos locales en caso de error
       setDishes(menuItems.filter(item => item.available));
     } finally {
