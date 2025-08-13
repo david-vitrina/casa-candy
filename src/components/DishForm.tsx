@@ -5,21 +5,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Upload, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Dish } from '@/types/menu';
 
-interface Dish {
-  id: string;
-  name: string;
-  description: string;
-  full_description: string;
-  ingredients: string[];
-  price: number;
-  image: string;
-  category: 'appetizer' | 'main' | 'dessert';
-  available: boolean;
-  discount_percentage?: number;
-}
 
 interface DishFormProps {
   dish?: Dish | null;
@@ -40,6 +30,9 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
     discount_percentage: ''
   });
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -55,21 +48,91 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         available: dish.available,
         discount_percentage: dish.discount_percentage?.toString() || ''
       });
+      setImagePreview(dish.image);
     }
   }, [dish]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "Error",
+          description: "La imagen no puede ser mayor a 5MB",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async (): Promise<string | null> => {
+    if (!imageFile) return null;
+    
+    setUploading(true);
+    try {
+      const fileExt = imageFile.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      
+      const { data, error } = await supabase.storage
+        .from('dish-images')
+        .upload(fileName, imageFile);
+
+      if (error) throw error;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('dish-images')
+        .getPublicUrl(fileName);
+
+      return publicUrl;
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Error al subir la imagen",
+        variant: "destructive"
+      });
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview('');
+    setFormData({ ...formData, image: '' });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      // Upload image if there's a new one
+      let imageUrl = formData.image;
+      if (imageFile) {
+        const uploadedUrl = await uploadImage();
+        if (!uploadedUrl) {
+          setLoading(false);
+          return;
+        }
+        imageUrl = uploadedUrl;
+      }
+
       const dishData = {
         name: formData.name,
         description: formData.description,
         full_description: formData.full_description,
         ingredients: formData.ingredients.split(',').map(i => i.trim()),
         price: parseFloat(formData.price),
-        image: formData.image,
+        image: imageUrl,
         category: formData.category,
         available: formData.available,
         discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0
@@ -215,14 +278,61 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
               </div>
 
               <div>
-                <Label htmlFor="image">URL de la Imagen</Label>
-                <Input
-                  id="image"
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="/src/assets/plato.jpg"
-                  required
-                />
+                <Label>Imagen del Plato</Label>
+                <div className="space-y-4">
+                  {imagePreview && (
+                    <div className="relative inline-block">
+                      <img 
+                        src={imagePreview} 
+                        alt="Preview" 
+                        className="w-32 h-32 object-cover rounded-lg border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute -top-2 -right-2 w-6 h-6 p-0"
+                        onClick={removeImage}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  )}
+                  
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <Label 
+                        htmlFor="image-upload"
+                        className="inline-flex items-center justify-center w-full p-4 border border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-muted/50"
+                      >
+                        <Upload className="w-5 h-5 mr-2" />
+                        Subir Nueva Imagen
+                      </Label>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <Input
+                        placeholder="O pegar URL de imagen"
+                        value={formData.image}
+                        onChange={(e) => {
+                          setFormData({ ...formData, image: e.target.value });
+                          setImagePreview(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  
+                  {uploading && (
+                    <p className="text-sm text-muted-foreground">Subiendo imagen...</p>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center space-x-2">
@@ -238,10 +348,10 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
               <div className="flex gap-4">
                 <Button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || uploading}
                   className="bg-gradient-to-r from-spanish-red to-spanish-orange"
                 >
-                  {loading ? 'Guardando...' : (dish ? 'Actualizar' : 'Crear')}
+                  {loading || uploading ? 'Guardando...' : (dish ? 'Actualizar' : 'Crear')}
                 </Button>
                 <Button type="button" variant="outline" onClick={onCancel}>
                   Cancelar
