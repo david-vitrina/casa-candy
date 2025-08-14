@@ -3,13 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { usePermissions } from '@/hooks/usePermissions';
 import { scrollToSection } from '@/utils/scroll';
 import { GradientText } from '@/components/ui/gradient-text';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isAdmin, signOut } = useAuth();
+  const { hasAnyPermission } = usePermissions();
   const navigate = useNavigate();
+
+  const hasAdminAccess = isAdmin || hasAnyPermission(['edit_dishes', 'manage_availability', 'delete_dishes', 'manage_users']);
 
   const handleScrollToSection = (sectionId: string) => {
     scrollToSection(sectionId, () => setIsMenuOpen(false));
@@ -48,14 +52,26 @@ const Header = () => {
               Contacto
             </Button>
             {user ? (
-              <Button
-                variant="ghost"
-                onClick={signOut}
-                className="hover:text-spanish-red transition-colors"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                Salir
-              </Button>
+              <>
+                {hasAdminAccess && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate('/admin')}
+                    className="hover:text-spanish-red transition-colors"
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    Admin
+                  </Button>
+                )}
+                <Button
+                  variant="ghost"
+                  onClick={signOut}
+                  className="hover:text-spanish-red transition-colors"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Salir
+                </Button>
+              </>
             ) : (
               <Button
                 variant="ghost"
@@ -105,17 +121,32 @@ const Header = () => {
                 Contacto
               </Button>
               {user ? (
-                <Button 
-                  variant="ghost" 
-                  onClick={() => {
-                    signOut();
-                    setIsMenuOpen(false);
-                  }}
-                  className="justify-start hover:text-spanish-red"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Salir
-                </Button>
+                <>
+                  {hasAdminAccess && (
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => {
+                        navigate('/admin');
+                        setIsMenuOpen(false);
+                      }}
+                      className="justify-start hover:text-spanish-red"
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Admin
+                    </Button>
+                  )}
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => {
+                      signOut();
+                      setIsMenuOpen(false);
+                    }}
+                    className="justify-start hover:text-spanish-red"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Salir
+                  </Button>
+                </>
               ) : (
                 <Button 
                   variant="ghost" 
