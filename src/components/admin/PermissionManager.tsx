@@ -60,6 +60,9 @@ const PermissionManager = ({ user, onBack }: PermissionManagerProps) => {
         if (error) throw error;
       }
 
+      // Force a slight delay to ensure the database has processed the change
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       setPermissions(prev => ({
         ...prev,
         [permissionKey]: granted
@@ -67,10 +70,11 @@ const PermissionManager = ({ user, onBack }: PermissionManagerProps) => {
 
       toast({
         title: granted ? "Permiso otorgado" : "Permiso revocado",
-        description: `${availablePermissions.find(p => p.key === permissionKey)?.label} ${granted ? 'otorgado a' : 'revocado de'} ${user.email}`
+        description: `${availablePermissions.find(p => p.key === permissionKey)?.label} ${granted ? 'otorgado a' : 'revocado de'} ${user.email}. Los cambios deberían reflejarse automáticamente.`
       });
 
     } catch (error) {
+      console.error('Permission error:', error);
       toast({
         title: "Error",
         description: "No se pudo actualizar el permiso",

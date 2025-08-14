@@ -26,6 +26,32 @@ export const usePermissions = () => {
     fetchUserPermissions();
   }, [user, isAdmin]);
 
+  // Add effect to listen for real-time permission changes
+  useEffect(() => {
+    if (!user || isAdmin) return;
+
+    const channel = supabase
+      .channel('user-permissions-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_permissions',
+          filter: `user_id=eq.${user.id}`
+        },
+        () => {
+          // Refetch permissions when they change
+          fetchUserPermissions();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, isAdmin]);
+
   const fetchUserPermissions = async () => {
     if (!user) return;
 
