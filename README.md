@@ -1,73 +1,95 @@
-# Welcome to your Lovable project
+# David Burger Menu Magic (Privado)
 
-## Project info
+Este repositorio es un proyecto privado para la aplicación React de "David Burger". Contiene el frontend (Vite + React + TypeScript + Tailwind + shadcn-ui) e integración con Supabase.
 
-**URL**: https://lovable.dev/projects/b20fabb9-8c7c-44c9-8709-9eaae0c75b8d
+Importante: Este código y su documentación son confidenciales. No compartas enlaces, capturas ni credenciales fuera del equipo autorizado.
 
-## How can I edit this code?
+## Requisitos
+- Node.js 18+ y npm 9+ (recomendado instalar con nvm: https://github.com/nvm-sh/nvm)
+- Acceso al repositorio privado
+- (Opcional) Cuenta y proyecto en Netlify para despliegues privados
+- (Opcional) Proyecto en Supabase (para autenticación y datos)
 
-There are several ways of editing your application.
+## Instalación y ejecución
+1. Clonar el repositorio
+   ```sh
+   git clone <URL_DEL_REPO_PRIVADO>
+   cd david-burger-menu-magic
+   ```
+2. Instalar dependencias
+   ```sh
+   npm install
+   ```
+3. Ejecutar en desarrollo
+   ```sh
+   npm run dev
+   ```
+   Abrir el navegador en la URL que muestre Vite (por defecto http://localhost:5173).
 
-**Use Lovable**
+## Scripts disponibles
+- `npm run dev`: Inicia el servidor de desarrollo con recarga en caliente.
+- `npm run build`: Genera el build de producción en `dist/`.
+- `npm run build:dev`: Build en modo development (útil para diagnósticos de bundling).
+- `npm run preview`: Sirve localmente el build de `dist/` para pruebas.
+- `npm run lint`: Ejecuta ESLint sobre el proyecto.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b20fabb9-8c7c-44c9-8709-9eaae0c75b8d) and start prompting.
+## Variables y configuración (Supabase)
+Actualmente la configuración de Supabase está centralizada en `src/config/supabase.ts` con URL y anonKey públicas (rol anon). Al ser un proyecto privado, recomendamos mover estos valores a variables de entorno de Vite y no commitear credenciales:
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1) Crear un archivo `.env.local` (no se sube al repo) en la raíz del proyecto con:
 ```
+VITE_SUPABASE_URL=... 
+VITE_SUPABASE_ANON_KEY=...
+```
+2) Actualizar `src/config/supabase.ts` para leer desde `import.meta.env`:
+```ts
+export const SUPABASE_CONFIG = {
+  url: import.meta.env.VITE_SUPABASE_URL!,
+  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY!,
+} as const;
+```
+Si prefieres mantener la configuración hardcodeada por ahora, asegúrate de que los valores correspondan al proyecto correcto de Supabase y que las RLS policies estén configuradas adecuadamente.
 
-**Edit a file directly in GitHub**
+La instancia del cliente se crea en `src/integrations/supabase/client.ts`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Despliegue (privado)
+Este proyecto es una SPA. El directorio `public/_redirects` ya está preparado para SPA routing (React Router). Para un despliegue privado en Netlify:
 
-**Use GitHub Codespaces**
+1. Crear un sitio en Netlify y conectarlo a este repo privado o subir manualmente la carpeta `dist/` tras ejecutar `npm run build`.
+2. Configuración recomendada:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - Node version: 18+
+   - Variables en Netlify (si usas env vars): `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+3. Asegura que el sitio quede restringido (por ejemplo, mediante protección por contraseña en Netlify, o con autenticación en la app) si no debe ser público.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+También puedes desplegar en Vercel o cualquier hosting estático compatible con SPA.
 
-## What technologies are used for this project?
+## Estructura del proyecto (resumen)
+- `src/` Código fuente de la app (páginas, componentes, hooks, estilos)
+- `public/` Archivos estáticos y `_redirects` para SPA
+- `supabase/` Configuración relacionada con Supabase
+- `dist/` Salida del build de producción
 
-This project is built with:
-
+## Tecnología
 - Vite
 - TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- React 18
+- Tailwind CSS + shadcn-ui
+- TanStack Query
+- Supabase JS
+- React Router
 
-## How can I deploy this project?
+## Buenas prácticas y seguridad (proyecto privado)
+- No compartas el repositorio, credenciales, ni URLs de despliegue fuera del equipo.
+- Usa `.env.local` para variables sensibles y configúralas en el proveedor de hosting.
+- Revisa políticas RLS en Supabase antes de exponer endpoints.
+- Realiza `npm run lint` y pruebas manuales antes de abrir PRs.
 
-Simply open [Lovable](https://lovable.dev/projects/b20fabb9-8c7c-44c9-8709-9eaae0c75b8d) and click on Share -> Publish.
+## Solución de problemas
+- Error de módulos o tipos: elimina `node_modules` y `package-lock.json`, luego `npm install`.
+- Variables de entorno no disponibles en producción: verifica que existan en la plataforma de despliegue con el prefijo `VITE_`.
+- Rutas rompen en refresco: confirma que `public/_redirects` esté incluido en el build y que el hosting respete la configuración para SPA.
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+Última actualización: 2025-08-13
