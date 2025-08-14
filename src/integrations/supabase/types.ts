@@ -134,6 +134,10 @@ export type Database = {
         Args: { user_email: string }
         Returns: undefined
       }
+      grant_permission: {
+        Args: { permission: string; target_user_email: string }
+        Returns: undefined
+      }
       has_permission: {
         Args: { check_user_id: string; permission: string }
         Returns: boolean
@@ -144,6 +148,10 @@ export type Database = {
       }
       promote_user_to_admin: {
         Args: { user_email: string }
+        Returns: undefined
+      }
+      revoke_permission: {
+        Args: { permission: string; target_user_email: string }
         Returns: undefined
       }
     }
