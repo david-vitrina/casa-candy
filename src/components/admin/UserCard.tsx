@@ -1,3 +1,4 @@
+
 import { Shield, User, Trash2, Settings, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +16,7 @@ interface UserProfile {
 interface UserCardProps {
   user: UserProfile;
   currentUserEmail: string;
+  isCurrentUserAdmin: boolean;
   onPromoteToAdmin: (email: string) => void;
   onDemoteFromAdmin: (email: string) => void;
   onDeleteUser: (user: UserProfile) => void;
@@ -24,6 +26,7 @@ interface UserCardProps {
 const UserCard = ({
   user,
   currentUserEmail,
+  isCurrentUserAdmin,
   onPromoteToAdmin,
   onDemoteFromAdmin,
   onDeleteUser,
@@ -84,52 +87,60 @@ const UserCard = ({
       </CardHeader>
 
       <CardContent>
-        <div className="flex flex-wrap gap-2">
-          {!isAdmin ? (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onPromoteToAdmin(user.email)}
-              className="flex-1"
-            >
-              <ChevronUp className="w-4 h-4 mr-1" />
-              Promover
-            </Button>
-          ) : (
-            !isCurrentUser && (
+        {isCurrentUserAdmin ? (
+          <div className="flex flex-wrap gap-2">
+            {!isAdmin ? (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onDemoteFromAdmin(user.email)}
+                onClick={() => onPromoteToAdmin(user.email)}
                 className="flex-1"
               >
-                <ChevronDown className="w-4 h-4 mr-1" />
-                Degradar
+                <ChevronUp className="w-4 h-4 mr-1" />
+                Promover
               </Button>
-            )
-          )}
+            ) : (
+              !isCurrentUser && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onDemoteFromAdmin(user.email)}
+                  className="flex-1"
+                >
+                  <ChevronDown className="w-4 h-4 mr-1" />
+                  Degradar
+                </Button>
+              )
+            )}
 
-          {!isAdmin && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onManagePermissions(user)}
-            >
-              <Settings className="w-4 h-4" />
-            </Button>
-          )}
+            {!isAdmin && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onManagePermissions(user)}
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
+            )}
 
-          {!isCurrentUser && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onDeleteUser(user)}
-              className="text-destructive hover:text-destructive"
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          )}
-        </div>
+            {!isCurrentUser && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onDeleteUser(user)}
+                className="text-destructive hover:text-destructive"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="text-center">
+            <Badge variant="outline" className="text-xs">
+              Solo lectura
+            </Badge>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,12 +1,15 @@
+
 import { useState, useEffect } from 'react';
-import { Search, Shield, User, Trash2, Settings } from 'lucide-react';
+import { Search, Shield, User, Trash2, Settings, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { usePermissions } from '@/hooks/usePermissions';
 import UserCard from './UserCard';
 import PermissionManager from './PermissionManager';
 
@@ -26,6 +29,7 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showPermissions, setShowPermissions] = useState(false);
   const { user: currentUser } = useAuth();
+  const { isAdmin } = usePermissions();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -75,6 +79,15 @@ const UserManagement = () => {
   };
 
   const promoteToAdmin = async (userEmail: string) => {
+    if (!isAdmin) {
+      toast({
+        title: "Sin permisos",
+        description: "Solo los administradores pueden promover usuarios",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (!confirm(`¿Promover a ${userEmail} como administrador?`)) return;
 
     try {
@@ -100,6 +113,15 @@ const UserManagement = () => {
   };
 
   const demoteFromAdmin = async (userEmail: string) => {
+    if (!isAdmin) {
+      toast({
+        title: "Sin permisos",
+        description: "Solo los administradores pueden degradar usuarios",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (userEmail === currentUser?.email) {
       toast({
         title: "Error",
@@ -134,6 +156,15 @@ const UserManagement = () => {
   };
 
   const deleteUser = async (user: UserProfile) => {
+    if (!isAdmin) {
+      toast({
+        title: "Sin permisos",
+        description: "Solo los administradores pueden eliminar usuarios",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (user.email === currentUser?.email) {
       toast({
         title: "Error",
@@ -170,6 +201,15 @@ const UserManagement = () => {
   };
 
   const handleManagePermissions = (user: UserProfile) => {
+    if (!isAdmin) {
+      toast({
+        title: "Sin permisos",
+        description: "Solo los administradores pueden gestionar permisos",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setSelectedUser(user);
     setShowPermissions(true);
   };
@@ -201,6 +241,15 @@ const UserManagement = () => {
         </div>
       </div>
 
+      {!isAdmin && (
+        <Alert className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Acceso limitado: Solo puedes ver los usuarios. Las funciones de gestión están restringidas a administradores.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -219,6 +268,7 @@ const UserManagement = () => {
             key={user.id}
             user={user}
             currentUserEmail={currentUser?.email || ''}
+            isCurrentUserAdmin={isAdmin}
             onPromoteToAdmin={promoteToAdmin}
             onDemoteFromAdmin={demoteFromAdmin}
             onDeleteUser={deleteUser}

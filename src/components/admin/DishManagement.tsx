@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { usePermissions } from '@/hooks/usePermissions';
@@ -38,6 +40,15 @@ const DishManagement = () => {
   };
 
   const toggleAvailability = async (dish: Dish) => {
+    if (!canManageAvailability) {
+      toast({
+        title: "Sin permisos",
+        description: "No tienes permisos para gestionar disponibilidad",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const { error } = await supabase
       .from('dishes')
       .update({ available: !dish.available })
@@ -61,6 +72,15 @@ const DishManagement = () => {
   };
 
   const deleteDish = async (dish: Dish) => {
+    if (!canDeleteDishes) {
+      toast({
+        title: "Sin permisos",
+        description: "No tienes permisos para eliminar platos",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (!confirm(`¿Estás seguro de eliminar ${dish.name}?`)) return;
 
     const { error } = await supabase
@@ -111,10 +131,22 @@ const DishManagement = () => {
     );
   }
 
+  // Mostrar información de permisos si no es admin
+  const showPermissionInfo = !isAdmin;
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Gestión de Platos</h2>
+        <div>
+          <h2 className="text-2xl font-bold">Gestión de Platos</h2>
+          {showPermissionInfo && (
+            <div className="flex gap-2 mt-2">
+              {canEditDishes && <Badge variant="secondary">Puede editar</Badge>}
+              {canManageAvailability && <Badge variant="secondary">Puede gestionar disponibilidad</Badge>}
+              {canDeleteDishes && <Badge variant="secondary">Puede eliminar</Badge>}
+            </div>
+          )}
+        </div>
         {isAdmin && (
           <Button
             onClick={() => setShowForm(true)}
@@ -125,6 +157,15 @@ const DishManagement = () => {
           </Button>
         )}
       </div>
+
+      {showPermissionInfo && (
+        <Alert className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Tienes acceso limitado. Solo puedes realizar las acciones para las que tienes permisos específicos.
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {dishes.map((dish) => (
@@ -177,6 +218,13 @@ const DishManagement = () => {
                   </Button>
                 )}
               </div>
+              {!canEditDishes && !canDeleteDishes && !canManageAvailability && (
+                <div className="mt-2 text-center">
+                  <Badge variant="outline" className="text-xs">
+                    Solo lectura
+                  </Badge>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))}
