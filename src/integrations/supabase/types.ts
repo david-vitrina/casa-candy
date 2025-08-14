@@ -130,6 +130,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      demote_admin_to_user: {
+        Args: { user_email: string }
+        Returns: undefined
+      }
+      has_permission: {
+        Args: { check_user_id: string; permission: string }
+        Returns: boolean
+      }
       is_admin: {
         Args: { user_id: string }
         Returns: boolean
