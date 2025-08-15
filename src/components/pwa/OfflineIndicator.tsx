@@ -11,8 +11,8 @@ export const OfflineIndicator = () => {
   }
 
   return (
-    <div className="fixed top-4 right-4 z-50">
-      <Badge 
+    <div className="fixed top-16 left-4 z-40 md:top-4 md:right-4 md:left-auto">
+      <Badge
         variant={isOnline ? "default" : "secondary"}
         className={cn(
           "flex items-center gap-2 transition-all duration-300",
