@@ -1,0 +1,74 @@
+{
+  "name": "David Burger - Auténticos Sabores Españoles",
+  "short_name": "David Burger",
+  "description": "Descubre los auténticos sabores de España en David Burger. Platos tradicionales españoles preparados con ingredientes premium.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#19223c",
+  "theme_color": "#19223c",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "categories": ["food", "restaurant", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver Menú",
+      "short_name": "Menú",
+      "description": "Explora nuestro menú de especialidades españolas",
+      "url": "/#menu",
+      "icons": [
+        {
+          "src": "/pwa-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Contacto",
+      "short_name": "Contacto",
+      "description": "Información de contacto y ubicación",
+      "url": "/#contact",
+      "icons": [
+        {
+          "src": "/pwa-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
