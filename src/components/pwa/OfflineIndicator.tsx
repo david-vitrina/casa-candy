@@ -11,11 +11,11 @@ export const OfflineIndicator = () => {
   }
 
   return (
-    <div className="fixed top-16 left-4 z-40 md:top-4 md:right-4 md:left-auto">
+    <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 md:top-4 md:right-4 md:left-auto md:transform-none md:translate-x-0">
       <Badge
         variant={isOnline ? "default" : "secondary"}
         className={cn(
-          "flex items-center gap-2 transition-all duration-300",
+          "flex items-center gap-2 transition-all duration-300 px-3 py-2 text-sm md:text-xs md:px-2 md:py-1",
           !isOnline && "bg-muted text-muted-foreground",
           isSyncing && "bg-primary/10 text-primary",
           syncStatus === 'error' && "bg-destructive/10 text-destructive"
