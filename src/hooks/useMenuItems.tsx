@@ -30,23 +30,26 @@ export const useMenuItems = () => {
           .order('name');
 
         if (!error && data && data.length > 0) {
-          // Combinar datos de Supabase con imágenes locales
-          const dishesWithLocalImages = data.map(dishFromDB => {
+          // Priorizar imágenes de Supabase sobre locales para permitir actualizaciones
+          const dishesWithImages = data.map(dishFromDB => {
             // Buscar el plato correspondiente en menuItems local por nombre
             const localDish = menuItems.find(local => 
               local.name.toLowerCase() === dishFromDB.name.toLowerCase()
             );
             
+            // Usar imagen de Supabase si existe y es una URL válida, sino usar local
+            const hasSupabaseImage = dishFromDB.image && 
+              (dishFromDB.image.startsWith('https://') || dishFromDB.image.startsWith('http://'));
+            
             return {
               ...dishFromDB,
-              // Usar imagen local si existe, sino usar la de la DB
-              image: localDish ? localDish.image : dishFromDB.image
+              image: hasSupabaseImage ? dishFromDB.image : (localDish?.image || dishFromDB.image)
             } as Dish;
           });
           
           // Update state and cache
-          setDishes(dishesWithLocalImages);
-          await indexedDBService.saveDishes(dishesWithLocalImages);
+          setDishes(dishesWithImages);
+          await indexedDBService.saveDishes(dishesWithImages);
         } else if (cachedDishes.length === 0) {
           // Fallback to local data only if no cached data exists
           const localDishes = menuItems.filter(item => item.available);
