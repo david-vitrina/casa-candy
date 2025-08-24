@@ -52,9 +52,20 @@ const Footer = () => {
                 Twitter
               </a>
             </div>
-            <div>
+            <div className="space-y-2">
               <p className="text-sm text-white/60">
                 © 2024 David Burger. Todos los derechos reservados.
+              </p>
+              <p className="text-xs text-white/40">
+                Imágenes cortesía de{' '}
+                <a 
+                  href="https://www.freepik.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:text-spanish-gold transition-colors"
+                >
+                  Freepik
+                </a>
               </p>
             </div>
           </div>
