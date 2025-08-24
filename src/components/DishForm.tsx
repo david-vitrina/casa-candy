@@ -5,10 +5,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Upload, X } from 'lucide-react';
+import { Upload, X, Loader2, Info } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Dish } from '@/types/menu';
+import imageCompression from 'browser-image-compression';
 
 
 interface DishFormProps {
@@ -31,9 +32,60 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
   });
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [compressing, setCompressing] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [originalFileSize, setOriginalFileSize] = useState<number>(0);
+  const [compressedFileSize, setCompressedFileSize] = useState<number>(0);
   const [imagePreview, setImagePreview] = useState<string>('');
   const { toast } = useToast();
+
+  // Helper function to format file size
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  // Enhanced image compression function
+  const compressImage = async (file: File): Promise<File> => {
+    setCompressing(true);
+    try {
+      console.log('Original file size:', formatFileSize(file.size));
+      
+      const options = {
+        maxSizeMB: 2, // Maximum size after compression
+        maxWidthOrHeight: 1920, // Maximum dimensions
+        useWebWorker: true,
+        fileType: 'image/jpeg', // Convert to JPEG for better compression
+        quality: 0.8 // Quality level
+      };
+
+      const compressedFile = await imageCompression(file, options);
+      console.log('Compressed file size:', formatFileSize(compressedFile.size));
+      
+      setCompressedFileSize(compressedFile.size);
+      
+      toast({
+        title: "Imagen comprimida",
+        description: `Tamaño reducido de ${formatFileSize(file.size)} a ${formatFileSize(compressedFile.size)}`,
+        variant: "default"
+      });
+
+      return compressedFile;
+    } catch (error) {
+      console.error('Error compressing image:', error);
+      toast({
+        title: "Error de compresión",
+        description: "No se pudo comprimir la imagen, se usará el original",
+        variant: "destructive"
+      });
+      return file;
+    } finally {
+      setCompressing(false);
+    }
+  };
 
   useEffect(() => {
     if (dish) {
@@ -52,24 +104,62 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
     }
   }, [dish]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      console.log('Selected file:', file.name, 'Size:', formatFileSize(file.size));
+      
+      // Store original file size for display
+      setOriginalFileSize(file.size);
+      
+      // Check if file is larger than 10MB (absolute limit)
+      if (file.size > 10 * 1024 * 1024) {
         toast({
-          title: "Error",
-          description: "La imagen no puede ser mayor a 5MB",
+          title: "Archivo demasiado grande",
+          description: `La imagen es de ${formatFileSize(file.size)}. El límite máximo es 10MB. Por favor, selecciona una imagen más pequeña.`,
           variant: "destructive"
         });
         return;
       }
-      
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+
+      try {
+        let processedFile = file;
+        
+        // Auto-compress if larger than 2MB
+        if (file.size > 2 * 1024 * 1024) {
+          toast({
+            title: "Comprimiendo imagen",
+            description: `Archivo de ${formatFileSize(file.size)} detectado. Comprimiendo automáticamente...`,
+            variant: "default"
+          });
+          
+          processedFile = await compressImage(file);
+        }
+
+        setImageFile(processedFile);
+        
+        // Create preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(processedFile);
+
+        // Show success message with final size
+        toast({
+          title: "Imagen cargada",
+          description: `Archivo procesado: ${formatFileSize(processedFile.size)}`,
+          variant: "default"
+        });
+
+      } catch (error) {
+        console.error('Error processing image:', error);
+        toast({
+          title: "Error al procesar imagen",
+          description: "Hubo un problema al procesar la imagen. Inténtalo de nuevo.",
+          variant: "destructive"
+        });
+      }
     }
   };
 
@@ -108,6 +198,9 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
     setImageFile(null);
     setImagePreview('');
     setFormData({ ...formData, image: '' });
+    // Reset file size info
+    setOriginalFileSize(0);
+    setCompressedFileSize(0);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -299,6 +392,29 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                     </div>
                   )}
                   
+                  {/* File size information */}
+                  {(originalFileSize > 0 || compressedFileSize > 0) && (
+                    <div className="bg-muted/50 p-3 rounded-lg">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Info className="w-4 h-4" />
+                        <span className="font-medium">Información del archivo:</span>
+                      </div>
+                      <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                        {originalFileSize > 0 && (
+                          <div>Tamaño original: {formatFileSize(originalFileSize)}</div>
+                        )}
+                        {compressedFileSize > 0 && compressedFileSize !== originalFileSize && (
+                          <div className="text-green-600">
+                            Tamaño después de compresión: {formatFileSize(compressedFileSize)}
+                          </div>
+                        )}
+                        {imageFile && (
+                          <div>Tamaño final: {formatFileSize(imageFile.size)}</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="flex gap-4">
                     <div className="flex-1">
                       <Input
@@ -307,14 +423,27 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                         onChange={handleImageChange}
                         className="hidden"
                         id="image-upload"
+                        disabled={compressing}
                       />
                       <Label 
                         htmlFor="image-upload"
-                        className="inline-flex items-center justify-center w-full p-4 border border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-muted/50"
+                        className={`inline-flex items-center justify-center w-full p-4 border border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-muted/50 ${compressing ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
-                        <Upload className="w-5 h-5 mr-2" />
-                        Subir Nueva Imagen
+                        {compressing ? (
+                          <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            Comprimiendo...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-5 h-5 mr-2" />
+                            Subir Nueva Imagen
+                          </>
+                        )}
                       </Label>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Máximo 10MB. Las imágenes mayores a 2MB se comprimen automáticamente.
+                      </p>
                     </div>
                     
                     <div className="flex-1">
@@ -324,13 +453,20 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                         onChange={(e) => {
                           setFormData({ ...formData, image: e.target.value });
                           setImagePreview(e.target.value);
+                          // Reset file size info when using URL
+                          setOriginalFileSize(0);
+                          setCompressedFileSize(0);
                         }}
+                        disabled={compressing}
                       />
                     </div>
                   </div>
                   
-                  {uploading && (
-                    <p className="text-sm text-muted-foreground">Subiendo imagen...</p>
+                  {(uploading || compressing) && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      {compressing ? 'Comprimiendo imagen...' : 'Subiendo imagen...'}
+                    </div>
                   )}
                 </div>
               </div>
