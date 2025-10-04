@@ -27,6 +27,7 @@ export type Database = {
           ingredients: string[]
           name: string
           price: number
+          tenant_id: string | null
           updated_at: string
         }
         Insert: {
@@ -41,6 +42,7 @@ export type Database = {
           ingredients: string[]
           name: string
           price: number
+          tenant_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -55,9 +57,18 @@ export type Database = {
           ingredients?: string[]
           name?: string
           price?: number
+          tenant_id?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dishes_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -65,6 +76,7 @@ export type Database = {
           email: string
           id: string
           role: string
+          tenant_id: string | null
           updated_at: string
           user_id: string
         }
@@ -73,6 +85,7 @@ export type Database = {
           email: string
           id?: string
           role?: string
+          tenant_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -81,8 +94,94 @@ export type Database = {
           email?: string
           id?: string
           role?: string
+          tenant_id?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenant_memberships: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_memberships_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenants: {
+        Row: {
+          accent_color: string | null
+          created_at: string | null
+          domain: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          primary_color: string | null
+          secondary_color: string | null
+          settings: Json | null
+          slug: string
+          status: Database["public"]["Enums"]["tenant_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          accent_color?: string | null
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          logo_url?: string | null
+          name: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          settings?: Json | null
+          slug: string
+          status?: Database["public"]["Enums"]["tenant_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          accent_color?: string | null
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          settings?: Json | null
+          slug?: string
+          status?: Database["public"]["Enums"]["tenant_status"] | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -92,6 +191,7 @@ export type Database = {
           granted_by: string | null
           id: string
           permission_type: string
+          tenant_id: string | null
           user_id: string
         }
         Insert: {
@@ -99,6 +199,7 @@ export type Database = {
           granted_by?: string | null
           id?: string
           permission_type: string
+          tenant_id?: string | null
           user_id: string
         }
         Update: {
@@ -106,6 +207,7 @@ export type Database = {
           granted_by?: string | null
           id?: string
           permission_type?: string
+          tenant_id?: string | null
           user_id?: string
         }
         Relationships: [
@@ -115,6 +217,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "user_permissions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "user_permissions_user_id_fkey"
@@ -133,6 +242,10 @@ export type Database = {
       demote_admin_to_user: {
         Args: { user_email: string }
         Returns: undefined
+      }
+      get_user_tenant_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       grant_permission: {
         Args: { permission: string; target_user_email: string }
@@ -154,9 +267,13 @@ export type Database = {
         Args: { permission: string; target_user_email: string }
         Returns: undefined
       }
+      user_belongs_to_tenant: {
+        Args: { check_tenant_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      tenant_status: "active" | "inactive" | "suspended"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -283,6 +400,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      tenant_status: ["active", "inactive", "suspended"],
+    },
   },
 } as const
