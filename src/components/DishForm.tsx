@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Upload, X, Loader2, Info } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { Dish } from '@/types/menu';
 import imageCompression from 'browser-image-compression';
 
@@ -38,6 +39,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
   const [compressedFileSize, setCompressedFileSize] = useState<number>(0);
   const [imagePreview, setImagePreview] = useState<string>('');
   const { toast } = useToast();
+  const { tenantId } = useAuth();
 
   // Helper function to format file size
   const formatFileSize = (bytes: number): string => {
@@ -219,6 +221,16 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         imageUrl = uploadedUrl;
       }
 
+      if (!tenantId) {
+        toast({
+          title: "Error",
+          description: "No se pudo determinar el tenant",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+
       const dishData = {
         name: formData.name,
         description: formData.description,
@@ -228,7 +240,8 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         image: imageUrl,
         category: formData.category,
         available: formData.available,
-        discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0
+        discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0,
+        tenant_id: tenantId
       };
 
       let error;

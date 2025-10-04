@@ -13,6 +13,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
+  tenantId: string | null;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   loading: boolean;
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [tenantId, setTenantId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,12 +45,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 .single();
               
               setProfile(profileData as Profile);
+              
+              // Obtener tenant_id del usuario
+              const { data: membershipData } = await supabase
+                .from('tenant_memberships')
+                .select('tenant_id')
+                .eq('user_id', session.user.id)
+                .maybeSingle();
+              
+              setTenantId(membershipData?.tenant_id || null);
             } catch (err) {
               // Error silencioso, el perfil se creará automáticamente
             }
           }, 0);
         } else {
           setProfile(null);
+          setTenantId(null);
         }
         setLoading(false);
       }
@@ -67,6 +79,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .single();
           
           setProfile(profileData as Profile);
+          
+          // Obtener tenant_id del usuario
+          const { data: membershipData } = await supabase
+            .from('tenant_memberships')
+            .select('tenant_id')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+          
+          setTenantId(membershipData?.tenant_id || null);
         } catch (err) {
           // Error silencioso, el perfil se creará automáticamente
         }
@@ -126,6 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     session,
     profile,
+    tenantId,
     signIn,
     signOut,
     loading,
