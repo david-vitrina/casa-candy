@@ -27,7 +27,7 @@ export type Database = {
           ingredients: string[]
           name: string
           price: number
-          tenant_id: string | null
+          tenant_id: string
           updated_at: string
         }
         Insert: {
@@ -42,7 +42,7 @@ export type Database = {
           ingredients: string[]
           name: string
           price: number
-          tenant_id?: string | null
+          tenant_id: string
           updated_at?: string
         }
         Update: {
@@ -57,7 +57,7 @@ export type Database = {
           ingredients?: string[]
           name?: string
           price?: number
-          tenant_id?: string | null
+          tenant_id?: string
           updated_at?: string
         }
         Relationships: [
@@ -76,7 +76,7 @@ export type Database = {
           email: string
           id: string
           role: string
-          tenant_id: string | null
+          tenant_id: string
           updated_at: string
           user_id: string
         }
@@ -85,7 +85,7 @@ export type Database = {
           email: string
           id?: string
           role?: string
-          tenant_id?: string | null
+          tenant_id: string
           updated_at?: string
           user_id: string
         }
@@ -94,7 +94,7 @@ export type Database = {
           email?: string
           id?: string
           role?: string
-          tenant_id?: string | null
+          tenant_id?: string
           updated_at?: string
           user_id?: string
         }
@@ -191,7 +191,7 @@ export type Database = {
           granted_by: string | null
           id: string
           permission_type: string
-          tenant_id: string | null
+          tenant_id: string
           user_id: string
         }
         Insert: {
@@ -199,7 +199,7 @@ export type Database = {
           granted_by?: string | null
           id?: string
           permission_type: string
-          tenant_id?: string | null
+          tenant_id: string
           user_id: string
         }
         Update: {
@@ -207,7 +207,7 @@ export type Database = {
           granted_by?: string | null
           id?: string
           permission_type?: string
-          tenant_id?: string | null
+          tenant_id?: string
           user_id?: string
         }
         Relationships: [
@@ -257,6 +257,10 @@ export type Database = {
       }
       is_admin: {
         Args: { user_id: string }
+        Returns: boolean
+      }
+      is_tenant_admin: {
+        Args: { check_tenant_id: string }
         Returns: boolean
       }
       promote_user_to_admin: {
