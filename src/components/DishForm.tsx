@@ -166,22 +166,24 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
   };
 
   const uploadImage = async (): Promise<string | null> => {
-    if (!imageFile) return null;
+    if (!imageFile || !tenantId) return null;
     
     setUploading(true);
     try {
       const fileExt = imageFile.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      // Organizar por tenant
+      const filePath = `${tenantId}/${fileName}`;
       
       const { data, error } = await supabase.storage
         .from('dish-images')
-        .upload(fileName, imageFile);
+        .upload(filePath, imageFile);
 
       if (error) throw error;
 
       const { data: { publicUrl } } = supabase.storage
         .from('dish-images')
-        .getPublicUrl(fileName);
+        .getPublicUrl(filePath);
 
       return publicUrl;
     } catch (error) {
