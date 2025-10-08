@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { menuItems } from '@/data/menu';
 import { Dish } from '@/types/menu';
 import { indexedDBService } from '@/services/indexedDB';
-import { useAuth } from './useAuth';
+import { useTenant } from './useTenant';
 
 export const useMenuItems = () => {
   const [dishes, setDishes] = useState<Dish[]>([]);
