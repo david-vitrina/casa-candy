@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { HARDCODED_TENANT_ID } from '@/config/tenant';
 
 interface TenantSettings {
   theme?: string;
@@ -62,16 +63,9 @@ export function TenantProvider({ children }: { children: ReactNode }) {
   };
 
   const fetchTenant = async () => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
     try {
       setLoading(true);
       
-      // Primero intentar detectar tenant por URL
-      const tenantSlug = detectTenantFromUrl();
       const hostname = window.location.hostname;
       
       let query = supabase
@@ -79,24 +73,31 @@ export function TenantProvider({ children }: { children: ReactNode }) {
         .select('*')
         .eq('status', 'active');
       
-      // Si tenemos un slug de la URL, buscar por slug
-      if (tenantSlug) {
-        query = query.eq('slug', tenantSlug);
-      } 
-      // Si es un dominio personalizado, buscar por dominio
+      // PRIORIDAD 1: Tenant hardcodeado (para builds específicos en Netlify)
+      if (HARDCODED_TENANT_ID) {
+        query = query.eq('id', HARDCODED_TENANT_ID);
+      }
+      // PRIORIDAD 2: Dominio personalizado
       else if (!hostname.includes('lovable.app') && !hostname.includes('localhost')) {
         query = query.eq('domain', hostname);
       }
-      // Si no, obtener el tenant del usuario desde tenant_memberships
+      // PRIORIDAD 3: Subdomain o slug en la URL
       else {
-        const { data: membership } = await supabase
-          .from('tenant_memberships')
-          .select('tenant_id')
-          .eq('user_id', user.id)
-          .single();
-        
-        if (membership?.tenant_id) {
-          query = query.eq('id', membership.tenant_id);
+        const tenantSlug = detectTenantFromUrl();
+        if (tenantSlug) {
+          query = query.eq('slug', tenantSlug);
+        }
+        // PRIORIDAD 4: Usuario autenticado (obtener de tenant_memberships)
+        else if (user) {
+          const { data: membership } = await supabase
+            .from('tenant_memberships')
+            .select('tenant_id')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          
+          if (membership?.tenant_id) {
+            query = query.eq('id', membership.tenant_id);
+          }
         }
       }
       

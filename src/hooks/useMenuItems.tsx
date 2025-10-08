@@ -8,7 +8,8 @@ import { useAuth } from './useAuth';
 export const useMenuItems = () => {
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [loading, setLoading] = useState(true);
-  const { tenantId } = useAuth();
+  const { tenant } = useTenant();
+  const tenantId = tenant?.id;
 
   useEffect(() => {
     if (tenantId) {

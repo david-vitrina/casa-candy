@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { useTenant } from '@/hooks/useTenant';
 import { usePermissions } from '@/hooks/usePermissions';
 import DishForm from '@/components/DishForm';
 import { Dish } from '@/types/menu';
@@ -17,7 +18,8 @@ const DishManagement = () => {
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [showForm, setShowForm] = useState(false);
   const { toast } = useToast();
-  const { tenantId } = useAuth();
+  const { tenant } = useTenant();
+  const tenantId = tenant?.id;
   const { canEditDishes, canManageAvailability, canDeleteDishes, isAdmin } = usePermissions();
 
   useEffect(() => {
