@@ -14,16 +14,157 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dishes: {
+        Row: {
+          available: boolean
+          category: Database["public"]["Enums"]["dish_category"]
+          created_at: string
+          description: string
+          discount_percentage: number | null
+          full_description: string | null
+          id: string
+          image: string | null
+          ingredients: string[] | null
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          category: Database["public"]["Enums"]["dish_category"]
+          created_at?: string
+          description: string
+          discount_percentage?: number | null
+          full_description?: string | null
+          id?: string
+          image?: string | null
+          ingredients?: string[] | null
+          name: string
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          category?: Database["public"]["Enums"]["dish_category"]
+          created_at?: string
+          description?: string
+          discount_percentage?: number | null
+          full_description?: string | null
+          id?: string
+          image?: string | null
+          ingredients?: string[] | null
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_permissions: {
+        Row: {
+          created_at: string
+          id: string
+          permission_type: Database["public"]["Enums"]["permission_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          permission_type: Database["public"]["Enums"]["permission_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          permission_type?: Database["public"]["Enums"]["permission_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      demote_admin_to_user: {
+        Args: { target_user_id: string }
+        Returns: undefined
+      }
+      grant_permission: {
+        Args: {
+          perm: Database["public"]["Enums"]["permission_type"]
+          target_user_id: string
+        }
+        Returns: undefined
+      }
+      is_admin: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
+      promote_user_to_admin: {
+        Args: { target_user_id: string }
+        Returns: undefined
+      }
+      revoke_permission: {
+        Args: {
+          perm: Database["public"]["Enums"]["permission_type"]
+          target_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      dish_category: "appetizer" | "main" | "dessert"
+      permission_type:
+        | "edit_dishes"
+        | "manage_availability"
+        | "delete_dishes"
+        | "manage_users"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +291,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      dish_category: ["appetizer", "main", "dessert"],
+      permission_type: [
+        "edit_dishes",
+        "manage_availability",
+        "delete_dishes",
+        "manage_users",
+      ],
+    },
   },
 } as const

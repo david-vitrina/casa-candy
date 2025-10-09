@@ -3,19 +3,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { menuItems } from '@/data/menu';
 import { Dish } from '@/types/menu';
 import { indexedDBService } from '@/services/indexedDB';
-import { useTenant } from './useTenant';
 
 export const useMenuItems = () => {
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [loading, setLoading] = useState(true);
-  const { tenant } = useTenant();
-  const tenantId = tenant?.id;
 
   useEffect(() => {
-    if (tenantId) {
-      fetchDishes();
-    }
-  }, [tenantId]);
+    fetchDishes();
+  }, []);
 
   const fetchDishes = async () => {
     try {
@@ -27,11 +22,10 @@ export const useMenuItems = () => {
       }
 
       // Then try to fetch from Supabase if online
-      if (navigator.onLine && tenantId) {
+      if (navigator.onLine) {
         const { data, error } = await supabase
           .from('dishes')
           .select('*')
-          .eq('tenant_id', tenantId)
           .eq('available', true)
           .order('name');
 

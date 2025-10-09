@@ -6,14 +6,12 @@ interface Profile {
   id: string;
   user_id: string;
   email: string;
-  role: 'user' | 'admin';
 }
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
-  tenantId: string | null;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   loading: boolean;
@@ -26,7 +24,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [tenantId, setTenantId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,25 +39,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 .from('profiles')
                 .select('*')
                 .eq('user_id', session.user.id)
-                .single();
-              
-              setProfile(profileData as Profile);
-              
-              // Obtener tenant_id del usuario
-              const { data: membershipData } = await supabase
-                .from('tenant_memberships')
-                .select('tenant_id')
-                .eq('user_id', session.user.id)
                 .maybeSingle();
               
-              setTenantId(membershipData?.tenant_id || null);
+              setProfile(profileData as Profile);
             } catch (err) {
               // Error silencioso, el perfil se creará automáticamente
             }
           }, 0);
         } else {
           setProfile(null);
-          setTenantId(null);
         }
         setLoading(false);
       }
@@ -76,18 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .from('profiles')
             .select('*')
             .eq('user_id', session.user.id)
-            .single();
-          
-          setProfile(profileData as Profile);
-          
-          // Obtener tenant_id del usuario
-          const { data: membershipData } = await supabase
-            .from('tenant_memberships')
-            .select('tenant_id')
-            .eq('user_id', session.user.id)
             .maybeSingle();
           
-          setTenantId(membershipData?.tenant_id || null);
+          setProfile(profileData as Profile);
         } catch (err) {
           // Error silencioso, el perfil se creará automáticamente
         }
@@ -143,15 +121,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Check if user is admin via user_roles table
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!user) {
+        setIsAdmin(false);
+        return;
+      }
+
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      setIsAdmin(!!data);
+    };
+
+    checkAdminStatus();
+  }, [user]);
+
   const value = {
     user,
     session,
     profile,
-    tenantId,
     signIn,
     signOut,
     loading,
-    isAdmin: profile?.role === 'admin'
+    isAdmin
   };
 
   return (

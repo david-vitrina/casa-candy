@@ -5,10 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { usePermissions } from '@/hooks/usePermissions';
+import { RESTAURANT_CONFIG } from '@/config/restaurant';
 import DishManagement from './DishManagement';
 import UserManagement from './UserManagement';
-import TenantSettings from './TenantSettings';
-import SuperAdmin from './SuperAdmin';
 
 const AdminLayout = () => {
   const { signOut } = useAuth();
@@ -30,15 +29,11 @@ const AdminLayout = () => {
 
   const hasDishPermissions = canEditDishes || canManageAvailability || canDeleteDishes;
   const hasUserPermissions = canManageUsers;
-  const hasSettingsAccess = isAdmin;
-  const hasSuperAdminAccess = isAdmin; // En el futuro podría ser un rol específico
 
   // Contar tabs disponibles
   const availableTabs = [
     hasDishPermissions && 'dishes',
-    hasUserPermissions && 'users',
-    hasSettingsAccess && 'settings',
-    hasSuperAdminAccess && 'super-admin'
+    hasUserPermissions && 'users'
   ].filter(Boolean);
 
   const tabCount = availableTabs.length;
@@ -72,8 +67,8 @@ const AdminLayout = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-spanish-red to-spanish-orange bg-clip-text text-transparent">
-              Panel de Administración
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              {RESTAURANT_CONFIG.name} - Panel de Administración
             </h1>
             {!isAdmin && (
               <p className="text-sm text-muted-foreground mt-1">
@@ -101,12 +96,6 @@ const AdminLayout = () => {
               {hasUserPermissions && (
                 <TabsTrigger value="users">Usuarios</TabsTrigger>
               )}
-              {hasSettingsAccess && (
-                <TabsTrigger value="settings">Configuración</TabsTrigger>
-              )}
-              {hasSuperAdminAccess && (
-                <TabsTrigger value="super-admin">Super Admin</TabsTrigger>
-              )}
             </TabsList>
             
             {hasDishPermissions && (
@@ -120,26 +109,12 @@ const AdminLayout = () => {
                 <UserManagement />
               </TabsContent>
             )}
-
-            {hasSettingsAccess && (
-              <TabsContent value="settings">
-                <TenantSettings />
-              </TabsContent>
-            )}
-
-            {hasSuperAdminAccess && (
-              <TabsContent value="super-admin">
-                <SuperAdmin />
-              </TabsContent>
-            )}
           </Tabs>
         ) : (
           // Solo una pestaña disponible, mostrar directamente el contenido
           <div className="w-full">
             {hasDishPermissions && <DishManagement />}
             {hasUserPermissions && !hasDishPermissions && <UserManagement />}
-            {hasSettingsAccess && !hasDishPermissions && !hasUserPermissions && <TenantSettings />}
-            {hasSuperAdminAccess && !hasDishPermissions && !hasUserPermissions && !hasSettingsAccess && <SuperAdmin />}
           </div>
         )}
       </div>

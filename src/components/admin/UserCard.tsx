@@ -8,17 +8,18 @@ interface UserProfile {
   id: string;
   user_id: string;
   email: string;
-  role: string;
   created_at: string;
+  updated_at: string;
   permissions?: string[];
+  isAdmin?: boolean;
 }
 
 interface UserCardProps {
   user: UserProfile;
   currentUserEmail: string;
   isCurrentUserAdmin: boolean;
-  onPromoteToAdmin: (email: string) => void;
-  onDemoteFromAdmin: (email: string) => void;
+  onPromoteToAdmin: (userId: string, email: string) => void;
+  onDemoteFromAdmin: (userId: string, email: string) => void;
   onDeleteUser: (user: UserProfile) => void;
   onManagePermissions: (user: UserProfile) => void;
 }
@@ -33,7 +34,7 @@ const UserCard = ({
   onManagePermissions
 }: UserCardProps) => {
   const isCurrentUser = user.email === currentUserEmail;
-  const isAdmin = user.role === 'admin';
+  const isAdmin = user.isAdmin || false;
 
   const getPermissionLabel = (permission: string) => {
     const labels = {
@@ -93,7 +94,7 @@ const UserCard = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onPromoteToAdmin(user.email)}
+                onClick={() => onPromoteToAdmin(user.user_id, user.email)}
                 className="flex-1"
               >
                 <ChevronUp className="w-4 h-4 mr-1" />
@@ -104,7 +105,7 @@ const UserCard = ({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onDemoteFromAdmin(user.email)}
+                  onClick={() => onDemoteFromAdmin(user.user_id, user.email)}
                   className="flex-1"
                 >
                   <ChevronDown className="w-4 h-4 mr-1" />

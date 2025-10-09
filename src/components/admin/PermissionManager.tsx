@@ -11,9 +11,10 @@ interface UserProfile {
   id: string;
   user_id: string;
   email: string;
-  role: string;
   created_at: string;
+  updated_at: string;
   permissions?: string[];
+  isAdmin?: boolean;
 }
 
 interface PermissionManagerProps {
@@ -48,14 +49,14 @@ const PermissionManager = ({ user, onBack }: PermissionManagerProps) => {
     try {
       if (granted) {
         const { error } = await supabase.rpc('grant_permission', {
-          target_user_email: user.email,
-          permission: permissionKey
+          target_user_id: user.user_id,
+          perm: permissionKey as any
         });
         if (error) throw error;
       } else {
         const { error } = await supabase.rpc('revoke_permission', {
-          target_user_email: user.email,
-          permission: permissionKey
+          target_user_id: user.user_id,
+          perm: permissionKey as any
         });
         if (error) throw error;
       }
@@ -148,8 +149,8 @@ const PermissionManager = ({ user, onBack }: PermissionManagerProps) => {
             <CardContent className="space-y-4">
               <div>
                 <p className="font-medium">{user.email}</p>
-                <Badge variant={user.role === 'admin' ? "destructive" : "secondary"}>
-                  {user.role === 'admin' ? 'Administrador' : 'Usuario'}
+                <Badge variant={user.isAdmin ? "destructive" : "secondary"}>
+                  {user.isAdmin ? 'Administrador' : 'Usuario'}
                 </Badge>
               </div>
 
@@ -178,9 +179,9 @@ const PermissionManager = ({ user, onBack }: PermissionManagerProps) => {
                 </p>
               </div>
 
-              {user.role === 'admin' && (
-                <div className="p-3 bg-spanish-red/10 rounded-lg">
-                  <p className="text-sm text-spanish-red font-medium">
+              {user.isAdmin && (
+                <div className="p-3 bg-primary/10 rounded-lg">
+                  <p className="text-sm text-primary font-medium">
                     Los administradores tienen todos los permisos automáticamente
                   </p>
                 </div>

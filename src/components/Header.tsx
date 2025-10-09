@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePermissions } from '@/hooks/usePermissions';
 import { scrollToSection } from '@/utils/scroll';
 import { GradientText } from '@/components/ui/gradient-text';
+import { RESTAURANT_CONFIG } from '@/config/restaurant';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +26,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="text-2xl font-bold">
-            <GradientText variant="primary">David Burger</GradientText>
+            <GradientText variant="primary">{RESTAURANT_CONFIG.name}</GradientText>
           </div>
 
           {/* Desktop Navigation */}

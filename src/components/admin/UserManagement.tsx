@@ -17,9 +17,10 @@ interface UserProfile {
   id: string;
   user_id: string;
   email: string;
-  role: string;
   created_at: string;
+  updated_at: string;
   permissions?: string[];
+  isAdmin?: boolean;
 }
 
 const UserManagement = () => {
@@ -53,10 +54,14 @@ const UserManagement = () => {
 
       if (profilesError) throw profilesError;
 
-      // Obtener permisos para cada usuario
+      // Obtener permisos y roles
       const { data: permissions, error: permissionsError } = await supabase
         .from('user_permissions')
         .select('user_id, permission_type');
+
+      const { data: roles } = await supabase
+        .from('user_roles')
+        .select('user_id, role');
 
       if (permissionsError) throw permissionsError;
 
@@ -65,7 +70,8 @@ const UserManagement = () => {
         ...profile,
         permissions: permissions
           ?.filter(p => p.user_id === profile.user_id)
-          ?.map(p => p.permission_type) || []
+          ?.map(p => p.permission_type) || [],
+        isAdmin: roles?.some(r => r.user_id === profile.user_id && r.role === 'admin') || false
       }));
 
       setUsers(usersWithPermissions);
@@ -78,7 +84,7 @@ const UserManagement = () => {
     }
   };
 
-  const promoteToAdmin = async (userEmail: string) => {
+  const promoteToAdmin = async (userId: string, userEmail: string) => {
     if (!isAdmin) {
       toast({
         title: "Sin permisos",
@@ -92,7 +98,7 @@ const UserManagement = () => {
 
     try {
       const { error } = await supabase.rpc('promote_user_to_admin', {
-        user_email: userEmail
+        target_user_id: userId
       });
 
       if (error) throw error;
@@ -112,7 +118,7 @@ const UserManagement = () => {
     }
   };
 
-  const demoteFromAdmin = async (userEmail: string) => {
+  const demoteFromAdmin = async (userId: string, userEmail: string) => {
     if (!isAdmin) {
       toast({
         title: "Sin permisos",
@@ -135,7 +141,7 @@ const UserManagement = () => {
 
     try {
       const { error } = await supabase.rpc('demote_admin_to_user', {
-        user_email: userEmail
+        target_user_id: userId
       });
 
       if (error) throw error;
@@ -227,8 +233,8 @@ const UserManagement = () => {
     );
   }
 
-  const adminCount = users.filter(u => u.role === 'admin').length;
-  const regularCount = users.filter(u => u.role === 'user').length;
+  const adminCount = users.filter(u => u.isAdmin).length;
+  const regularCount = users.filter(u => !u.isAdmin).length;
 
   return (
     <div>
