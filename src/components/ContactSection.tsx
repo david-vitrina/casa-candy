@@ -6,22 +6,22 @@ import { GradientButton } from '@/components/ui/gradient-button';
 
 const ContactSection = () => {
   return (
-    <section id="contacto" className="py-20 bg-gradient-to-b from-warm-cream/30 to-background">
+    <section id="contacto" className="py-24 bg-gradient-to-b from-cream-light/30 to-background">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center space-y-4 mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold">
+        <div className="text-center space-y-6 mb-16">
+          <h2 className="text-5xl md:text-6xl font-bold">
             <GradientText>Contacto</GradientText>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            ¿Tienes alguna pregunta o quieres hacer una reserva? Estamos aquí para ayudarte
+          <p className="text-xl text-foreground/70 max-w-2xl mx-auto font-light">
+            ¿Tienes alguna pregunta o quieres hacer una reserva? Estamos aquí para atenderte
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
           {/* Contact Information */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-spanish-red mb-6">
+            <h3 className="text-2xl font-bold text-toasted-brown mb-6">
               Información de Contacto
             </h3>
             
@@ -58,7 +58,7 @@ const ContactSection = () => {
                 <div>
                   <h4 className="font-semibold text-foreground">Email</h4>
                   <p className="text-muted-foreground">
-                    info@davidburger.es
+                    info@casacandy.com
                   </p>
                 </div>
               </div>
@@ -82,7 +82,7 @@ const ContactSection = () => {
           {/* Contact Form */}
           <Card className="border-0 shadow-lg">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-semibold text-spanish-red mb-6">
+              <h3 className="text-2xl font-bold text-toasted-brown mb-6">
                 Envíanos un Mensaje
               </h3>
               
@@ -94,7 +94,7 @@ const ContactSection = () => {
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-spanish-red/20 focus:border-spanish-red transition-colors"
+                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors"
                       placeholder="Tu nombre"
                     />
                   </div>
@@ -104,7 +104,7 @@ const ContactSection = () => {
                     </label>
                     <input
                       type="tel"
-                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-spanish-red/20 focus:border-spanish-red transition-colors"
+                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors"
                       placeholder="Tu teléfono"
                     />
                   </div>
@@ -116,7 +116,7 @@ const ContactSection = () => {
                   </label>
                   <input
                     type="email"
-                    className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-spanish-red/20 focus:border-spanish-red transition-colors"
+                    className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors"
                     placeholder="tu@email.com"
                   />
                 </div>
@@ -127,7 +127,7 @@ const ContactSection = () => {
                   </label>
                   <textarea
                     rows={4}
-                    className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-spanish-red/20 focus:border-spanish-red transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors resize-none"
                     placeholder="¿En qué podemos ayudarte?"
                   />
                 </div>

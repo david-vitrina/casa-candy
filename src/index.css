@@ -8,48 +8,48 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 40 25% 98%;
-    --foreground: 0 0% 15%;
+    --background: 40 15% 98%;
+    --foreground: 25 20% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 15%;
+    --card-foreground: 25 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15%;
+    --popover-foreground: 25 20% 15%;
 
-    /* Candy Elegante - Coral/Mint/Gold */
-    --primary: 12 82% 65%;
+    /* Premium Restaurant - Brown/Mustard */
+    --primary: 30 60% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 165 50% 70%;
-    --secondary-foreground: 0 0% 15%;
+    --secondary: 45 70% 55%;
+    --secondary-foreground: 25 20% 15%;
 
-    --muted: 40 20% 95%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 40 15% 94%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 45 65% 75%;
-    --accent-foreground: 0 0% 15%;
+    --accent: 50 75% 62%;
+    --accent-foreground: 25 20% 15%;
 
-    /* Candy Elegante color palette */
-    --candy-coral: 12 82% 65%;
-    --candy-coral-dark: 12 72% 55%;
-    --candy-mint: 165 50% 70%;
-    --candy-mint-dark: 165 50% 60%;
-    --candy-gold: 45 65% 75%;
-    --candy-gold-dark: 45 65% 65%;
-    --candy-cream: 40 30% 97%;
-    --candy-peach: 25 75% 80%;
+    /* Premium color palette */
+    --toasted-brown: 30 60% 45%;
+    --toasted-brown-dark: 30 60% 35%;
+    --golden-mustard: 45 70% 55%;
+    --golden-mustard-dark: 45 70% 45%;
+    --warm-amber: 35 65% 60%;
+    --deep-espresso: 25 40% 20%;
+    --cream-light: 40 25% 96%;
+    --earth-terracotta: 15 55% 50%;
     
     /* Gradients */
-    --gradient-candy: linear-gradient(135deg, hsl(var(--candy-coral)), hsl(var(--candy-peach)));
-    --gradient-fresh: linear-gradient(135deg, hsl(var(--candy-mint)), hsl(var(--candy-gold)));
-    --gradient-elegant: linear-gradient(180deg, hsl(var(--candy-cream)), hsl(var(--background)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--candy-coral) / 0.1), hsl(var(--candy-mint) / 0.1));
+    --gradient-premium: linear-gradient(135deg, hsl(var(--toasted-brown)), hsl(var(--warm-amber)));
+    --gradient-gold: linear-gradient(135deg, hsl(var(--golden-mustard)), hsl(var(--warm-amber)));
+    --gradient-warm: linear-gradient(180deg, hsl(var(--cream-light)), hsl(var(--background)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--cream-light)), hsl(var(--golden-mustard) / 0.1));
     
     /* Shadows */
-    --shadow-candy: 0 10px 40px -10px hsl(var(--candy-coral) / 0.25);
-    --shadow-soft: 0 4px 20px -5px hsl(var(--candy-coral) / 0.15);
-    --shadow-glow: 0 0 50px hsl(var(--candy-gold) / 0.3);
+    --shadow-premium: 0 10px 40px -10px hsl(var(--toasted-brown) / 0.3);
+    --shadow-soft: 0 4px 20px -5px hsl(var(--toasted-brown) / 0.2);
+    --shadow-glow: 0 0 50px hsl(var(--golden-mustard) / 0.25);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -78,33 +78,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 0 0% 8%;
-    --foreground: 40 20% 95%;
+    --background: 25 25% 10%;
+    --foreground: 40 15% 92%;
 
-    --card: 0 0% 12%;
-    --card-foreground: 40 20% 95%;
+    --card: 25 25% 14%;
+    --card-foreground: 40 15% 92%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 40 20% 95%;
+    --popover: 25 25% 14%;
+    --popover-foreground: 40 15% 92%;
 
-    --primary: 12 82% 65%;
+    --primary: 45 70% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 165 50% 50%;
+    --secondary: 30 60% 35%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 20%;
+    --muted: 25 20% 22%;
     --muted-foreground: 0 0% 65%;
 
-    --accent: 45 65% 60%;
+    --accent: 50 75% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 12 82% 65%;
+    --border: 25 20% 22%;
+    --input: 25 20% 22%;
+    --ring: 45 70% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

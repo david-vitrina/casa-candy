@@ -8,9 +8,9 @@ interface GradientTextProps {
 }
 
 const gradientVariants = {
-  'primary': 'bg-gradient-to-r from-candy-coral via-candy-peach to-candy-gold',
-  'gold': 'bg-gradient-to-r from-candy-gold to-candy-peach',
-  'reverse': 'bg-gradient-to-r from-candy-mint via-candy-gold to-candy-coral'
+  'primary': 'bg-gradient-to-r from-toasted-brown via-warm-amber to-golden-mustard',
+  'gold': 'bg-gradient-to-r from-golden-mustard to-warm-amber',
+  'reverse': 'bg-gradient-to-r from-golden-mustard via-warm-amber to-toasted-brown'
 };
 
 export const GradientText = ({ 

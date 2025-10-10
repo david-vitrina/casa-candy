@@ -23,7 +23,7 @@ const MenuSection = () => {
 
   if (loading) {
     return (
-      <section id="menu" className="py-20 bg-gradient-to-b from-background to-warm-cream/30">
+      <section id="menu" className="py-24 bg-gradient-to-b from-background via-cream-light/30 to-background">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <p className="text-xl text-muted-foreground">Cargando menú...</p>
@@ -39,12 +39,12 @@ const MenuSection = () => {
         {/* Header */}
         <div className="text-center space-y-6 mb-16 animate-fade-in">
           <h2 className="text-5xl md:text-6xl font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-candy-coral via-candy-peach to-candy-gold bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-toasted-brown via-warm-amber to-golden-mustard bg-clip-text text-transparent">
               Nuestro Menú
             </span>
           </h2>
           <p className="text-xl text-foreground/70 max-w-2xl mx-auto font-light leading-relaxed">
-            Explora nuestras creaciones únicas, donde cada burger cuenta una historia deliciosa
+            Una selección cuidadosa de platos que combinan tradición y creatividad
           </p>
         </div>
 
@@ -56,8 +56,8 @@ const MenuSection = () => {
               variant={filter === key ? "default" : "outline"}
               onClick={() => setFilter(key)}
               className={filter === key 
-                ? "bg-gradient-to-r from-candy-coral to-candy-peach text-white shadow-candy rounded-full px-8 py-6 font-semibold" 
-                : "border-2 border-candy-coral text-candy-coral hover:bg-candy-coral hover:text-white rounded-full px-8 py-6 transition-all duration-300"
+                ? "bg-gradient-to-r from-toasted-brown to-warm-amber text-white shadow-premium rounded-full px-8 py-6 font-semibold" 
+                : "border-2 border-toasted-brown text-toasted-brown hover:bg-toasted-brown hover:text-white rounded-full px-8 py-6 transition-all duration-300"
               }
             >
               {label}

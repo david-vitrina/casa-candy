@@ -10,8 +10,8 @@ interface GradientButtonProps extends Omit<ButtonProps, 'variant'> {
 export const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>(
   ({ variant = 'spanish', className, ...props }, ref) => {
     const variantStyles = {
-      'spanish': 'bg-gradient-to-r from-candy-coral to-candy-peach hover:from-candy-coral-dark hover:to-candy-peach/90 text-white font-semibold shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-candy',
-      'outline-spanish': 'border-2 border-candy-coral text-candy-coral hover:bg-candy-coral hover:text-white transition-all duration-300'
+      'spanish': 'bg-gradient-to-r from-toasted-brown to-warm-amber hover:from-toasted-brown-dark hover:to-warm-amber/90 text-white font-semibold shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-premium',
+      'outline-spanish': 'border-2 border-toasted-brown text-toasted-brown hover:bg-toasted-brown hover:text-white transition-all duration-300'
     };
 
     return (

@@ -44,7 +44,7 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
       <CardContent className="p-6">
         <div className="space-y-3">
           <div className="flex items-start justify-between">
-            <h3 className="text-xl font-semibold text-foreground group-hover:text-spanish-red transition-colors">
+            <h3 className="text-xl font-semibold text-foreground group-hover:text-toasted-brown transition-colors">
               {dish.name}
             </h3>
             <div className="text-right">
@@ -54,12 +54,12 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
                     €{dish.price.toFixed(2)}
                   </span>
                   <br />
-                  <span className="text-lg font-bold text-spanish-red">
+                  <span className="text-lg font-bold text-toasted-brown">
                     €{(dish.price * (1 - dish.discount_percentage / 100)).toFixed(2)}
                   </span>
                 </div>
               ) : (
-                <span className="text-lg font-bold text-spanish-red">
+                <span className="text-lg font-bold text-toasted-brown">
                   €{dish.price.toFixed(2)}
                 </span>
               )}
@@ -71,7 +71,7 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
           </p>
           
           <div className="pt-2">
-            <span className="text-sm text-spanish-orange font-medium">
+            <span className="text-sm text-warm-amber font-medium">
               Ver detalles →
             </span>
           </div>
