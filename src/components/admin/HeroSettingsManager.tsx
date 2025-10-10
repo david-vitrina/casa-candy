@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import imageCompression from 'browser-image-compression';
 
 export const HeroSettingsManager = () => {
-  const { settings, loading, updateHeroSettings } = useHeroSettings();
+  const { settings, isLoading, updateSettings } = useHeroSettings();
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
 
@@ -48,7 +48,11 @@ export const HeroSettingsManager = () => {
         .getPublicUrl(filePath);
 
       // Actualizar configuración
-      await updateHeroSettings({ image_url: publicUrl });
+      updateSettings({
+        image_url: publicUrl,
+        overlay_opacity: settings.overlay_opacity,
+        gradient_enabled: settings.gradient_enabled,
+      });
 
       toast({
         title: 'Imagen actualizada',
@@ -66,15 +70,23 @@ export const HeroSettingsManager = () => {
     }
   };
 
-  const handleOpacityChange = async (value: number[]) => {
-    await updateHeroSettings({ overlay_opacity: value[0] });
+  const handleOpacityChange = (value: number[]) => {
+    updateSettings({
+      image_url: settings.image_url,
+      overlay_opacity: value[0],
+      gradient_enabled: settings.gradient_enabled,
+    });
   };
 
-  const handleGradientToggle = async (checked: boolean) => {
-    await updateHeroSettings({ gradient_enabled: checked });
+  const handleGradientToggle = (checked: boolean) => {
+    updateSettings({
+      image_url: settings.image_url,
+      overlay_opacity: settings.overlay_opacity,
+      gradient_enabled: checked,
+    });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-8">

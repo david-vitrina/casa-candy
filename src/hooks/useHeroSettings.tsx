@@ -1,92 +1,67 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
-interface HeroSettings {
+export interface HeroBackgroundSettings {
   image_url: string;
   overlay_opacity: number;
   gradient_enabled: boolean;
 }
 
+const defaultSettings: HeroBackgroundSettings = {
+  image_url: '',
+  overlay_opacity: 0.3,
+  gradient_enabled: true,
+};
+
 export const useHeroSettings = () => {
-  const [settings, setSettings] = useState<HeroSettings>({
-    image_url: '',
-    overlay_opacity: 0.3,
-    gradient_enabled: true
-  });
-  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetchHeroSettings();
-    
-    // Suscribirse a cambios en tiempo real
-    const channel = supabase
-      .channel('hero-settings-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'site_settings',
-          filter: 'key=eq.hero_background'
-        },
-        () => {
-          fetchHeroSettings();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const fetchHeroSettings = async () => {
-    try {
+  const { data: settings = defaultSettings, isLoading } = useQuery({
+    queryKey: ['site-settings', 'hero_background'],
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('value')
         .eq('key', 'hero_background')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!data) return defaultSettings;
       
-      if (data?.value && typeof data.value === 'object') {
-        const value = data.value as Record<string, unknown>;
-        setSettings({
-          image_url: (value.image_url as string) || '',
-          overlay_opacity: (value.overlay_opacity as number) || 0.3,
-          gradient_enabled: (value.gradient_enabled as boolean) ?? true
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching hero settings:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return data.value as unknown as HeroBackgroundSettings;
+    },
+  });
 
-  const updateHeroSettings = async (newSettings: Partial<HeroSettings>) => {
-    try {
-      const updatedSettings = { ...settings, ...newSettings };
-      
+  const updateSettings = useMutation({
+    mutationFn: async (newSettings: HeroBackgroundSettings) => {
       const { error } = await supabase
         .from('site_settings')
-        .update({ value: updatedSettings })
+        .update({ value: newSettings as any })
         .eq('key', 'hero_background');
 
       if (error) throw error;
-      
-      setSettings(updatedSettings);
-      return { success: true };
-    } catch (error) {
-      console.error('Error updating hero settings:', error);
-      return { success: false, error };
-    }
-  };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['site-settings', 'hero_background'] });
+      toast({
+        title: 'Configuración actualizada',
+        description: 'El fondo del hero se ha actualizado correctamente',
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `No se pudo actualizar: ${error.message}`,
+      });
+    },
+  });
 
   return {
     settings,
-    loading,
-    updateHeroSettings
+    isLoading,
+    updateSettings: updateSettings.mutate,
   };
 };
