@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePermissions } from '@/hooks/usePermissions';
 import UserCard from './UserCard';
 import PermissionManager from './PermissionManager';
+import CreateUserDialog from './CreateUserDialog';
 
 interface UserProfile {
   id: string;
@@ -245,6 +246,7 @@ const UserManagement = () => {
             {adminCount} administradores, {regularCount} usuarios regulares
           </p>
         </div>
+        {isAdmin && <CreateUserDialog onUserCreated={fetchUsers} />}
       </div>
 
       {!isAdmin && (
