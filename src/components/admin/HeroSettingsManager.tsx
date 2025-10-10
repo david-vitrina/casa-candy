@@ -53,11 +53,6 @@ export const HeroSettingsManager = () => {
         overlay_opacity: settings.overlay_opacity,
         gradient_enabled: settings.gradient_enabled,
       });
-
-      toast({
-        title: 'Imagen actualizada',
-        description: 'La imagen de fondo del hero se ha actualizado correctamente.',
-      });
     } catch (error) {
       console.error('Error uploading image:', error);
       toast({

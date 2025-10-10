@@ -38,16 +38,21 @@ export const useHeroSettings = () => {
     mutationFn: async (newSettings: HeroBackgroundSettings) => {
       const { error } = await supabase
         .from('site_settings')
-        .update({ value: newSettings as any })
-        .eq('key', 'hero_background');
+        .upsert({ 
+          key: 'hero_background',
+          value: newSettings as any 
+        }, {
+          onConflict: 'key'
+        });
 
       if (error) throw error;
+      return newSettings;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['site-settings', 'hero_background'] });
       toast({
         title: 'Configuración actualizada',
-        description: 'El fondo del hero se ha actualizado correctamente',
+        description: 'Los ajustes del hero se han guardado correctamente',
       });
     },
     onError: (error) => {
