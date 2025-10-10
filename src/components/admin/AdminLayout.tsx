@@ -91,7 +91,7 @@ const AdminLayout = () => {
         {/* Mostrar tabs si hay más de una pestaña disponible */}
         {tabCount > 1 ? (
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className={`grid w-full grid-cols-${Math.min(tabCount, 4)} mb-8`}>
+            <TabsList className="grid w-full grid-cols-3 mb-8">
               {hasDishPermissions && (
                 <TabsTrigger value="dishes">Platos</TabsTrigger>
               )}
