@@ -18,6 +18,7 @@ interface UserProfile {
   id: string;
   user_id: string;
   email: string;
+  display_name?: string;
   created_at: string;
   updated_at: string;
   permissions?: string[];
@@ -40,7 +41,8 @@ const UserManagement = () => {
 
   useEffect(() => {
     const filtered = users.filter(user =>
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.display_name && user.display_name.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredUsers(filtered);
   }, [users, searchTerm]);
@@ -262,7 +264,7 @@ const UserManagement = () => {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
-            placeholder="Buscar usuarios por email..."
+            placeholder="Buscar usuarios por nombre o email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"

@@ -8,6 +8,7 @@ interface UserProfile {
   id: string;
   user_id: string;
   email: string;
+  display_name?: string;
   created_at: string;
   updated_at: string;
   permissions?: string[];
@@ -50,15 +51,22 @@ const UserCard = ({
     <Card className={`relative ${isCurrentUser ? 'ring-2 ring-spanish-red' : ''}`}>
       <CardHeader>
         <div className="flex justify-between items-start">
-          <div className="flex items-center gap-2">
-            {isAdmin ? (
-              <Shield className="w-5 h-5 text-spanish-red" />
-            ) : (
-              <User className="w-5 h-5 text-muted-foreground" />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              {isAdmin ? (
+                <Shield className="w-5 h-5 text-spanish-red flex-shrink-0" />
+              ) : (
+                <User className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+              )}
+              <CardTitle className="text-lg truncate">
+                {user.display_name || user.email}
+              </CardTitle>
+            </div>
+            {user.display_name && (
+              <p className="text-sm text-muted-foreground truncate ml-7">{user.email}</p>
             )}
-            <CardTitle className="text-lg">{user.email}</CardTitle>
           </div>
-          <Badge variant={isAdmin ? "destructive" : "secondary"}>
+          <Badge variant={isAdmin ? "destructive" : "secondary"} className="flex-shrink-0">
             {isAdmin ? 'Admin' : 'Usuario'}
           </Badge>
         </div>

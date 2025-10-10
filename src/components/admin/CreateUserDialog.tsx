@@ -23,11 +23,12 @@ const CreateUserDialog = ({ onUserCreated }: CreateUserDialogProps) => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleCreateUser = async () => {
-    if (!email || !password) {
+    if (!email || !password || !displayName) {
       toast({
         title: "Error",
         description: "Por favor completa todos los campos",
@@ -57,6 +58,9 @@ const CreateUserDialog = ({ onUserCreated }: CreateUserDialogProps) => {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/`,
+          data: {
+            display_name: displayName
+          }
         }
       });
 
@@ -69,6 +73,7 @@ const CreateUserDialog = ({ onUserCreated }: CreateUserDialogProps) => {
 
       setEmail('');
       setPassword('');
+      setDisplayName('');
       setOpen(false);
       onUserCreated();
     } catch (error: any) {
@@ -100,6 +105,18 @@ const CreateUserDialog = ({ onUserCreated }: CreateUserDialogProps) => {
         </DialogHeader>
         
         <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="displayName">Nombre</Label>
+            <Input
+              id="displayName"
+              type="text"
+              placeholder="Nombre completo del usuario"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
