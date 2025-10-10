@@ -9,9 +9,9 @@ interface GradientIconProps {
 }
 
 const gradientVariants = {
-  'red-orange': 'bg-gradient-to-br from-spanish-red to-spanish-orange',
-  'orange-gold': 'bg-gradient-to-br from-spanish-orange to-spanish-gold', 
-  'gold-red': 'bg-gradient-to-br from-spanish-gold to-spanish-red'
+  'red-orange': 'bg-gradient-to-br from-candy-coral to-candy-peach',
+  'orange-gold': 'bg-gradient-to-br from-candy-peach to-candy-gold', 
+  'gold-red': 'bg-gradient-to-br from-candy-gold to-candy-mint'
 };
 
 const sizeVariants = {

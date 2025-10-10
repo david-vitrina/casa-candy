@@ -8,43 +8,48 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 40 25% 98%;
+    --foreground: 0 0% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
+    --popover-foreground: 0 0% 15%;
 
-    /* Casa Candy - Colores cálidos */
-    --primary: 25 70% 50%;
-    --primary-foreground: 0 0% 98%;
+    /* Candy Elegante - Coral/Mint/Gold */
+    --primary: 12 82% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 25 60% 30%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 165 50% 70%;
+    --secondary-foreground: 0 0% 15%;
 
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --muted: 40 20% 95%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 39 50% 60%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 45 65% 75%;
+    --accent-foreground: 0 0% 15%;
 
-    /* Spanish-inspired design tokens */
-    --spanish-red: 0 85% 58%;
-    --spanish-gold: 45 95% 65%;
-    --spanish-orange: 15 90% 68%;
-    --warm-cream: 25 35% 97%;
-    --deep-burgundy: 0 45% 25%;
+    /* Candy Elegante color palette */
+    --candy-coral: 12 82% 65%;
+    --candy-coral-dark: 12 72% 55%;
+    --candy-mint: 165 50% 70%;
+    --candy-mint-dark: 165 50% 60%;
+    --candy-gold: 45 65% 75%;
+    --candy-gold-dark: 45 65% 65%;
+    --candy-cream: 40 30% 97%;
+    --candy-peach: 25 75% 80%;
     
     /* Gradients */
-    --gradient-spanish: linear-gradient(135deg, hsl(var(--spanish-red)), hsl(var(--spanish-orange)));
-    --gradient-gold: linear-gradient(135deg, hsl(var(--spanish-gold)), hsl(var(--accent)));
-    --gradient-warm: linear-gradient(180deg, hsl(var(--warm-cream)), hsl(var(--background)));
+    --gradient-candy: linear-gradient(135deg, hsl(var(--candy-coral)), hsl(var(--candy-peach)));
+    --gradient-fresh: linear-gradient(135deg, hsl(var(--candy-mint)), hsl(var(--candy-gold)));
+    --gradient-elegant: linear-gradient(180deg, hsl(var(--candy-cream)), hsl(var(--background)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--candy-coral) / 0.1), hsl(var(--candy-mint) / 0.1));
     
     /* Shadows */
-    --shadow-warm: 0 10px 30px -10px hsl(var(--spanish-red) / 0.2);
-    --shadow-glow: 0 0 40px hsl(var(--spanish-gold) / 0.3);
+    --shadow-candy: 0 10px 40px -10px hsl(var(--candy-coral) / 0.25);
+    --shadow-soft: 0 4px 20px -5px hsl(var(--candy-coral) / 0.15);
+    --shadow-glow: 0 0 50px hsl(var(--candy-gold) / 0.3);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -73,33 +78,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 8%;
+    --foreground: 40 20% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 12%;
+    --card-foreground: 40 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 40 20% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 12 82% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 165 50% 50%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 45 65% 60%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 12 82% 65%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

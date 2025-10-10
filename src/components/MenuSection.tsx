@@ -34,30 +34,30 @@ const MenuSection = () => {
   }
 
   return (
-    <section id="menu" className="py-20 bg-gradient-to-b from-background to-warm-cream/30">
+    <section id="menu" className="py-24 bg-gradient-to-b from-background via-candy-cream/30 to-background">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center space-y-4 mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            <span className="bg-gradient-to-r from-spanish-red to-spanish-orange bg-clip-text text-transparent">
+        <div className="text-center space-y-6 mb-16 animate-fade-in">
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tight">
+            <span className="bg-gradient-to-r from-candy-coral via-candy-peach to-candy-gold bg-clip-text text-transparent">
               Nuestro Menú
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Descubre nuestros platos tradicionales españoles, preparados con ingredientes frescos y recetas auténticas
+          <p className="text-xl text-foreground/70 max-w-2xl mx-auto font-light leading-relaxed">
+            Explora nuestras creaciones únicas, donde cada burger cuenta una historia deliciosa
           </p>
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
           {filterButtons.map(({ key, label }) => (
             <Button
               key={key}
               variant={filter === key ? "default" : "outline"}
               onClick={() => setFilter(key)}
               className={filter === key 
-                ? "bg-gradient-to-r from-spanish-red to-spanish-orange text-white" 
-                : "border-spanish-red text-spanish-red hover:bg-spanish-red hover:text-white"
+                ? "bg-gradient-to-r from-candy-coral to-candy-peach text-white shadow-candy rounded-full px-8 py-6 font-semibold" 
+                : "border-2 border-candy-coral text-candy-coral hover:bg-candy-coral hover:text-white rounded-full px-8 py-6 transition-all duration-300"
               }
             >
               {label}

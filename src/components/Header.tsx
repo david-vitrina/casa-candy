@@ -21,11 +21,11 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-border z-50">
-      <div className="container mx-auto px-4 py-4">
+    <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-candy-coral/20 z-50 shadow-soft">
+      <div className="container mx-auto px-4 py-5">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="text-2xl font-bold">
+          <div className="text-3xl font-bold tracking-tight">
             <GradientText variant="primary">{RESTAURANT_CONFIG.name}</GradientText>
           </div>
 
@@ -34,21 +34,21 @@ const Header = () => {
             <Button 
               variant="ghost" 
               onClick={() => handleScrollToSection('inicio')}
-              className="hover:text-spanish-red transition-colors"
+              className="hover:text-candy-coral transition-all duration-300 font-medium"
             >
               Inicio
             </Button>
             <Button 
               variant="ghost" 
               onClick={() => handleScrollToSection('menu')}
-              className="hover:text-spanish-red transition-colors"
+              className="hover:text-candy-coral transition-all duration-300 font-medium"
             >
               Menú
             </Button>
             <Button 
               variant="ghost" 
               onClick={() => handleScrollToSection('contacto')}
-              className="hover:text-spanish-red transition-colors"
+              className="hover:text-candy-coral transition-all duration-300 font-medium"
             >
               Contacto
             </Button>
@@ -58,7 +58,7 @@ const Header = () => {
                   <Button
                     variant="ghost"
                     onClick={() => navigate('/admin')}
-                    className="hover:text-spanish-red transition-colors"
+                    className="hover:text-candy-coral transition-all duration-300 font-medium"
                   >
                     <Settings className="w-4 h-4 mr-2" />
                     Admin
@@ -67,7 +67,7 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   onClick={signOut}
-                  className="hover:text-spanish-red transition-colors"
+                  className="hover:text-candy-coral transition-all duration-300 font-medium"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Salir
@@ -77,7 +77,7 @@ const Header = () => {
               <Button
                 variant="ghost"
                 onClick={() => navigate('/auth')}
-                className="hover:text-spanish-red transition-colors"
+                className="hover:text-candy-coral transition-all duration-300 font-medium"
               >
                 <User className="w-4 h-4 mr-2" />
                 Acceder
@@ -103,21 +103,21 @@ const Header = () => {
               <Button 
                 variant="ghost" 
                 onClick={() => handleScrollToSection('inicio')}
-                className="justify-start hover:text-spanish-red"
+                className="justify-start hover:text-candy-coral transition-all duration-300"
               >
                 Inicio
               </Button>
               <Button 
                 variant="ghost" 
                 onClick={() => handleScrollToSection('menu')}
-                className="justify-start hover:text-spanish-red"
+                className="justify-start hover:text-candy-coral transition-all duration-300"
               >
                 Menú
               </Button>
               <Button 
                 variant="ghost" 
                 onClick={() => handleScrollToSection('contacto')}
-                className="justify-start hover:text-spanish-red"
+                className="justify-start hover:text-candy-coral transition-all duration-300"
               >
                 Contacto
               </Button>
@@ -130,7 +130,7 @@ const Header = () => {
                         navigate('/admin');
                         setIsMenuOpen(false);
                       }}
-                      className="justify-start hover:text-spanish-red"
+                      className="justify-start hover:text-candy-coral transition-all duration-300"
                     >
                       <Settings className="w-4 h-4 mr-2" />
                       Admin
@@ -142,7 +142,7 @@ const Header = () => {
                       signOut();
                       setIsMenuOpen(false);
                     }}
-                    className="justify-start hover:text-spanish-red"
+                    className="justify-start hover:text-candy-coral transition-all duration-300"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
                     Salir
@@ -155,7 +155,7 @@ const Header = () => {
                     navigate('/auth');
                     setIsMenuOpen(false);
                   }}
-                  className="justify-start hover:text-spanish-red"
+                  className="justify-start hover:text-candy-coral transition-all duration-300"
                 >
                   <User className="w-4 h-4 mr-2" />
                   Acceder
