@@ -3,13 +3,28 @@ import { GradientText } from '@/components/ui/gradient-text';
 import { GradientIcon } from '@/components/ui/gradient-icon';
 import { GradientButton } from '@/components/ui/gradient-button';
 import { UtensilsCrossed, Award, ChefHat } from 'lucide-react';
+import { useHeroSettings } from '@/hooks/useHeroSettings';
+import heroBackgroundDefault from '@/assets/hero-background.jpg';
 
 const Hero = () => {
+  const { settings } = useHeroSettings();
+  const backgroundImage = settings.image_url || heroBackgroundDefault;
 
   return (
     <section id="inicio" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cream-light via-background to-golden-mustard/10" />
+      {/* Background image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      />
+      
+      {/* Gradient overlay */}
+      {settings.gradient_enabled && (
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-cream-light via-background to-golden-mustard/10"
+          style={{ opacity: settings.overlay_opacity }}
+        />
+      )}
       
       {/* Decorative elements */}
       <div className="absolute top-32 right-20 w-40 h-40 bg-golden-mustard/20 rounded-full blur-3xl animate-float" />
