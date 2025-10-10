@@ -1,123 +1,175 @@
 import { Dish } from '@/types/menu';
-import paellaImg from '@/assets/paella-valenciana.jpg';
-import jamonImg from '@/assets/jamon-iberico.jpg';
-import tortillaImg from '@/assets/tortilla-espanola.jpg';
-import gazpachoImg from '@/assets/gazpacho.jpg';
-import pulpoImg from '@/assets/pulpo-gallega.jpg';
-import croquetasImg from '@/assets/croquetas.jpg';
-import patatasImg from '@/assets/patatas-bravas.jpg';
-import fabadaImg from '@/assets/fabada.jpg';
-import churrosImg from '@/assets/churros.jpg';
-import cremaImg from '@/assets/crema-catalana.jpg';
 
+// Fallback offline data - Casa Candy menu items
+// Images will be loaded from Supabase Storage when online
 export const menuItems: Dish[] = [
+  // Appetizers
   {
-    id: '1',
-    name: 'Paella Valenciana',
-    description: 'Arroz tradicional con pollo, judías verdes y azafrán',
-    full_description: 'La auténtica paella valenciana preparada con los ingredientes tradicionales: arroz bomba, pollo de corral, judías verdes tiernas, garrofón, tomate rallado, azafrán premium y aceite de oliva virgen extra. Cocinada lentamente en paellera de hierro para conseguir el socarrat perfecto.',
-    ingredients: ['Arroz bomba', 'Pollo de corral', 'Judías verdes', 'Garrofón', 'Tomate', 'Azafrán', 'Aceite de oliva', 'Sal marina'],
+    id: 'offline-1',
+    name: 'Pincho de Bacalao',
+    description: 'Posta de lomo de bacalao rebozada al punto de sal.',
+    full_description: 'Delicioso pincho de bacalao rebozado, preparado con posta de lomo de bacalao de primera calidad, rebozada a la perfección y sazonada al punto de sal.',
+    ingredients: ['Bacalao', 'Harina', 'Huevo', 'Sal'],
+    price: 5.00,
+    image: '/placeholder.svg',
+    category: 'appetizer',
+    available: true
+  },
+  {
+    id: 'offline-2',
+    name: 'Anillas de Calamar',
+    description: 'Anillas de calamar XXL seleccionadas y rebozadas.',
+    full_description: 'Anillas de calamar XXL cuidadosamente seleccionadas, rebozadas con nuestra receta especial y fritas al punto perfecto.',
+    ingredients: ['Calamar', 'Harina', 'Huevo', 'Sal'],
+    price: 10.50,
+    image: '/placeholder.svg',
+    category: 'appetizer',
+    available: true
+  },
+  {
+    id: 'offline-3',
+    name: 'Sepia a la Plancha',
+    description: 'Sepia troceada a la plancha con salsa de ajo, perejil y aceite de oliva.',
+    full_description: 'Sepia fresca troceada y cocinada a la plancha, acompañada de una deliciosa salsa de ajo, perejil y aceite de oliva virgen extra.',
+    ingredients: ['Sepia', 'Ajo', 'Perejil', 'Aceite de oliva'],
+    price: 11.50,
+    image: '/placeholder.svg',
+    category: 'appetizer',
+    available: true
+  },
+  {
+    id: 'offline-4',
+    name: 'Fuente de Patatas con Salsas',
+    description: 'Patatas con ketchup, mahonesa, alioli casera, brava, rosa y barbacoa.',
+    full_description: 'Generosa fuente de patatas fritas crujientes acompañadas de seis salsas diferentes: ketchup, mahonesa, alioli casero, brava, rosa y barbacoa.',
+    ingredients: ['Patatas', 'Ketchup', 'Mahonesa', 'Alioli', 'Salsa brava', 'Salsa rosa', 'Barbacoa'],
+    price: 8.00,
+    image: '/placeholder.svg',
+    category: 'appetizer',
+    available: true
+  },
+  {
+    id: 'offline-5',
+    name: 'Pata de Pulpo a la Parrilla',
+    description: 'Pata de pulpo (350g) a la parrilla con pimentón de la vera y patatas.',
+    full_description: 'Pata de pulpo de 350g cocinada a la parrilla, acompañada de patatas y sazonada con pimentón de La Vera.',
+    ingredients: ['Pulpo', 'Pimentón de La Vera', 'Patatas', 'Aceite de oliva', 'Sal'],
     price: 18.50,
-    image: paellaImg,
-    category: 'main',
-    available: true
-  },
-  {
-    id: '2',
-    name: 'Jamón Ibérico',
-    description: 'Jamón ibérico de bellota cortado a cuchillo',
-    full_description: 'Jamón ibérico de bellota de primera calidad, curado durante 36 meses en bodegas naturales. Cortado a mano al momento para conservar toda su jugosidad y sabor. Cada loncha es una experiencia gastronómica única.',
-    ingredients: ['Jamón ibérico de bellota', 'Sal marina'],
-    price: 22.00,
-    image: jamonImg,
+    image: '/placeholder.svg',
     category: 'appetizer',
     available: true
   },
+
+  // Main courses
   {
-    id: '3',
-    name: 'Tortilla Española',
-    description: 'Tortilla de patatas tradicional con huevos camperos',
-    full_description: 'La clásica tortilla española elaborada con patatas gallegas, huevos camperos de primera calidad y un toque de sal marina. Preparada al momento con el punto perfecto: cremosa por dentro y dorada por fuera.',
-    ingredients: ['Patatas gallegas', 'Huevos camperos', 'Aceite de oliva', 'Sal marina'],
-    price: 8.50,
-    image: tortillaImg,
-    category: 'appetizer',
-    available: true
-  },
-  {
-    id: '4',
-    name: 'Gazpacho Andaluz',
-    description: 'Sopa fría tradicional con tomates maduros',
-    full_description: 'Refrescante gazpacho andaluz preparado con tomates maduros de la huerta, pepino, pimiento verde, cebolla dulce, ajo tierno y pan del día. Aliñado con aceite de oliva virgen extra y vinagre de Jerez.',
-    ingredients: ['Tomates maduros', 'Pepino', 'Pimiento verde', 'Cebolla', 'Ajo', 'Pan', 'Aceite de oliva', 'Vinagre de Jerez'],
-    price: 7.00,
-    image: gazpachoImg,
-    category: 'appetizer',
-    available: true
-  },
-  {
-    id: '5',
-    name: 'Pulpo a la Gallega',
-    description: 'Pulpo gallego con patatas, pimentón y aceite de oliva',
-    full_description: 'Tierno pulpo gallego cocido tradicionalmente con laurel, servido sobre patatas gallegas cocidas. Aliñado con pimentón dulce de La Vera, sal gruesa y aceite de oliva virgen extra. Una delicia del mar.',
-    ingredients: ['Pulpo gallego', 'Patatas', 'Pimentón dulce', 'Aceite de oliva', 'Sal gruesa', 'Laurel'],
-    price: 16.00,
-    image: pulpoImg,
-    category: 'main',
-    available: true
-  },
-  {
-    id: '6',
-    name: 'Croquetas de Jamón',
-    description: 'Croquetas artesanales con jamón ibérico',
-    full_description: 'Croquetas artesanales elaboradas con bechamel cremosa y jamón ibérico desmenuzado. Empanadas con pan rallado casero y fritas en aceite de oliva hasta conseguir una textura crujiente por fuera y cremosa por dentro.',
-    ingredients: ['Harina', 'Leche', 'Jamón ibérico', 'Mantequilla', 'Huevo', 'Pan rallado', 'Aceite de oliva'],
-    price: 9.50,
-    image: croquetasImg,
-    category: 'appetizer',
-    available: true
-  },
-  {
-    id: '7',
-    name: 'Patatas Bravas',
-    description: 'Patatas fritas con salsa brava y alioli',
-    full_description: 'Patatas cortadas en dados irregulares y fritas hasta conseguir una textura crujiente. Servidas con nuestra salsa brava casera (tomate, pimentón picante, ajo) y alioli tradicional elaborado con ajo y aceite de oliva.',
-    ingredients: ['Patatas', 'Tomate', 'Pimentón picante', 'Ajo', 'Aceite de oliva', 'Mayonesa', 'Vinagre'],
-    price: 6.50,
-    image: patatasImg,
-    category: 'appetizer',
-    available: true
-  },
-  {
-    id: '8',
-    name: 'Fabada Asturiana',
-    description: 'Guiso de alubias blancas con chorizo y morcilla',
-    full_description: 'Contundente fabada asturiana con alubias blancas fabes de la granja, chorizo asturiano, morcilla, lacón y panceta. Cocinada lentamente durante horas para conseguir la textura cremosa característica de este plato tradicional.',
-    ingredients: ['Alubias blancas', 'Chorizo asturiano', 'Morcilla', 'Lacón', 'Panceta', 'Azafrán', 'Pimentón'],
-    price: 14.00,
-    image: fabadaImg,
-    category: 'main',
-    available: true
-  },
-  {
-    id: '9',
-    name: 'Churros con Chocolate',
-    description: 'Churros recién hechos con chocolate espeso',
-    full_description: 'Churros tradicionales recién fritos, crujientes por fuera y tiernos por dentro, espolvoreados con azúcar. Acompañados de chocolate caliente espeso preparado con cacao puro y leche entera. El postre perfecto para compartir.',
-    ingredients: ['Harina', 'Agua', 'Sal', 'Aceite de girasol', 'Azúcar', 'Chocolate negro', 'Leche', 'Maicena'],
+    id: 'offline-6',
+    name: 'Hamburguesa Simple',
+    description: 'Solo carne, queso y jamón york.',
+    full_description: 'Hamburguesa clásica con carne de primera calidad, queso fundido y jamón york.',
+    ingredients: ['Carne', 'Queso', 'Jamón york', 'Pan'],
     price: 5.50,
-    image: churrosImg,
+    image: '/placeholder.svg',
+    category: 'main',
+    available: true
+  },
+  {
+    id: 'offline-7',
+    name: 'Hamburguesa Completa',
+    description: 'Carne mixta, queso, jamón york, lechuga, tomate, cebolla, pepinillo y frito.',
+    full_description: 'Hamburguesa completa con carne mixta jugosa, queso, jamón york, lechuga fresca, tomate, cebolla, pepinillo y huevo frito.',
+    ingredients: ['Carne mixta', 'Queso', 'Jamón york', 'Lechuga', 'Tomate', 'Cebolla', 'Pepinillo', 'Huevo'],
+    price: 10.00,
+    image: '/placeholder.svg',
+    category: 'main',
+    available: true
+  },
+  {
+    id: 'offline-8',
+    name: 'Hamburguesa de Buey',
+    description: '200g de carne de Buey con los ingredientes de la completa.',
+    full_description: 'Hamburguesa premium con 200g de carne de Buey de máxima calidad, acompañada de todos los ingredientes de la hamburguesa completa.',
+    ingredients: ['Carne de Buey', 'Queso', 'Jamón york', 'Lechuga', 'Tomate', 'Cebolla', 'Pepinillo', 'Huevo'],
+    price: 10.00,
+    image: '/placeholder.svg',
+    category: 'main',
+    available: true
+  },
+  {
+    id: 'offline-9',
+    name: 'Serranito Casa Candy',
+    description: 'Jamón Serrano a la plancha con pimiento frito y lomo de cerdo.',
+    full_description: 'Nuestro bocadillo estrella con jamón serrano a la plancha, pimiento frito y lomo de cerdo, todo en pan recién horneado.',
+    ingredients: ['Jamón Serrano', 'Lomo de cerdo', 'Pimiento frito', 'Pan'],
+    price: 6.00,
+    image: '/placeholder.svg',
+    category: 'main',
+    available: true
+  },
+  {
+    id: 'offline-10',
+    name: 'Plato 1. Lomo de Cerdo',
+    description: 'Cinta de lomo a la plancha con patatas fritas y dos huevos.',
+    full_description: 'Plato combinado con cinta de lomo de cerdo a la plancha, patatas fritas crujientes y dos huevos fritos.',
+    ingredients: ['Lomo de cerdo', 'Patatas', 'Huevos', 'Aceite de oliva'],
+    price: 9.50,
+    image: '/placeholder.svg',
+    category: 'main',
+    available: true
+  },
+  {
+    id: 'offline-11',
+    name: 'Plato 2. Combinado de Bacalao',
+    description: '2 postas de bacalao rebozado con ensalada mezclum.',
+    full_description: 'Plato combinado con dos generosas postas de bacalao rebozado acompañadas de ensalada mezclum fresca.',
+    ingredients: ['Bacalao', 'Harina', 'Huevo', 'Ensalada mezclum'],
+    price: 11.00,
+    image: '/placeholder.svg',
+    category: 'main',
+    available: true
+  },
+  {
+    id: 'offline-12',
+    name: 'Plato 4. Combinado de Pechuga',
+    description: 'Dos filetes de pechuga de pollo, dos huevos fritos y patatas fritas.',
+    full_description: 'Plato combinado abundante con dos filetes de pechuga de pollo a la plancha, dos huevos fritos y patatas fritas.',
+    ingredients: ['Pechuga de pollo', 'Huevos', 'Patatas', 'Aceite de oliva'],
+    price: 9.50,
+    image: '/placeholder.svg',
+    category: 'main',
+    available: true
+  },
+
+  // Desserts
+  {
+    id: 'offline-13',
+    name: 'Crepe Casero',
+    description: 'Crepe elaborado artesanalmente.',
+    full_description: 'Delicioso crepe casero elaborado con nuestra receta artesanal, con variedad de rellenos a elegir.',
+    ingredients: ['Harina', 'Huevo', 'Leche', 'Azúcar', 'Mantequilla'],
+    price: 5.50,
+    image: '/placeholder.svg',
     category: 'dessert',
     available: true
   },
   {
-    id: '10',
-    name: 'Crema Catalana',
-    description: 'Crema tradicional catalana con azúcar quemado',
-    full_description: 'Deliciosa crema catalana tradicional elaborada con leche fresca, yemas de huevo, azúcar y un toque de canela y limón. Terminada con una capa de azúcar caramelizado al momento con soplete para conseguir la textura crujiente característica.',
-    ingredients: ['Leche fresca', 'Yemas de huevo', 'Azúcar', 'Maicena', 'Canela', 'Limón', 'Vainilla'],
-    price: 6.00,
-    image: cremaImg,
+    id: 'offline-14',
+    name: 'Gofre Casero',
+    description: 'Preparado con masa casera.',
+    full_description: 'Gofre elaborado con masa casera, crujiente por fuera y esponjoso por dentro. Acompañado de toppings a elegir.',
+    ingredients: ['Harina', 'Huevo', 'Leche', 'Azúcar', 'Mantequilla', 'Levadura'],
+    price: 6.50,
+    image: '/placeholder.svg',
+    category: 'dessert',
+    available: true
+  },
+  {
+    id: 'offline-15',
+    name: 'Tartas Artesanas',
+    description: 'A consultar disponibilidad con el camarero.',
+    full_description: 'Selección de tartas artesanas elaboradas diariamente. Pregunta a nuestro personal por las variedades disponibles del día.',
+    ingredients: ['Consultar con el camarero'],
+    price: 4.90,
+    image: '/placeholder.svg',
     category: 'dessert',
     available: true
   }
