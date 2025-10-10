@@ -22,10 +22,10 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 w-full bg-background/85 backdrop-blur-md border-b border-toasted-brown/15 z-50 shadow-soft">
-      <div className="container mx-auto px-4 py-5">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="text-3xl font-bold tracking-tight">
+          <div className="text-2xl font-bold tracking-tight">
             <GradientText variant="primary">{RESTAURANT_CONFIG.name}</GradientText>
           </div>
 
