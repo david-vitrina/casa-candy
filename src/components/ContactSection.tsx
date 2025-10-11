@@ -18,127 +18,87 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-          {/* Contact Information */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-toasted-brown mb-6">
-              Información de Contacto
-            </h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-start space-x-4">
-                <GradientIcon variant="red-orange" className="flex-shrink-0">
-                  <MapPin className="h-6 w-6" />
-                </GradientIcon>
-                <div>
-                  <h4 className="font-semibold text-foreground">Dirección</h4>
-                  <p className="text-muted-foreground">
-                    Calle de la Gastronomía, 123<br />
-                    28001 Madrid, España
-                  </p>
-                </div>
-              </div>
+        {/* Contact Information - Centered Creative Layout */}
+        <div className="max-w-5xl mx-auto">
+          <Card className="border-0 shadow-2xl backdrop-blur-sm bg-card/80">
+            <CardContent className="p-12">
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+                {/* Left Column */}
+                <div className="space-y-8">
+                  <div className="flex items-start space-x-4 group">
+                    <GradientIcon variant="red-orange" className="flex-shrink-0 transform group-hover:scale-110 transition-transform">
+                      <MapPin className="h-7 w-7" />
+                    </GradientIcon>
+                    <div>
+                      <h4 className="font-bold text-lg text-foreground mb-2">Encuéntranos</h4>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Calle Agustín Carreño, Local 3<br />
+                        Casa Candy
+                      </p>
+                    </div>
+                  </div>
 
-              <div className="flex items-start space-x-4">
-                <GradientIcon variant="orange-gold" className="flex-shrink-0">
-                  <Phone className="h-6 w-6" />
-                </GradientIcon>
-                <div>
-                  <h4 className="font-semibold text-foreground">Teléfono</h4>
-                  <p className="text-muted-foreground">
-                    +34 91 123 45 67
-                  </p>
+                  <div className="flex items-start space-x-4 group">
+                    <GradientIcon variant="orange-gold" className="flex-shrink-0 transform group-hover:scale-110 transition-transform">
+                      <Phone className="h-7 w-7" />
+                    </GradientIcon>
+                    <div>
+                      <h4 className="font-bold text-lg text-foreground mb-2">Llámanos</h4>
+                      <a 
+                        href="tel:+34676075124" 
+                        className="text-muted-foreground hover:text-toasted-brown transition-colors text-lg"
+                      >
+                        +34 676 075 124
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-start space-x-4">
-                <GradientIcon variant="gold-red" className="flex-shrink-0">
-                  <Mail className="h-6 w-6" />
-                </GradientIcon>
-                <div>
-                  <h4 className="font-semibold text-foreground">Email</h4>
-                  <p className="text-muted-foreground">
-                    info@casacandy.com
-                  </p>
-                </div>
-              </div>
+                {/* Right Column */}
+                <div className="space-y-8">
+                  <div className="flex items-start space-x-4 group">
+                    <GradientIcon variant="gold-red" className="flex-shrink-0 transform group-hover:scale-110 transition-transform">
+                      <Mail className="h-7 w-7" />
+                    </GradientIcon>
+                    <div>
+                      <h4 className="font-bold text-lg text-foreground mb-2">Escríbenos</h4>
+                      <a 
+                        href="mailto:ccandy@gmail.com" 
+                        className="text-muted-foreground hover:text-toasted-brown transition-colors"
+                      >
+                        ccandy@gmail.com
+                      </a>
+                    </div>
+                  </div>
 
-              <div className="flex items-start space-x-4">
-                <GradientIcon variant="red-orange" className="flex-shrink-0">
-                  <Clock className="h-6 w-6" />
-                </GradientIcon>
-                <div>
-                  <h4 className="font-semibold text-foreground">Horarios</h4>
-                  <div className="text-muted-foreground">
-                    <p>Lun - Jue: 12:00 - 16:00, 20:00 - 24:00</p>
-                    <p>Vie - Sáb: 12:00 - 02:00</p>
-                    <p>Domingo: 12:00 - 23:00</p>
+                  <div className="flex items-start space-x-4 group">
+                    <GradientIcon variant="red-orange" className="flex-shrink-0 transform group-hover:scale-110 transition-transform">
+                      <Clock className="h-7 w-7" />
+                    </GradientIcon>
+                    <div>
+                      <h4 className="font-bold text-lg text-foreground mb-2">Horarios</h4>
+                      <div className="text-muted-foreground space-y-1 leading-relaxed">
+                        <p>Lun - Jue: 12:00 - 16:00, 20:00 - 24:00</p>
+                        <p>Vie - Sáb: 12:00 - 02:00</p>
+                        <p>Domingo: 12:00 - 23:00</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Contact Form */}
-          <Card className="border-0 shadow-lg">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-toasted-brown mb-6">
-                Envíanos un Mensaje
-              </h3>
-              
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Nombre
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors"
-                      placeholder="Tu nombre"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Teléfono
-                    </label>
-                    <input
-                      type="tel"
-                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors"
-                      placeholder="Tu teléfono"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Mensaje
-                  </label>
-                  <textarea
-                    rows={4}
-                    className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-toasted-brown/20 focus:border-toasted-brown transition-colors resize-none"
-                    placeholder="¿En qué podemos ayudarte?"
-                  />
-                </div>
-                
+              {/* Call to Action */}
+              <div className="mt-12 pt-8 border-t border-border/50 text-center">
+                <p className="text-foreground/80 text-lg mb-4">
+                  ¿Listo para disfrutar de una experiencia gastronómica única?
+                </p>
                 <GradientButton 
-                  type="submit"
-                  className="w-full py-3"
+                  onClick={() => window.location.href = 'tel:+34676075124'}
+                  className="px-8 py-3"
                 >
-                  Enviar Mensaje
+                  Reserva Ahora
                 </GradientButton>
-              </form>
+              </div>
             </CardContent>
           </Card>
         </div>
