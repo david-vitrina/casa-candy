@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { Home } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const { signIn, user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   if (user) {
     return <Navigate to="/admin" replace />;
@@ -53,15 +55,25 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-warm-cream to-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-spanish-red to-spanish-orange bg-clip-text text-transparent">
-            David Burger
-          </CardTitle>
-          <p className="text-muted-foreground">
-            Iniciar Sesión
-          </p>
-        </CardHeader>
+      <div className="w-full max-w-md space-y-4">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+        >
+          <Home className="w-4 h-4" />
+          Volver al Inicio
+        </Button>
+        
+        <Card>
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-spanish-red to-spanish-orange bg-clip-text text-transparent">
+              David Burger
+            </CardTitle>
+            <p className="text-muted-foreground">
+              Iniciar Sesión
+            </p>
+          </CardHeader>
         <CardContent>
           <form onSubmit={handleSignIn} className="space-y-4">
             <div>
@@ -92,6 +104,7 @@ const Auth = () => {
           </form>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };
