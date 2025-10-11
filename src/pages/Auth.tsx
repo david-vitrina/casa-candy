@@ -68,7 +68,7 @@ const Auth = () => {
         <Card className="shadow-premium border-primary/10">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-toasted-brown to-golden-mustard bg-clip-text text-transparent">
-              David Burger
+              Casa Candy
             </CardTitle>
             <p className="text-muted-foreground">
               Iniciar Sesión
