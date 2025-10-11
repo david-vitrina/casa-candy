@@ -49,26 +49,36 @@ const CreateUserDialog = ({ onUserCreated }: CreateUserDialogProps) => {
     setLoading(true);
 
     try {
-      // Crear usuario usando la API de Admin de Supabase
-      // Nota: Esto requiere usar el service role key, que solo está disponible en Edge Functions
-      // Por ahora, vamos a usar el método de signup regular
+      // Llamar a la Edge Function para crear el usuario sin cerrar la sesión del admin
+      const { data: { session } } = await supabase.auth.getSession();
       
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
+      const SUPABASE_URL = "https://bldnunrindnyherziwlt.supabase.co";
+      
+      const response = await fetch(
+        `${SUPABASE_URL}/functions/v1/create-user`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session?.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            password,
             display_name: displayName
-          }
+          })
         }
-      });
+      );
 
-      if (error) throw error;
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'No se pudo crear el usuario');
+      }
 
       toast({
         title: "Usuario creado",
-        description: `Se ha enviado un correo de confirmación a ${email}. El usuario debe verificar su correo para activar la cuenta.`
+        description: `El usuario ${email} ha sido creado exitosamente con el nombre "${displayName}".`
       });
 
       setEmail('');
