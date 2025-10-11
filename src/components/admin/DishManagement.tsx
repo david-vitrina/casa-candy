@@ -173,9 +173,16 @@ const DishManagement = () => {
             <CardHeader>
               <div className="flex justify-between items-start">
                 <CardTitle className="text-lg">{dish.name}</CardTitle>
-                <Badge variant={dish.available ? "default" : "secondary"}>
-                  {getCategoryLabel(dish.category)}
-                </Badge>
+                <div className="flex gap-2 flex-wrap justify-end">
+                  <Badge variant={dish.available ? "default" : "secondary"}>
+                    {getCategoryLabel(dish.category)}
+                  </Badge>
+                  {dish.is_daily_menu && (
+                    <Badge className="bg-gradient-to-r from-golden-mustard to-warm-amber">
+                      Menú Diario
+                    </Badge>
+                  )}
+                </div>
               </div>
               <p className="text-muted-foreground">{dish.description}</p>
               <p className="text-lg font-bold text-spanish-red">€{dish.price}</p>

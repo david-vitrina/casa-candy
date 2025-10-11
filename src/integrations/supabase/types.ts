@@ -25,6 +25,7 @@ export type Database = {
           id: string
           image: string | null
           ingredients: string[] | null
+          is_daily_menu: boolean
           name: string
           price: number
           updated_at: string
@@ -39,6 +40,7 @@ export type Database = {
           id?: string
           image?: string | null
           ingredients?: string[] | null
+          is_daily_menu?: boolean
           name: string
           price: number
           updated_at?: string
@@ -53,6 +55,7 @@ export type Database = {
           id?: string
           image?: string | null
           ingredients?: string[] | null
+          is_daily_menu?: boolean
           name?: string
           price?: number
           updated_at?: string

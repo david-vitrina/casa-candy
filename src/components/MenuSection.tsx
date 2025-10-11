@@ -7,15 +7,18 @@ import { useMenuItems } from '@/hooks/useMenuItems';
 
 const MenuSection = () => {
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
-  const [filter, setFilter] = useState<'all' | 'appetizer' | 'main' | 'dessert'>('all');
+  const [filter, setFilter] = useState<'all' | 'appetizer' | 'main' | 'dessert' | 'daily'>('all');
   const { dishes, loading } = useMenuItems();
 
   const filteredItems = filter === 'all' 
     ? dishes 
-    : dishes.filter(item => item.category === filter);
+    : filter === 'daily'
+      ? dishes.filter(item => item.is_daily_menu === true)
+      : dishes.filter(item => item.category === filter);
 
   const filterButtons = [
     { key: 'all', label: 'Todos los Platos' },
+    { key: 'daily', label: 'Menú Diario' },
     { key: 'appetizer', label: 'Entrantes' },
     { key: 'main', label: 'Principales' },
     { key: 'dessert', label: 'Postres' }

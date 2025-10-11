@@ -9,4 +9,5 @@ export interface Dish {
   category: 'appetizer' | 'main' | 'dessert';
   available: boolean;
   discount_percentage?: number;
+  is_daily_menu?: boolean;
 }

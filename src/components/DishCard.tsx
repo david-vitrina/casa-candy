@@ -26,16 +26,23 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
             </Badge>
           </div>
         )}
-        <div className="absolute top-3 right-3 flex gap-2">
-          <Badge 
-            variant={dish.category === 'appetizer' ? 'secondary' : dish.category === 'main' ? 'default' : 'outline'}
-            className="bg-white/90 text-xs"
-          >
-            {dish.category === 'appetizer' ? 'Entrante' : dish.category === 'main' ? 'Principal' : 'Postre'}
-          </Badge>
-          {dish.discount_percentage && dish.discount_percentage > 0 && (
-            <Badge className="bg-green-600 text-white text-xs">
-              -{dish.discount_percentage}%
+        <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
+          <div className="flex gap-2">
+            <Badge 
+              variant={dish.category === 'appetizer' ? 'secondary' : dish.category === 'main' ? 'default' : 'outline'}
+              className="bg-white/90 text-xs"
+            >
+              {dish.category === 'appetizer' ? 'Entrante' : dish.category === 'main' ? 'Principal' : 'Postre'}
+            </Badge>
+            {dish.discount_percentage && dish.discount_percentage > 0 && (
+              <Badge className="bg-green-600 text-white text-xs">
+                -{dish.discount_percentage}%
+              </Badge>
+            )}
+          </div>
+          {dish.is_daily_menu && (
+            <Badge className="bg-gradient-to-r from-golden-mustard to-warm-amber text-white text-xs shadow-lg">
+              Menú del Día
             </Badge>
           )}
         </div>

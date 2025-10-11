@@ -29,7 +29,8 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
     image: '',
     category: 'appetizer' as 'appetizer' | 'main' | 'dessert',
     available: true,
-    discount_percentage: ''
+    discount_percentage: '',
+    is_daily_menu: false
   });
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -99,7 +100,8 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         image: dish.image,
         category: dish.category,
         available: dish.available,
-        discount_percentage: dish.discount_percentage?.toString() || ''
+        discount_percentage: dish.discount_percentage?.toString() || '',
+        is_daily_menu: dish.is_daily_menu || false
       });
       setImagePreview(dish.image);
     }
@@ -230,7 +232,8 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         image: imageUrl,
         category: formData.category,
         available: formData.available,
-        discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0
+        discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0,
+        is_daily_menu: formData.is_daily_menu
       };
 
       let error;
@@ -481,6 +484,16 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                   onChange={(e) => setFormData({ ...formData, available: e.target.checked })}
                 />
                 <Label htmlFor="available">Disponible</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="is_daily_menu"
+                  checked={formData.is_daily_menu}
+                  onChange={(e) => setFormData({ ...formData, is_daily_menu: e.target.checked })}
+                />
+                <Label htmlFor="is_daily_menu">Incluir en Menú Diario</Label>
               </div>
 
               <div className="flex gap-4">
