@@ -30,7 +30,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
     category: 'appetizer' as 'appetizer' | 'main' | 'dessert',
     available: true,
     discount_percentage: '',
-    is_daily_menu: false
+    daily_menu_type: null as 'primero' | 'segundo' | null
   });
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -101,7 +101,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         category: dish.category,
         available: dish.available,
         discount_percentage: dish.discount_percentage?.toString() || '',
-        is_daily_menu: dish.is_daily_menu || false
+        daily_menu_type: dish.daily_menu_type || null
       });
       setImagePreview(dish.image);
     }
@@ -233,7 +233,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         category: formData.category,
         available: formData.available,
         discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0,
-        is_daily_menu: formData.is_daily_menu
+        daily_menu_type: formData.daily_menu_type
       };
 
       let error;
@@ -486,14 +486,24 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                 <Label htmlFor="available">Disponible</Label>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="is_daily_menu"
-                  checked={formData.is_daily_menu}
-                  onChange={(e) => setFormData({ ...formData, is_daily_menu: e.target.checked })}
-                />
-                <Label htmlFor="is_daily_menu">Incluir en Menú Diario</Label>
+              <div className="space-y-2">
+                <Label htmlFor="daily_menu_type">Menú Diario</Label>
+                <Select
+                  value={formData.daily_menu_type || ''}
+                  onValueChange={(value) => setFormData({ 
+                    ...formData, 
+                    daily_menu_type: value === '' ? null : value as 'primero' | 'segundo' 
+                  })}
+                >
+                  <SelectTrigger id="daily_menu_type">
+                    <SelectValue placeholder="No incluir en menú diario" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">No incluir en menú diario</SelectItem>
+                    <SelectItem value="primero">Primero (Menú Diario)</SelectItem>
+                    <SelectItem value="segundo">Segundo (Menú Diario)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="flex gap-4">

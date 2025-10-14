@@ -5,9 +5,10 @@ import { Dish } from '@/types/menu';
 interface DishCardProps {
   dish: Dish;
   onClick: () => void;
+  hidePriceInDailyMenu?: boolean;
 }
 
-const DishCard = ({ dish, onClick }: DishCardProps) => {
+const DishCard = ({ dish, onClick, hidePriceInDailyMenu = false }: DishCardProps) => {
   return (
     <Card 
       className="group cursor-pointer overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
@@ -40,9 +41,9 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
               </Badge>
             )}
           </div>
-          {dish.is_daily_menu && (
+          {dish.daily_menu_type && (
             <Badge className="bg-gradient-to-r from-golden-mustard to-warm-amber text-white text-xs shadow-lg">
-              Menú del Día
+              {dish.daily_menu_type === 'primero' ? 'Primero' : 'Segundo'}
             </Badge>
           )}
         </div>
@@ -54,23 +55,25 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
             <h3 className="text-xl font-semibold text-foreground group-hover:text-toasted-brown transition-colors">
               {dish.name}
             </h3>
-            <div className="text-right">
-              {dish.discount_percentage && dish.discount_percentage > 0 ? (
-                <div>
-                  <span className="text-sm text-gray-500 line-through">
+            {!hidePriceInDailyMenu && (
+              <div className="text-right">
+                {dish.discount_percentage && dish.discount_percentage > 0 ? (
+                  <div>
+                    <span className="text-sm text-gray-500 line-through">
+                      €{dish.price.toFixed(2)}
+                    </span>
+                    <br />
+                    <span className="text-lg font-bold text-toasted-brown">
+                      €{(dish.price * (1 - dish.discount_percentage / 100)).toFixed(2)}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-lg font-bold text-toasted-brown">
                     €{dish.price.toFixed(2)}
                   </span>
-                  <br />
-                  <span className="text-lg font-bold text-toasted-brown">
-                    €{(dish.price * (1 - dish.discount_percentage / 100)).toFixed(2)}
-                  </span>
-                </div>
-              ) : (
-                <span className="text-lg font-bold text-toasted-brown">
-                  €{dish.price.toFixed(2)}
-                </span>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </div>
           
           <p className="text-muted-foreground line-clamp-2">

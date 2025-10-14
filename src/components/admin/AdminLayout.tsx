@@ -9,6 +9,7 @@ import { RESTAURANT_CONFIG } from '@/config/restaurant';
 import DishManagement from './DishManagement';
 import UserManagement from './UserManagement';
 import { HeroSettingsManager } from './HeroSettingsManager';
+import DailyMenuSettingsManager from './DailyMenuSettingsManager';
 
 const AdminLayout = () => {
   const { signOut } = useAuth();
@@ -35,6 +36,7 @@ const AdminLayout = () => {
   const availableTabs = [
     hasDishPermissions && 'dishes',
     hasUserPermissions && 'users',
+    (isAdmin || canEditDishes) && 'daily-menu',
     (isAdmin || canEditDishes) && 'hero'
   ].filter(Boolean);
 
@@ -91,12 +93,15 @@ const AdminLayout = () => {
         {/* Mostrar tabs si hay más de una pestaña disponible */}
         {tabCount > 1 ? (
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsList className="grid w-full grid-cols-4 mb-8">
               {hasDishPermissions && (
                 <TabsTrigger value="dishes">Platos</TabsTrigger>
               )}
               {hasUserPermissions && (
                 <TabsTrigger value="users">Usuarios</TabsTrigger>
+              )}
+              {(isAdmin || canEditDishes) && (
+                <TabsTrigger value="daily-menu">Menú Diario</TabsTrigger>
               )}
               {(isAdmin || canEditDishes) && (
                 <TabsTrigger value="hero">Hero</TabsTrigger>
@@ -112,6 +117,12 @@ const AdminLayout = () => {
             {hasUserPermissions && (
               <TabsContent value="users">
                 <UserManagement />
+              </TabsContent>
+            )}
+            
+            {(isAdmin || canEditDishes) && (
+              <TabsContent value="daily-menu">
+                <DailyMenuSettingsManager />
               </TabsContent>
             )}
             

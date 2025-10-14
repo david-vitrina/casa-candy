@@ -46,12 +46,19 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
           <div className="space-y-4">
             {/* Category and Price */}
             <div className="flex items-center justify-between">
-              <Badge 
-                variant={dish.category === 'appetizer' ? 'secondary' : dish.category === 'main' ? 'default' : 'outline'}
-                className="text-sm"
-              >
-                {dish.category === 'appetizer' ? 'Entrante' : dish.category === 'main' ? 'Plato Principal' : 'Postre'}
-              </Badge>
+              <div className="flex gap-2">
+                <Badge 
+                  variant={dish.category === 'appetizer' ? 'secondary' : dish.category === 'main' ? 'default' : 'outline'}
+                  className="text-sm"
+                >
+                  {dish.category === 'appetizer' ? 'Entrante' : dish.category === 'main' ? 'Plato Principal' : 'Postre'}
+                </Badge>
+                {dish.daily_menu_type && (
+                  <Badge className="bg-gradient-to-r from-golden-mustard to-warm-amber text-white text-sm">
+                    {dish.daily_menu_type === 'primero' ? 'Primero (Menú Diario)' : 'Segundo (Menú Diario)'}
+                  </Badge>
+                )}
+              </div>
               <span className="text-2xl font-bold text-spanish-red">
                 €{dish.price.toFixed(2)}
               </span>

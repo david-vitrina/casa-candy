@@ -13,8 +13,7 @@ export const menuItems: Dish[] = [
     price: 5.00,
     image: '/placeholder.svg',
     category: 'appetizer',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-2',
@@ -25,8 +24,7 @@ export const menuItems: Dish[] = [
     price: 10.50,
     image: '/placeholder.svg',
     category: 'appetizer',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-3',
@@ -37,8 +35,7 @@ export const menuItems: Dish[] = [
     price: 11.50,
     image: '/placeholder.svg',
     category: 'appetizer',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-4',
@@ -49,8 +46,7 @@ export const menuItems: Dish[] = [
     price: 8.00,
     image: '/placeholder.svg',
     category: 'appetizer',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-5',
@@ -61,8 +57,7 @@ export const menuItems: Dish[] = [
     price: 18.50,
     image: '/placeholder.svg',
     category: 'appetizer',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
 
   // Main courses
@@ -75,8 +70,7 @@ export const menuItems: Dish[] = [
     price: 5.50,
     image: '/placeholder.svg',
     category: 'main',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-7',
@@ -87,8 +81,7 @@ export const menuItems: Dish[] = [
     price: 10.00,
     image: '/placeholder.svg',
     category: 'main',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-8',
@@ -99,8 +92,7 @@ export const menuItems: Dish[] = [
     price: 10.00,
     image: '/placeholder.svg',
     category: 'main',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-9',
@@ -111,8 +103,7 @@ export const menuItems: Dish[] = [
     price: 6.00,
     image: '/placeholder.svg',
     category: 'main',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-10',
@@ -123,8 +114,7 @@ export const menuItems: Dish[] = [
     price: 9.50,
     image: '/placeholder.svg',
     category: 'main',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-11',
@@ -135,8 +125,7 @@ export const menuItems: Dish[] = [
     price: 11.00,
     image: '/placeholder.svg',
     category: 'main',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-12',
@@ -147,8 +136,7 @@ export const menuItems: Dish[] = [
     price: 9.50,
     image: '/placeholder.svg',
     category: 'main',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
 
   // Desserts
@@ -161,8 +149,7 @@ export const menuItems: Dish[] = [
     price: 5.50,
     image: '/placeholder.svg',
     category: 'dessert',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-14',
@@ -173,8 +160,7 @@ export const menuItems: Dish[] = [
     price: 6.50,
     image: '/placeholder.svg',
     category: 'dessert',
-    available: true,
-    is_daily_menu: false
+    available: true
   },
   {
     id: 'offline-15',
@@ -185,7 +171,6 @@ export const menuItems: Dish[] = [
     price: 4.90,
     image: '/placeholder.svg',
     category: 'dessert',
-    available: true,
-    is_daily_menu: false
+    available: true
   }
 ];

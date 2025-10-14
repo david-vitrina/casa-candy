@@ -1,3 +1,5 @@
+export type DailyMenuType = 'primero' | 'segundo' | null;
+
 export interface Dish {
   id: string;
   name: string;
@@ -9,5 +11,13 @@ export interface Dish {
   category: 'appetizer' | 'main' | 'dessert';
   available: boolean;
   discount_percentage?: number;
-  is_daily_menu?: boolean;
+  daily_menu_type?: DailyMenuType;
+}
+
+export interface DailyMenuSettings {
+  id: string;
+  price: number;
+  is_active: boolean;
+  updated_at: string;
+  updated_by?: string;
 }

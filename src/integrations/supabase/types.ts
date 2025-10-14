@@ -14,18 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_menu_settings: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          price: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          price?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          price?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       dishes: {
         Row: {
           available: boolean
           category: Database["public"]["Enums"]["dish_category"]
           created_at: string
+          daily_menu_type: Database["public"]["Enums"]["daily_menu_type"] | null
           description: string
           discount_percentage: number | null
           full_description: string | null
           id: string
           image: string | null
           ingredients: string[] | null
-          is_daily_menu: boolean
           name: string
           price: number
           updated_at: string
@@ -34,13 +61,15 @@ export type Database = {
           available?: boolean
           category: Database["public"]["Enums"]["dish_category"]
           created_at?: string
+          daily_menu_type?:
+            | Database["public"]["Enums"]["daily_menu_type"]
+            | null
           description: string
           discount_percentage?: number | null
           full_description?: string | null
           id?: string
           image?: string | null
           ingredients?: string[] | null
-          is_daily_menu?: boolean
           name: string
           price: number
           updated_at?: string
@@ -49,13 +78,15 @@ export type Database = {
           available?: boolean
           category?: Database["public"]["Enums"]["dish_category"]
           created_at?: string
+          daily_menu_type?:
+            | Database["public"]["Enums"]["daily_menu_type"]
+            | null
           description?: string
           discount_percentage?: number | null
           full_description?: string | null
           id?: string
           image?: string | null
           ingredients?: string[] | null
-          is_daily_menu?: boolean
           name?: string
           price?: number
           updated_at?: string
@@ -189,6 +220,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      daily_menu_type: "primero" | "segundo"
       dish_category: "appetizer" | "main" | "dessert"
       permission_type:
         | "edit_dishes"
@@ -323,6 +355,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      daily_menu_type: ["primero", "segundo"],
       dish_category: ["appetizer", "main", "dessert"],
       permission_type: [
         "edit_dishes",

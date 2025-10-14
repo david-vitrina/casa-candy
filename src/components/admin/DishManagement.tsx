@@ -177,9 +177,9 @@ const DishManagement = () => {
                   <Badge variant={dish.available ? "default" : "secondary"}>
                     {getCategoryLabel(dish.category)}
                   </Badge>
-                  {dish.is_daily_menu && (
+                  {dish.daily_menu_type && (
                     <Badge className="bg-gradient-to-r from-golden-mustard to-warm-amber">
-                      Menú Diario
+                      {dish.daily_menu_type === 'primero' ? 'Primero' : 'Segundo'}
                     </Badge>
                   )}
                 </div>

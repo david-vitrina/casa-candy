@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import DishCard from './DishCard';
 import DishModal from './DishModal';
+import DailyMenuView from './DailyMenuView';
 import { Dish } from '@/types/menu';
 import { useMenuItems } from '@/hooks/useMenuItems';
 
@@ -13,7 +14,7 @@ const MenuSection = () => {
   const filteredItems = filter === 'all' 
     ? dishes 
     : filter === 'daily'
-      ? dishes.filter(item => item.is_daily_menu === true)
+      ? dishes.filter(item => item.daily_menu_type !== null && item.daily_menu_type !== undefined)
       : dishes.filter(item => item.category === filter);
 
   const filterButtons = [
@@ -68,16 +69,23 @@ const MenuSection = () => {
           ))}
         </div>
 
-        {/* Menu Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredItems.map((dish) => (
-            <DishCard
-              key={dish.id}
-              dish={dish}
-              onClick={() => setSelectedDish(dish)}
-            />
-          ))}
-        </div>
+        {/* Menu Grid o Daily Menu View */}
+        {filter === 'daily' ? (
+          <DailyMenuView 
+            dishes={filteredItems}
+            onDishClick={(dish) => setSelectedDish(dish)}
+          />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredItems.map((dish) => (
+              <DishCard
+                key={dish.id}
+                dish={dish}
+                onClick={() => setSelectedDish(dish)}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Dish Modal */}
         <DishModal
