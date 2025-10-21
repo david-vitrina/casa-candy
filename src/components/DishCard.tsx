@@ -6,9 +6,10 @@ interface DishCardProps {
   dish: Dish;
   onClick: () => void;
   hidePriceInDailyMenu?: boolean;
+  isDailyMenuContext?: boolean;
 }
 
-const DishCard = ({ dish, onClick, hidePriceInDailyMenu = false }: DishCardProps) => {
+const DishCard = ({ dish, onClick, hidePriceInDailyMenu = false, isDailyMenuContext = false }: DishCardProps) => {
   return (
     <Card 
       className="group cursor-pointer overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
@@ -20,7 +21,7 @@ const DishCard = ({ dish, onClick, hidePriceInDailyMenu = false }: DishCardProps
           alt={dish.name}
           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
         />
-        {!dish.available && (
+        {!dish.available && !isDailyMenuContext && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <Badge variant="destructive" className="text-sm">
               No Disponible

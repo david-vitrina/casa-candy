@@ -70,6 +70,7 @@ const DailyMenuView = ({ dishes, onDishClick }: DailyMenuViewProps) => {
                 dish={dish}
                 onClick={() => onDishClick(dish)}
                 hidePriceInDailyMenu={true}
+                isDailyMenuContext={true}
               />
             ))}
           </div>
@@ -97,6 +98,7 @@ const DailyMenuView = ({ dishes, onDishClick }: DailyMenuViewProps) => {
                 dish={dish}
                 onClick={() => onDishClick(dish)}
                 hidePriceInDailyMenu={true}
+                isDailyMenuContext={true}
               />
             ))}
           </div>
