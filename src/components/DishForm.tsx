@@ -489,17 +489,17 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
               <div className="space-y-2">
                 <Label htmlFor="daily_menu_type">Menú Diario</Label>
                 <Select
-                  value={formData.daily_menu_type || ''}
+                  value={formData.daily_menu_type || 'none'}
                   onValueChange={(value) => setFormData({ 
                     ...formData, 
-                    daily_menu_type: value === '' ? null : value as 'primero' | 'segundo' 
+                    daily_menu_type: value === 'none' ? null : value as 'primero' | 'segundo' 
                   })}
                 >
                   <SelectTrigger id="daily_menu_type">
                     <SelectValue placeholder="No incluir en menú diario" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No incluir en menú diario</SelectItem>
+                    <SelectItem value="none">No incluir en menú diario</SelectItem>
                     <SelectItem value="primero">Primero (Menú Diario)</SelectItem>
                     <SelectItem value="segundo">Segundo (Menú Diario)</SelectItem>
                   </SelectContent>
