@@ -12,7 +12,8 @@ export const dishSchema = z.object({
   }),
   available: z.boolean(),
   discount_percentage: z.number().min(0, 'El descuento no puede ser negativo').max(100, 'El descuento no puede ser mayor al 100%').optional(),
-  image: z.string().url('URL de imagen inválida').optional()
+  image: z.string().url('URL de imagen inválida').optional(),
+  daily_menu_type: z.enum(['primero', 'segundo']).nullable().optional()
 });
 
 // Esquema de validación para autenticación

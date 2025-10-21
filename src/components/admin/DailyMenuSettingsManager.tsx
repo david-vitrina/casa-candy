@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,13 +6,44 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useDailyMenuSettings } from '@/hooks/useDailyMenuSettings';
-import { useMenuItems } from '@/hooks/useMenuItems';
+import { supabase } from '@/integrations/supabase/client';
+import { Dish } from '@/types/menu';
 import { AlertCircle, DollarSign, TrendingUp } from 'lucide-react';
 
 const DailyMenuSettingsManager = () => {
   const { settings, loading, updatePrice, toggleActive } = useDailyMenuSettings();
-  const { dishes } = useMenuItems();
+  const [dishes, setDishes] = useState<Dish[]>([]);
   const [priceInput, setPriceInput] = useState('');
+
+  useEffect(() => {
+    fetchAllDishes();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel('dishes-changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'dishes' }, 
+        () => {
+          fetchAllDishes();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const fetchAllDishes = async () => {
+    const { data } = await supabase
+      .from('dishes')
+      .select('*')
+      .order('name');
+    
+    if (data) {
+      setDishes(data as Dish[]);
+    }
+  };
 
   if (loading) {
     return <div className="text-center py-8">Cargando...</div>;
@@ -29,8 +60,8 @@ const DailyMenuSettingsManager = () => {
     );
   }
 
-  const primeros = dishes.filter(d => d.daily_menu_type === 'primero' && d.available);
-  const segundos = dishes.filter(d => d.daily_menu_type === 'segundo' && d.available);
+  const primeros = dishes.filter(d => d.daily_menu_type === 'primero');
+  const segundos = dishes.filter(d => d.daily_menu_type === 'segundo');
 
   const handleUpdatePrice = () => {
     const newPrice = parseFloat(priceInput);
