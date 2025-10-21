@@ -13,8 +13,13 @@ interface DailyMenuViewProps {
 const DailyMenuView = ({ dishes, onDishClick }: DailyMenuViewProps) => {
   const { settings, loading } = useDailyMenuSettings();
 
+  console.log('🍽️ DailyMenuView rendered with dishes:', dishes.length, dishes.map(d => ({ name: d.name, type: d.daily_menu_type })));
+
   const primeros = dishes.filter(dish => dish.daily_menu_type === 'primero');
   const segundos = dishes.filter(dish => dish.daily_menu_type === 'segundo');
+
+  console.log('👉 Primeros:', primeros.length, primeros.map(d => d.name));
+  console.log('👉 Segundos:', segundos.length, segundos.map(d => d.name));
 
   if (loading) {
     return (
