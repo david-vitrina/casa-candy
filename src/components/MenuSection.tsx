@@ -1,20 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import DishCard from './DishCard';
 import DishModal from './DishModal';
 import DailyMenuView from './DailyMenuView';
 import { Dish } from '@/types/menu';
 import { useMenuItems } from '@/hooks/useMenuItems';
+import { supabase } from '@/integrations/supabase/client';
 
 const MenuSection = () => {
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [filter, setFilter] = useState<'all' | 'appetizer' | 'main' | 'dessert' | 'daily'>('all');
   const { dishes, loading } = useMenuItems();
+  const [dailyMenuDishes, setDailyMenuDishes] = useState<Dish[]>([]);
+  const [loadingDaily, setLoadingDaily] = useState(false);
+
+  // Fetch daily menu dishes (including unavailable ones)
+  useEffect(() => {
+    if (filter === 'daily') {
+      fetchDailyMenuDishes();
+
+      // Subscribe to realtime updates
+      const channel = supabase
+        .channel('daily-menu-changes')
+        .on('postgres_changes', 
+          { event: '*', schema: 'public', table: 'dishes' }, 
+          () => {
+            fetchDailyMenuDishes();
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [filter]);
+
+  const fetchDailyMenuDishes = async () => {
+    setLoadingDaily(true);
+    try {
+      const { data, error } = await supabase
+        .from('dishes')
+        .select('*')
+        .not('daily_menu_type', 'is', null)
+        .order('name');
+
+      if (error) throw error;
+      if (data) {
+        setDailyMenuDishes(data as Dish[]);
+      }
+    } catch (error) {
+      console.error('Error fetching daily menu dishes:', error);
+    } finally {
+      setLoadingDaily(false);
+    }
+  };
 
   const filteredItems = filter === 'all' 
     ? dishes 
     : filter === 'daily'
-      ? dishes.filter(item => item.daily_menu_type !== null && item.daily_menu_type !== undefined)
+      ? dailyMenuDishes
       : dishes.filter(item => item.category === filter);
 
   const filterButtons = [
@@ -25,7 +70,7 @@ const MenuSection = () => {
     { key: 'dessert', label: 'Postres' }
   ] as const;
 
-  if (loading) {
+  if (loading || (filter === 'daily' && loadingDaily)) {
     return (
       <section id="menu" className="py-24 bg-gradient-to-b from-background via-cream-light/30 to-background">
         <div className="container mx-auto px-4">
