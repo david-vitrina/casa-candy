@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -13,11 +13,22 @@ const Header = () => {
   const { user, isAdmin, signOut } = useAuth();
   const { hasAnyPermission } = usePermissions();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const hasAdminAccess = isAdmin || hasAnyPermission(['edit_dishes', 'manage_availability', 'delete_dishes', 'manage_users']);
 
-  const handleScrollToSection = (sectionId: string) => {
-    scrollToSection(sectionId, () => setIsMenuOpen(false));
+  const handleNavigation = (sectionId: string) => {
+    if (location.pathname === '/') {
+      // Si ya estamos en la página principal, scroll directo
+      scrollToSection(sectionId, () => setIsMenuOpen(false));
+    } else {
+      // Si estamos en otra ruta, navegar primero y luego scroll
+      navigate('/');
+      setIsMenuOpen(false);
+      setTimeout(() => {
+        scrollToSection(sectionId);
+      }, 100);
+    }
   };
 
   return (
@@ -25,7 +36,10 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="text-2xl font-bold tracking-tight">
+          <div 
+            className="text-2xl font-bold tracking-tight cursor-pointer" 
+            onClick={() => handleNavigation('inicio')}
+          >
             <GradientText variant="primary">{RESTAURANT_CONFIG.name}</GradientText>
           </div>
 
@@ -33,21 +47,21 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <Button 
               variant="ghost" 
-              onClick={() => handleScrollToSection('inicio')}
+              onClick={() => handleNavigation('inicio')}
               className="hover:text-toasted-brown transition-all duration-300 font-medium"
             >
               Inicio
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => handleScrollToSection('menu')}
+              onClick={() => handleNavigation('menu')}
               className="hover:text-toasted-brown transition-all duration-300 font-medium"
             >
               Menú
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => handleScrollToSection('contacto')}
+              onClick={() => handleNavigation('contacto')}
               className="hover:text-toasted-brown transition-all duration-300 font-medium"
             >
               Contacto
@@ -102,21 +116,21 @@ const Header = () => {
             <div className="flex flex-col space-y-2">
               <Button 
                 variant="ghost" 
-                onClick={() => handleScrollToSection('inicio')}
+                onClick={() => handleNavigation('inicio')}
                 className="justify-start hover:text-toasted-brown transition-all duration-300"
               >
                 Inicio
               </Button>
               <Button 
                 variant="ghost" 
-                onClick={() => handleScrollToSection('menu')}
+                onClick={() => handleNavigation('menu')}
                 className="justify-start hover:text-toasted-brown transition-all duration-300"
               >
                 Menú
               </Button>
               <Button 
                 variant="ghost" 
-                onClick={() => handleScrollToSection('contacto')}
+                onClick={() => handleNavigation('contacto')}
                 className="justify-start hover:text-toasted-brown transition-all duration-300"
               >
                 Contacto
