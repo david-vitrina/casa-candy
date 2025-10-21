@@ -16,10 +16,7 @@ const MenuSection = () => {
 
   // Fetch daily menu dishes (including unavailable ones) - runs on mount and filter change
   useEffect(() => {
-    console.log('🔍 MenuSection useEffect triggered, filter:', filter);
-    
     if (filter === 'daily') {
-      console.log('📋 Fetching daily menu dishes...');
       fetchDailyMenuDishes();
 
       // Subscribe to realtime updates
@@ -27,24 +24,19 @@ const MenuSection = () => {
         .channel('daily-menu-changes')
         .on('postgres_changes', 
           { event: '*', schema: 'public', table: 'dishes' }, 
-          (payload) => {
-            console.log('⚡ Realtime event received:', payload.eventType, payload);
+          () => {
             fetchDailyMenuDishes();
           }
         )
-        .subscribe((status) => {
-          console.log('📡 Realtime subscription status:', status);
-        });
+        .subscribe();
 
       return () => {
-        console.log('🔌 Unsubscribing from realtime channel');
         supabase.removeChannel(channel);
       };
     }
   }, [filter]);
 
   const fetchDailyMenuDishes = async () => {
-    console.log('🔄 fetchDailyMenuDishes called');
     setLoadingDaily(true);
     try {
       const { data, error } = await supabase
@@ -52,16 +44,13 @@ const MenuSection = () => {
         .select('*')
         .not('daily_menu_type', 'is', null)
         .order('name');
-
-      console.log('📊 Query result:', { error, dataCount: data?.length, data });
       
       if (error) throw error;
       if (data) {
-        console.log('✅ Setting dailyMenuDishes:', data.map(d => ({ name: d.name, type: d.daily_menu_type })));
         setDailyMenuDishes(data as Dish[]);
       }
     } catch (error) {
-      console.error('❌ Error fetching daily menu dishes:', error);
+      console.error('Error fetching daily menu dishes:', error);
     } finally {
       setLoadingDaily(false);
     }
@@ -123,20 +112,6 @@ const MenuSection = () => {
               {label}
             </Button>
           ))}
-          
-          {/* Debug: Manual reload button for daily menu */}
-          {filter === 'daily' && (
-            <Button
-              onClick={() => {
-                console.log('🔄 Manual reload clicked');
-                fetchDailyMenuDishes();
-              }}
-              variant="outline"
-              className="border-2 border-dashed border-toasted-brown/50 text-toasted-brown hover:bg-toasted-brown/10 rounded-full px-8 py-6"
-            >
-              🔄 Recargar
-            </Button>
-          )}
         </div>
 
         {/* Menu Grid o Daily Menu View */}
