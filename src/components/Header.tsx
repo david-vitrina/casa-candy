@@ -33,11 +33,11 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 w-full bg-background/85 backdrop-blur-md border-b border-toasted-brown/15 z-[100] shadow-soft rounded-b-lg">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 sm:py-3">
+        <div className="flex items-center justify-between min-h-[56px] sm:min-h-0">
           {/* Logo */}
           <div 
-            className="text-2xl font-bold tracking-tight cursor-pointer" 
+            className="text-xl sm:text-2xl font-bold tracking-tight cursor-pointer" 
             onClick={() => handleNavigation('inicio')}
           >
             <GradientText variant="primary">{RESTAURANT_CONFIG.name}</GradientText>
@@ -103,7 +103,7 @@ const Header = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden h-10 w-10"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X /> : <Menu />}

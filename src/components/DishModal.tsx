@@ -74,11 +74,12 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
             
             {/* Ingredients */}
             <div>
-              <h4 className="text-lg font-semibold mb-3">Ingredientes</h4>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              <h4 className="text-base sm:text-lg font-semibold mb-3">Ingredientes</h4>
+              <ul className="space-y-2">
                 {dish.ingredients.map((ingredient, index) => (
-                  <li key={index} className="text-sm">
-                    {ingredient}
+                  <li key={index} className="flex items-start text-sm sm:text-base text-muted-foreground">
+                    <span className="mr-3 mt-1.5 h-1.5 w-1.5 rounded-full bg-spanish-gold flex-shrink-0" />
+                    <span>{ingredient}</span>
                   </li>
                 ))}
               </ul>
