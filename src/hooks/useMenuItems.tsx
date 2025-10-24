@@ -32,8 +32,31 @@ export const useMenuItems = () => {
           const hasSupabaseImage = dishFromDB.image && 
             (dishFromDB.image.startsWith('https://') || dishFromDB.image.startsWith('http://'));
           
+          // Normalizar ingredientes
+          let normalizedIngredients: string[];
+          
+          if (Array.isArray(dishFromDB.ingredients)) {
+            normalizedIngredients = dishFromDB.ingredients;
+          } else if (typeof dishFromDB.ingredients === 'string') {
+            try {
+              // Intentar parsear si es JSON string
+              const parsed = JSON.parse(dishFromDB.ingredients);
+              normalizedIngredients = Array.isArray(parsed) ? parsed : [];
+            } catch {
+              // Si falla, dividir por comas o saltos de línea
+              const ingredientsStr = dishFromDB.ingredients as string;
+              normalizedIngredients = ingredientsStr
+                .split(/[,\n]/)
+                .map(i => i.trim())
+                .filter(i => i.length > 0);
+            }
+          } else {
+            normalizedIngredients = [];
+          }
+          
           return {
             ...dishFromDB,
+            ingredients: normalizedIngredients,
             image: hasSupabaseImage ? dishFromDB.image : (localDish?.image || dishFromDB.image)
           } as Dish;
         });

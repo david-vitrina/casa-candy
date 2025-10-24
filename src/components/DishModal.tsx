@@ -75,14 +75,20 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
             {/* Ingredients */}
             <div>
               <h4 className="text-base sm:text-lg font-semibold mb-3">Ingredientes</h4>
-              <ul className="space-y-2">
-                {dish.ingredients.map((ingredient, index) => (
-                  <li key={index} className="flex items-start text-sm sm:text-base text-muted-foreground">
-                    <span className="mr-3 mt-1.5 h-1.5 w-1.5 rounded-full bg-spanish-gold flex-shrink-0" />
-                    <span>{ingredient}</span>
-                  </li>
-                ))}
-              </ul>
+              {Array.isArray(dish.ingredients) && dish.ingredients.length > 0 ? (
+                <ul className="space-y-2">
+                  {dish.ingredients.map((ingredient, index) => (
+                    <li key={index} className="flex items-start text-sm sm:text-base text-muted-foreground">
+                      <span className="mr-3 mt-1.5 h-2 w-2 rounded-full bg-spanish-gold flex-shrink-0" />
+                      <span>{ingredient}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No hay ingredientes disponibles
+                </p>
+              )}
             </div>
             
             {/* Availability Status */}
