@@ -42,7 +42,7 @@ const Hero = () => {
               </h1>
               
               {/* Subtitle */}
-              <p className="text-2xl md:text-3xl text-foreground/80 max-w-3xl mx-auto font-light leading-relaxed">
+              <p className="text-2xl md:text-3xl text-foreground max-w-3xl mx-auto font-light leading-relaxed drop-shadow-sm">
                 Tradición culinaria con un toque contemporáneo. 
                 Descubre sabores auténticos en cada plato.
               </p>
