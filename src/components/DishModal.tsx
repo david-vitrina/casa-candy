@@ -18,20 +18,20 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-spanish-red">
+          <DialogTitle className="text-xl sm:text-2xl font-bold text-spanish-red">
             {dish.name}
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Image */}
           <div className="relative overflow-hidden rounded-lg">
             <img 
               src={dish.image} 
               alt={dish.name}
-              className="w-full h-64 object-cover"
+              className="w-full h-48 sm:h-64 object-cover"
             />
             {!dish.available && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -59,7 +59,7 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
                   </Badge>
                 )}
               </div>
-              <span className="text-2xl font-bold text-spanish-red">
+              <span className="text-xl sm:text-2xl font-bold text-spanish-red">
                 €{dish.price.toFixed(2)}
               </span>
             </div>
