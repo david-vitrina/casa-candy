@@ -75,17 +75,13 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
             {/* Ingredients */}
             <div>
               <h4 className="text-lg font-semibold mb-3">Ingredientes</h4>
-              <div className="flex flex-wrap gap-2">
+              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                 {dish.ingredients.map((ingredient, index) => (
-                  <Badge 
-                    key={index} 
-                    variant="outline" 
-                    className="text-xs bg-warm-cream/50 border-spanish-gold/30"
-                  >
+                  <li key={index} className="text-sm">
                     {ingredient}
-                  </Badge>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
             
             {/* Availability Status */}
