@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import DishCard from './DishCard';
 import DishModal from './DishModal';
 import DailyMenuView from './DailyMenuView';
@@ -7,23 +6,37 @@ import { Dish } from '@/types/menu';
 import { useMenuItems } from '@/hooks/useMenuItems';
 import { supabase } from '@/integrations/supabase/client';
 
+type Filter = 'all' | 'appetizer' | 'main' | 'dessert' | 'daily';
+
+const FILTERS: { key: Filter; label: string }[] = [
+  { key: 'all', label: 'Toda la carta' },
+  { key: 'daily', label: 'Menú del día' },
+  { key: 'appetizer', label: 'Entrantes' },
+  { key: 'main', label: 'Principales' },
+  { key: 'dessert', label: 'Postres' },
+];
+
+const CATEGORY_GROUP_LABEL: Record<'appetizer' | 'main' | 'dessert', string> = {
+  appetizer: 'Entrantes',
+  main: 'Principales',
+  dessert: 'Postres',
+};
+
 const MenuSection = () => {
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
-  const [filter, setFilter] = useState<'all' | 'appetizer' | 'main' | 'dessert' | 'daily'>('all');
+  const [filter, setFilter] = useState<Filter>('all');
   const { dishes, loading } = useMenuItems();
   const [dailyMenuDishes, setDailyMenuDishes] = useState<Dish[]>([]);
   const [loadingDaily, setLoadingDaily] = useState(false);
 
-  // Fetch daily menu dishes (including unavailable ones) - runs on mount and filter change
   useEffect(() => {
     if (filter === 'daily') {
       fetchDailyMenuDishes();
 
-      // Subscribe to realtime updates
       const channel = supabase
         .channel('daily-menu-changes')
-        .on('postgres_changes', 
-          { event: '*', schema: 'public', table: 'dishes' }, 
+        .on('postgres_changes',
+          { event: '*', schema: 'public', table: 'dishes' },
           () => {
             fetchDailyMenuDishes();
           }
@@ -44,7 +57,7 @@ const MenuSection = () => {
         .select('*')
         .not('daily_menu_type', 'is', null)
         .order('name');
-      
+
       if (error) throw error;
       if (data) {
         setDailyMenuDishes(data as Dish[]);
@@ -56,83 +69,68 @@ const MenuSection = () => {
     }
   };
 
-  const filteredItems = filter === 'all' 
-    ? dishes 
-    : filter === 'daily'
-      ? dailyMenuDishes
-      : dishes.filter(item => item.category === filter);
-
-  const filterButtons = [
-    { key: 'all', label: 'Todos los Platos' },
-    { key: 'daily', label: 'Menú Diario' },
-    { key: 'appetizer', label: 'Entrantes' },
-    { key: 'main', label: 'Principales' },
-    { key: 'dessert', label: 'Postres' }
-  ] as const;
-
   if (loading || (filter === 'daily' && loadingDaily)) {
     return (
-      <section id="menu" className="py-24 bg-gradient-to-b from-background via-cream-light/30 to-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <p className="text-xl text-muted-foreground">Cargando menú...</p>
-          </div>
+      <section id="menu" className="py-20 sm:py-28">
+        <div className="container mx-auto px-4 sm:px-6 text-center">
+          <p className="text-ink/50">Cargando carta…</p>
         </div>
       </section>
     );
   }
 
   return (
-    <section id="menu" className="py-24 bg-gradient-to-b from-background via-candy-cream/30 to-background">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center space-y-6 mb-16 animate-fade-in">
-          <h2 className="text-5xl md:text-6xl font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-toasted-brown via-warm-amber to-golden-mustard bg-clip-text text-transparent">
-              Nuestro Menú
-            </span>
-          </h2>
-          <p className="text-xl text-foreground/70 max-w-2xl mx-auto font-light leading-relaxed">
-            Una selección cuidadosa de platos que combinan tradición y creatividad
-          </p>
-        </div>
+    <section id="menu" className="py-20 sm:py-28">
+      <div className="container mx-auto px-4 sm:px-6">
+        <p className="uppercase tracking-[0.2em] text-xs font-medium text-olive mb-3">Nuestra propuesta</p>
+        <h2 className="font-serif text-4xl sm:text-5xl text-ink mb-10 sm:mb-12 text-balance">La carta</h2>
 
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {filterButtons.map(({ key, label }) => (
-            <Button
+        <div className="flex flex-wrap gap-x-6 gap-y-2 sm:gap-x-8 mb-12 text-xs sm:text-sm uppercase tracking-[0.05em]">
+          {FILTERS.map(({ key, label }) => (
+            <button
               key={key}
-              variant={filter === key ? "default" : "outline"}
               onClick={() => setFilter(key)}
-              className={filter === key 
-                ? "bg-gradient-to-r from-toasted-brown to-warm-amber text-white shadow-premium rounded-full px-8 py-6 font-semibold" 
-                : "border-2 border-toasted-brown text-toasted-brown hover:bg-toasted-brown hover:text-white rounded-full px-8 py-6 transition-all duration-300"
-              }
+              className="pb-1 transition-opacity"
+              style={{
+                borderBottom: filter === key ? '2px solid hsl(var(--terracotta))' : '2px solid transparent',
+                opacity: filter === key ? 1 : 0.55,
+              }}
             >
               {label}
-            </Button>
+            </button>
           ))}
         </div>
 
-        {/* Menu Grid o Daily Menu View */}
         {filter === 'daily' ? (
-          <DailyMenuView 
-            dishes={filteredItems}
+          <DailyMenuView
+            dishes={dailyMenuDishes}
             onDishClick={(dish) => setSelectedDish(dish)}
           />
+        ) : filter === 'all' ? (
+          (['appetizer', 'main', 'dessert'] as const).map((cat) => {
+            const items = dishes.filter((d) => d.category === cat);
+            if (!items.length) return null;
+            return (
+              <div key={cat} className="mb-10">
+                <p className="uppercase tracking-[0.2em] text-xs font-semibold text-olive mb-1">
+                  {CATEGORY_GROUP_LABEL[cat]}
+                </p>
+                {items.map((dish) => (
+                  <DishCard key={dish.id} dish={dish} onClick={() => setSelectedDish(dish)} />
+                ))}
+              </div>
+            );
+          })
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredItems.map((dish) => (
-              <DishCard
-                key={dish.id}
-                dish={dish}
-                onClick={() => setSelectedDish(dish)}
-              />
-            ))}
+          <div>
+            {dishes
+              .filter((d) => d.category === filter)
+              .map((dish) => (
+                <DishCard key={dish.id} dish={dish} onClick={() => setSelectedDish(dish)} />
+              ))}
           </div>
         )}
 
-        {/* Dish Modal */}
         <DishModal
           dish={selectedDish}
           isOpen={!!selectedDish}

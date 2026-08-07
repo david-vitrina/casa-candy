@@ -1,98 +1,66 @@
 import { scrollToMenu, scrollToContact } from '@/utils/scroll';
-import { GradientText } from '@/components/ui/gradient-text';
-import { GradientIcon } from '@/components/ui/gradient-icon';
-import { GradientButton } from '@/components/ui/gradient-button';
-import { UtensilsCrossed, Award, ChefHat } from 'lucide-react';
 import { useHeroSettings } from '@/hooks/useHeroSettings';
+import { UtensilsCrossed, Award, ChefHat } from 'lucide-react';
 import heroBackgroundDefault from '@/assets/hero-background.jpg';
+
+const FEATURES = [
+  { icon: UtensilsCrossed, title: 'Cocina tradicional', body: 'Técnicas artesanales, recetas de siempre.' },
+  { icon: Award, title: 'Ingredientes premium', body: 'Producto fresco de temporada.' },
+  { icon: ChefHat, title: 'Maestría culinaria', body: 'Chef con pasión por el detalle.' },
+];
+
 const Hero = () => {
-  const {
-    settings
-  } = useHeroSettings();
+  const { settings } = useHeroSettings();
   const backgroundImage = settings.image_url || heroBackgroundDefault;
-  return <section id="inicio" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-      {/* Background image */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
-      backgroundImage: `url(${backgroundImage})`
-    }} />
-      
-      {/* Gradient overlay */}
-      {settings.gradient_enabled && <div className="absolute inset-0 bg-gradient-to-br from-cream-light via-background to-golden-mustard/10" style={{
-      opacity: settings.overlay_opacity
-    }} />}
-      
-      {/* Decorative elements */}
-      <div className="absolute top-32 right-20 w-40 h-40 bg-golden-mustard/20 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-32 left-20 w-56 h-56 bg-toasted-brown/15 rounded-full blur-3xl animate-float" style={{
-      animationDelay: '1.5s'
-    }} />
-      <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-warm-amber/15 rounded-full blur-2xl animate-float" style={{
-      animationDelay: '3s'
-    }} />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-5xl mx-auto">
-          {/* Main content in single column */}
-          <div className="text-center space-y-10 animate-fade-in mb-20">
-            {/* Main heading */}
-            <div className="space-y-4">
-              <h1 className="text-7xl md:text-8xl font-bold leading-tight tracking-tight">
-                <GradientText variant="primary" className="font-medium">Casa Candy</GradientText>
-              </h1>
-              
-              {/* Subtitle */}
-              
-            </div>
-            
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-6">
-              <GradientButton size="lg" onClick={scrollToMenu} className="px-12 py-7 text-lg rounded-full">
-                Explorar Menú
-              </GradientButton>
-              <GradientButton variant="outline-spanish" size="lg" onClick={scrollToContact} className="px-12 py-7 text-lg rounded-full">
-                Reservar Mesa
-              </GradientButton>
+
+  return (
+    <section id="inicio" className="pt-24 sm:pt-28">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center py-6 md:py-16">
+          <div>
+            <p className="uppercase tracking-[0.2em] text-xs font-medium text-olive mb-6">
+              Restaurante · Cocina Española
+            </p>
+            <h1 className="font-serif text-6xl md:text-7xl leading-[0.95] text-ink mb-6 text-balance">
+              Sabor de<br />
+              <em className="italic font-medium text-terracotta">siempre</em>
+            </h1>
+            <p className="font-serif italic text-xl sm:text-2xl text-ink/80 max-w-md mb-8 text-balance">
+              &ldquo;Por más vueltas que doy, a Casa Candy voy&rdquo;
+            </p>
+            <div className="flex flex-wrap gap-6 sm:gap-8 text-base">
+              <button onClick={scrollToMenu} className="border-b-2 border-terracotta pb-1 text-ink font-medium">
+                Ver la carta ↓
+              </button>
+              <button onClick={scrollToContact} className="pb-1 text-ink/60 hover:text-ink transition-colors font-medium">
+                Reservar mesa →
+              </button>
             </div>
           </div>
-          
-          {/* Features - Full width grid */}
-          <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
-            <div className="text-center space-y-5 p-8 rounded-3xl bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-all duration-300 hover:shadow-premium animate-slide-up border border-toasted-brown/10">
-              <GradientIcon variant="red-orange" size="lg" className="mx-auto shadow-premium">
-                <UtensilsCrossed className="h-8 w-8" />
-              </GradientIcon>
-              <h3 className="text-2xl font-bold text-foreground">Cocina Tradicional</h3>
-              <p className="text-foreground/70 leading-relaxed text-base">
-                Recetas auténticas preparadas con técnicas artesanales
-              </p>
-            </div>
-            
-            <div className="text-center space-y-5 p-8 rounded-3xl bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-all duration-300 hover:shadow-premium animate-slide-up border border-toasted-brown/10" style={{
-            animationDelay: '0.15s'
-          }}>
-              <GradientIcon variant="orange-gold" size="lg" className="mx-auto shadow-premium">
-                <Award className="h-8 w-8" />
-              </GradientIcon>
-              <h3 className="text-2xl font-bold text-foreground">Ingredientes Premium</h3>
-              <p className="text-foreground/70 leading-relaxed text-base">
-                Selección cuidadosa de productos frescos de temporada
-              </p>
-            </div>
-            
-            <div className="text-center space-y-5 p-8 rounded-3xl bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-all duration-300 hover:shadow-premium animate-slide-up border border-toasted-brown/10" style={{
-            animationDelay: '0.3s'
-          }}>
-              <GradientIcon variant="gold-red" size="lg" className="mx-auto shadow-premium">
-                <ChefHat className="h-8 w-8" />
-              </GradientIcon>
-              <h3 className="text-2xl font-bold text-foreground">Maestría Culinaria</h3>
-              <p className="text-foreground/70 leading-relaxed text-base">
-                Chef experimentado con pasión por la excelencia gastronómica
-              </p>
-            </div>
+          <div className="relative order-first md:order-last">
+            <img
+              src={backgroundImage}
+              alt="Casa Candy"
+              className="w-full h-64 sm:h-80 md:h-[420px] object-cover"
+              style={{ borderRadius: '58% 42% 68% 32% / 45% 55% 45% 55%' }}
+            />
           </div>
         </div>
+
+        <div className="grid sm:grid-cols-3 gap-8 sm:gap-10 py-10 border-t border-b border-line">
+          {FEATURES.map(({ icon: Icon, title, body }) => (
+            <div key={title} className="flex items-start gap-4 sm:block sm:text-left">
+              <Icon className="w-6 h-6 text-terracotta flex-shrink-0 sm:mb-3" />
+              <div>
+                <h3 className="font-serif text-lg text-ink mb-1">{title}</h3>
+                <p className="text-sm text-ink/60">{body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Hero;

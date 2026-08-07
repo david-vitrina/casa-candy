@@ -8,38 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 40 15% 98%;
-    --foreground: 25 20% 15%;
+    --background: 40 65% 95%;
+    --foreground: 28 26% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 25 20% 15%;
+    --card-foreground: 28 26% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 25 20% 15%;
+    --popover-foreground: 28 26% 11%;
 
-    /* Premium Restaurant - Brown/Mustard */
-    --primary: 30 60% 45%;
+    /* Mercado Mediterráneo - Terracota/Oliva */
+    --primary: 14 62% 47%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 45 70% 55%;
-    --secondary-foreground: 25 20% 15%;
+    --secondary-foreground: 28 26% 11%;
 
     --muted: 40 15% 94%;
     --muted-foreground: 0 0% 40%;
 
     --accent: 50 75% 62%;
-    --accent-foreground: 25 20% 15%;
+    --accent-foreground: 28 26% 11%;
 
-    /* Premium color palette */
-    --toasted-brown: 30 60% 45%;
-    --toasted-brown-dark: 30 60% 35%;
-    --golden-mustard: 45 70% 55%;
-    --golden-mustard-dark: 45 70% 45%;
-    --warm-amber: 35 65% 60%;
-    --deep-espresso: 25 40% 20%;
-    --cream-light: 40 25% 96%;
-    --earth-terracotta: 15 55% 50%;
-    
+    /* Mercado Mediterráneo - paleta editorial */
+    --paper: 40 65% 95%;
+    --ink: 28 26% 11%;
+    --terracotta: 14 62% 47%;
+    --olive: 79 28% 33%;
+    --line: 38 30% 79%;
+
+    /* Alias de tokens de marca anteriores, remapeados a la paleta nueva
+       (siguen en uso en src/components/admin/, que no se rediseña visualmente) */
+    --toasted-brown: 14 62% 47%;
+    --toasted-brown-dark: 14 62% 37%;
+    --golden-mustard: 79 28% 33%;
+    --golden-mustard-dark: 79 28% 24%;
+    --warm-amber: 14 55% 58%;
+    --deep-espresso: 28 26% 11%;
+    --cream-light: 38 45% 92%;
+    --earth-terracotta: 14 62% 42%;
+
     /* Gradients */
     --gradient-premium: linear-gradient(135deg, hsl(var(--toasted-brown)), hsl(var(--warm-amber)));
     --gradient-gold: linear-gradient(135deg, hsl(var(--golden-mustard)), hsl(var(--warm-amber)));
@@ -122,7 +130,7 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 
   /* Scrollbar personalizada más delgada */

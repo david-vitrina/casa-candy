@@ -328,7 +328,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="price">Precio (€)</Label>
                   <Input

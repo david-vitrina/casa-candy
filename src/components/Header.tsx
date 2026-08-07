@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePermissions } from '@/hooks/usePermissions';
 import { scrollToSection } from '@/utils/scroll';
-import { GradientText } from '@/components/ui/gradient-text';
 import { RESTAURANT_CONFIG } from '@/config/restaurant';
+
+const NAV_ITEMS = [
+  { id: 'inicio', label: 'Inicio' },
+  { id: 'menu', label: 'Carta' },
+  { id: 'contacto', label: 'Contacto' },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,163 +23,117 @@ const Header = () => {
 
   const handleNavigation = (sectionId: string) => {
     if (location.pathname === '/') {
-      // Si ya estamos en la página principal, scroll directo
       scrollToSection(sectionId, () => setIsMenuOpen(false));
     } else {
-      // Si estamos en otra ruta, navegar primero y luego scroll
       navigate('/');
       setIsMenuOpen(false);
-      setTimeout(() => {
-        scrollToSection(sectionId);
-      }, 100);
+      setTimeout(() => scrollToSection(sectionId), 100);
     }
   };
 
   return (
-    <header className="fixed top-0 w-full bg-background/85 backdrop-blur-md border-b border-toasted-brown/15 z-[100] shadow-soft rounded-b-lg">
-      <div className="container mx-auto px-4 py-2.5 sm:py-2">
-        <div className="flex items-center justify-between min-h-[48px] sm:min-h-0">
-          {/* Logo */}
-          <div 
-            className="text-xl sm:text-2xl font-bold tracking-tight cursor-pointer" 
+    <header className="fixed top-0 w-full bg-paper/95 backdrop-blur-sm border-b border-line z-[100]">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          <button
             onClick={() => handleNavigation('inicio')}
+            className="font-serif text-xl sm:text-2xl text-ink"
           >
-            <GradientText variant="primary">{RESTAURANT_CONFIG.name}</GradientText>
-          </div>
+            {RESTAURANT_CONFIG.name}
+          </button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Button 
-              variant="ghost" 
-              onClick={() => handleNavigation('inicio')}
-              className="hover:text-toasted-brown transition-all duration-300 font-medium"
-            >
-              Inicio
-            </Button>
-            <Button 
-              variant="ghost" 
-              onClick={() => handleNavigation('menu')}
-              className="hover:text-toasted-brown transition-all duration-300 font-medium"
-            >
-              Menú
-            </Button>
-            <Button 
-              variant="ghost" 
-              onClick={() => handleNavigation('contacto')}
-              className="hover:text-toasted-brown transition-all duration-300 font-medium"
-            >
-              Contacto
-            </Button>
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-8 text-sm uppercase tracking-[0.08em] font-medium text-ink/80">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavigation(item.id)}
+                className="hover:text-terracotta transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
             {user ? (
               <>
                 {hasAdminAccess && (
-                  <Button
-                    variant="ghost"
+                  <button
                     onClick={() => navigate('/admin')}
-                    className="hover:text-toasted-brown transition-all duration-300 font-medium"
+                    className="flex items-center gap-1.5 hover:text-terracotta transition-colors"
                   >
-                    <Settings className="w-4 h-4 mr-2" />
+                    <Settings className="w-4 h-4" />
                     Admin
-                  </Button>
+                  </button>
                 )}
-                <Button
-                  variant="ghost"
+                <button
                   onClick={signOut}
-                  className="hover:text-toasted-brown transition-all duration-300 font-medium"
+                  className="flex items-center gap-1.5 hover:text-terracotta transition-colors"
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
+                  <LogOut className="w-4 h-4" />
                   Salir
-                </Button>
+                </button>
               </>
             ) : (
-              <Button
-                variant="ghost"
+              <button
                 onClick={() => navigate('/auth')}
-                className="hover:text-toasted-brown transition-all duration-300 font-medium"
+                className="flex items-center gap-1.5 hover:text-terracotta transition-colors"
               >
-                <User className="w-4 h-4 mr-2" />
+                <User className="w-4 h-4" />
                 Acceder
-              </Button>
+              </button>
             )}
           </nav>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden h-10 w-10"
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden p-2 text-ink"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={isMenuOpen}
           >
-            {isMenuOpen ? <X /> : <Menu />}
-          </Button>
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile nav */}
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 border-t border-border pt-4">
-            <div className="flex flex-col space-y-2">
-              <Button 
-                variant="ghost" 
-                onClick={() => handleNavigation('inicio')}
-                className="justify-start hover:text-toasted-brown transition-all duration-300"
+          <nav className="md:hidden pb-6 pt-2 border-t border-line flex flex-col gap-1 text-sm uppercase tracking-[0.08em] font-medium text-ink/80">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavigation(item.id)}
+                className="text-left py-3 hover:text-terracotta transition-colors"
               >
-                Inicio
-              </Button>
-              <Button 
-                variant="ghost" 
-                onClick={() => handleNavigation('menu')}
-                className="justify-start hover:text-toasted-brown transition-all duration-300"
-              >
-                Menú
-              </Button>
-              <Button 
-                variant="ghost" 
-                onClick={() => handleNavigation('contacto')}
-                className="justify-start hover:text-toasted-brown transition-all duration-300"
-              >
-                Contacto
-              </Button>
-              {user ? (
-                <>
-                  {hasAdminAccess && (
-                    <Button 
-                      variant="ghost" 
-                      onClick={() => {
-                        navigate('/admin');
-                        setIsMenuOpen(false);
-                      }}
-                      className="justify-start hover:text-toasted-brown transition-all duration-300"
-                    >
-                      <Settings className="w-4 h-4 mr-2" />
-                      Admin
-                    </Button>
-                  )}
-                  <Button 
-                    variant="ghost" 
-                    onClick={() => {
-                      signOut();
-                      setIsMenuOpen(false);
-                    }}
-                    className="justify-start hover:text-toasted-brown transition-all duration-300"
+                {item.label}
+              </button>
+            ))}
+            {user ? (
+              <>
+                {hasAdminAccess && (
+                  <button
+                    onClick={() => { navigate('/admin'); setIsMenuOpen(false); }}
+                    className="text-left py-3 flex items-center gap-2 hover:text-terracotta transition-colors"
                   >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Salir
-                  </Button>
-                </>
-              ) : (
-                <Button 
-                  variant="ghost" 
-                  onClick={() => {
-                    navigate('/auth');
-                    setIsMenuOpen(false);
-                  }}
-                  className="justify-start hover:text-toasted-brown transition-all duration-300"
+                    <Settings className="w-4 h-4" />
+                    Admin
+                  </button>
+                )}
+                <button
+                  onClick={() => { signOut(); setIsMenuOpen(false); }}
+                  className="text-left py-3 flex items-center gap-2 hover:text-terracotta transition-colors"
                 >
-                  <User className="w-4 h-4 mr-2" />
-                  Acceder
-                </Button>
-              )}
-            </div>
+                  <LogOut className="w-4 h-4" />
+                  Salir
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => { navigate('/auth'); setIsMenuOpen(false); }}
+                className="text-left py-3 flex items-center gap-2 hover:text-terracotta transition-colors"
+              >
+                <User className="w-4 h-4" />
+                Acceder
+              </button>
+            )}
           </nav>
         )}
       </div>

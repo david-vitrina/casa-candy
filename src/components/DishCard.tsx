@@ -1,5 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Dish } from '@/types/menu';
 
 interface DishCardProps {
@@ -10,85 +8,55 @@ interface DishCardProps {
 }
 
 const DishCard = ({ dish, onClick, hidePriceInDailyMenu = false, isDailyMenuContext = false }: DishCardProps) => {
+  const hasDiscount = dish.discount_percentage > 0;
+  const finalPrice = hasDiscount ? dish.price * (1 - dish.discount_percentage / 100) : dish.price;
+
   return (
-    <Card 
-      className="group cursor-pointer overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+    <button
       onClick={onClick}
+      className="w-full text-left group flex gap-4 items-start py-4 border-b border-line"
     >
-      <div className="relative overflow-hidden">
-        <img 
-          src={dish.image} 
+      <div className="relative flex-shrink-0">
+        <img
+          src={dish.image}
           alt={dish.name}
-          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+          className="w-16 h-16 object-cover"
+          style={{ borderRadius: '50% 45% 50% 50% / 50% 50% 45% 50%' }}
         />
         {!dish.available && !isDailyMenuContext && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <Badge variant="destructive" className="text-sm">
-              No Disponible
-            </Badge>
-          </div>
-        )}
-        <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
-          <div className="flex gap-2">
-            <Badge 
-              variant={dish.category === 'appetizer' ? 'secondary' : dish.category === 'main' ? 'default' : 'outline'}
-              className="bg-white/90 text-xs"
-            >
-              {dish.category === 'appetizer' ? 'Entrante' : dish.category === 'main' ? 'Principal' : 'Postre'}
-            </Badge>
-            {dish.discount_percentage && dish.discount_percentage > 0 && (
-              <Badge className="bg-green-600 text-white text-xs">
-                -{dish.discount_percentage}%
-              </Badge>
-            )}
-          </div>
-          {dish.daily_menu_type && (
-            <Badge className="bg-gradient-to-r from-golden-mustard to-warm-amber text-white text-xs shadow-lg">
-              {dish.daily_menu_type === 'primero' ? 'Primero' : 'Segundo'}
-            </Badge>
-          )}
-        </div>
-      </div>
-      
-      <CardContent className="p-6">
-        <div className="space-y-3">
-          <div className="flex items-start justify-between">
-            <h3 className="text-xl font-semibold text-foreground group-hover:text-toasted-brown transition-colors">
-              {dish.name}
-            </h3>
-            {!hidePriceInDailyMenu && (
-              <div className="text-right">
-                {dish.discount_percentage && dish.discount_percentage > 0 ? (
-                  <div>
-                    <span className="text-sm text-gray-500 line-through">
-                      €{dish.price.toFixed(2)}
-                    </span>
-                    <br />
-                    <span className="text-lg font-bold text-toasted-brown">
-                      €{(dish.price * (1 - dish.discount_percentage / 100)).toFixed(2)}
-                    </span>
-                  </div>
-                ) : (
-                  <span className="text-lg font-bold text-toasted-brown">
-                    €{dish.price.toFixed(2)}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-          
-          <p className="text-muted-foreground line-clamp-2">
-            {dish.description}
-          </p>
-          
-          <div className="pt-2">
-            <span className="text-sm text-warm-amber font-medium">
-              Ver detalles →
+          <div
+            className="absolute inset-0 bg-ink/60 flex items-center justify-center"
+            style={{ borderRadius: '50% 45% 50% 50% / 50% 50% 45% 50%' }}
+          >
+            <span className="text-[8px] text-paper font-semibold uppercase tracking-wide text-center leading-tight px-1">
+              No disp.
             </span>
           </div>
+        )}
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline gap-2">
+          <h3 className="font-serif text-lg text-ink group-hover:text-terracotta transition-colors">
+            {dish.name}
+          </h3>
+          <span className="flex-1 border-b border-dotted border-line -translate-y-1" />
+          {!hidePriceInDailyMenu && (
+            hasDiscount ? (
+              <span className="flex items-baseline gap-1.5 flex-shrink-0">
+                <span className="text-xs text-ink/40 line-through">€{dish.price.toFixed(2)}</span>
+                <span className="text-terracotta font-medium tabular-nums">€{finalPrice.toFixed(2)}</span>
+              </span>
+            ) : (
+              <span className="text-terracotta font-medium tabular-nums flex-shrink-0">
+                €{dish.price.toFixed(2)}
+              </span>
+            )
+          )}
         </div>
-      </CardContent>
-    </Card>
+        <p className="text-sm text-ink/60 mt-1 line-clamp-2">{dish.description}</p>
+      </div>
+    </button>
   );
 };
 

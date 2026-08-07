@@ -18,7 +18,16 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				serif: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+				sans: ['"Work Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+			},
 			colors: {
+				paper: 'hsl(var(--paper))',
+				ink: 'hsl(var(--ink))',
+				terracotta: 'hsl(var(--terracotta))',
+				olive: 'hsl(var(--olive))',
+				line: 'hsl(var(--line))',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
