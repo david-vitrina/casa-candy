@@ -36,6 +36,8 @@ All colors MUST be HSL.
     --terracotta: 14 62% 47%;
     --olive: 79 28% 33%;
     --line: 38 30% 79%;
+    /* Terracota oscurecida para texto (precios): 4,5:1 sobre papel y blanco (WCAG AA) */
+    --terracotta-deep: 14 62% 38%;
 
     /* Alias de tokens de marca anteriores, remapeados a la paleta nueva
        (siguen en uso en src/components/admin/, que no se rediseña visualmente) */

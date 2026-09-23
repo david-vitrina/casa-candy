@@ -9,7 +9,7 @@ import { Upload, X, Loader2, Info } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { Dish } from '@/types/menu';
+import { Category, Dish } from '@/types/menu';
 import imageCompression from 'browser-image-compression';
 
 
@@ -27,7 +27,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
     ingredients: '',
     price: '',
     image: '',
-    category: 'appetizer' as 'appetizer' | 'main' | 'dessert',
+    category_id: '',
     available: true,
     discount_percentage: '',
     daily_menu_type: null as 'primero' | 'segundo' | null
@@ -39,7 +39,30 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
   const [originalFileSize, setOriginalFileSize] = useState<number>(0);
   const [compressedFileSize, setCompressedFileSize] = useState<number>(0);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [categories, setCategories] = useState<Category[]>([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('id, slug, name, position, visible')
+        .order('position');
+
+      if (error) {
+        console.error('Error fetching categories:', error);
+        toast({
+          title: "Error",
+          description: "No se pudieron cargar las categorías",
+          variant: "destructive"
+        });
+        return;
+      }
+      setCategories(data);
+    };
+
+    fetchCategories();
+  }, [toast]);
 
   // Helper function to format file size
   const formatFileSize = (bytes: number): string => {
@@ -98,7 +121,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         ingredients: dish.ingredients.join(', '),
         price: dish.price.toString(),
         image: dish.image,
-        category: dish.category,
+        category_id: dish.category_id ?? '',
         available: dish.available,
         discount_percentage: dish.discount_percentage?.toString() || '',
         daily_menu_type: dish.daily_menu_type || null
@@ -209,6 +232,16 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.category_id) {
+      toast({
+        title: "Falta la categoría",
+        description: "Elige una categoría para el plato",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -230,7 +263,7 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
         ingredients: formData.ingredients.split(',').map(i => i.trim()),
         price: parseFloat(formData.price),
         image: imageUrl,
-        category: formData.category,
+        category_id: formData.category_id,
         available: formData.available,
         discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : 0,
         daily_menu_type: formData.daily_menu_type
@@ -358,18 +391,18 @@ const DishForm = ({ dish, onSave, onCancel }: DishFormProps) => {
                 <div>
                   <Label htmlFor="category">Categoría</Label>
                   <Select
-                    value={formData.category}
-                    onValueChange={(value: 'appetizer' | 'main' | 'dessert') => 
-                      setFormData({ ...formData, category: value })
-                    }
+                    value={formData.category_id}
+                    onValueChange={(value) => setFormData({ ...formData, category_id: value })}
                   >
-                    <SelectTrigger>
-                      <SelectValue />
+                    <SelectTrigger id="category">
+                      <SelectValue placeholder="Elige una categoría" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="appetizer">Entrante</SelectItem>
-                      <SelectItem value="main">Principal</SelectItem>
-                      <SelectItem value="dessert">Postre</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
