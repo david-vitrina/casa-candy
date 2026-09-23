@@ -9,9 +9,18 @@ export interface Dish {
   price: number;
   image: string;
   category: 'appetizer' | 'main' | 'dessert';
+  category_id?: string | null;
   available: boolean;
   discount_percentage?: number;
   daily_menu_type?: DailyMenuType;
+}
+
+export interface Category {
+  id: string;
+  slug: string;
+  name: string;
+  position: number;
+  visible: boolean;
 }
 
 export interface DailyMenuSettings {

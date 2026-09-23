@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          position: number
+          slug: string
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          position?: number
+          slug: string
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          position?: number
+          slug?: string
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
       daily_menu_settings: {
         Row: {
           created_at: string
@@ -45,6 +75,7 @@ export type Database = {
         Row: {
           available: boolean
           category: Database["public"]["Enums"]["dish_category"]
+          category_id: string | null
           created_at: string
           daily_menu_type: Database["public"]["Enums"]["daily_menu_type"] | null
           description: string
@@ -59,7 +90,8 @@ export type Database = {
         }
         Insert: {
           available?: boolean
-          category: Database["public"]["Enums"]["dish_category"]
+          category?: Database["public"]["Enums"]["dish_category"]
+          category_id?: string | null
           created_at?: string
           daily_menu_type?:
             | Database["public"]["Enums"]["daily_menu_type"]
@@ -77,6 +109,7 @@ export type Database = {
         Update: {
           available?: boolean
           category?: Database["public"]["Enums"]["dish_category"]
+          category_id?: string | null
           created_at?: string
           daily_menu_type?:
             | Database["public"]["Enums"]["daily_menu_type"]
@@ -91,7 +124,15 @@ export type Database = {
           price?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dishes_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
