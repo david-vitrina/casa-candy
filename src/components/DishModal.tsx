@@ -5,28 +5,24 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Dish } from '@/types/menu';
+import { finalPrice, formatPrice, hasPhoto } from '@/lib/menu';
 
 interface DishModalProps {
   dish: Dish | null;
+  categoryName: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CATEGORY_LABEL: Record<Dish['category'], string> = {
-  appetizer: 'Entrante',
-  main: 'Plato Principal',
-  dessert: 'Postre',
-};
-
-const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
+const DishModal = ({ dish, categoryName, isOpen, onClose }: DishModalProps) => {
   if (!dish) return null;
 
-  const hasDiscount = dish.discount_percentage > 0;
-  const finalPrice = hasDiscount ? dish.price * (1 - dish.discount_percentage / 100) : dish.price;
+  const hasDiscount = !!dish.discount_percentage && dish.discount_percentage > 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-2xl bg-paper border-line p-0 sm:p-0">
+        {hasPhoto(dish) && (
         <div className="relative overflow-hidden rounded-t-lg h-48 sm:h-64">
           <img
             src={dish.image}
@@ -41,10 +37,11 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
             </div>
           )}
         </div>
+        )}
 
         <div className="p-6 sm:p-8 space-y-4">
           <DialogHeader>
-            <DialogTitle className="font-serif text-2xl sm:text-3xl text-ink text-left">
+            <DialogTitle className="font-serif text-2xl sm:text-3xl text-ink text-left pr-8">
               {dish.name}
             </DialogTitle>
           </DialogHeader>
@@ -52,7 +49,7 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex gap-2 items-center flex-wrap">
               <span className="uppercase tracking-[0.15em] text-xs font-semibold text-olive">
-                {CATEGORY_LABEL[dish.category]}
+                {categoryName}
               </span>
               {dish.daily_menu_type && (
                 <span className="uppercase tracking-[0.1em] text-xs font-semibold text-terracotta border border-terracotta/40 px-2 py-0.5">
@@ -62,11 +59,11 @@ const DishModal = ({ dish, isOpen, onClose }: DishModalProps) => {
             </div>
             {hasDiscount ? (
               <span className="flex items-baseline gap-2">
-                <span className="text-sm text-ink/40 line-through">€{dish.price.toFixed(2)}</span>
-                <span className="text-xl sm:text-2xl font-serif text-terracotta">€{finalPrice.toFixed(2)}</span>
+                <span className="text-sm text-ink/70 line-through tabular-nums">{formatPrice(dish.price)}</span>
+                <span className="text-xl sm:text-2xl font-serif text-terracotta-deep tabular-nums">{formatPrice(finalPrice(dish))}</span>
               </span>
             ) : (
-              <span className="text-xl sm:text-2xl font-serif text-terracotta">€{dish.price.toFixed(2)}</span>
+              <span className="text-xl sm:text-2xl font-serif text-terracotta-deep tabular-nums">{formatPrice(dish.price)}</span>
             )}
           </div>
 

@@ -1,60 +1,44 @@
 import { Dish } from '@/types/menu';
+import { finalPrice, formatPrice, hasPhoto } from '@/lib/menu';
 
 interface DishCardProps {
   dish: Dish;
+  categoryName: string;
   onClick: () => void;
-  hidePriceInDailyMenu?: boolean;
-  isDailyMenuContext?: boolean;
 }
 
-const DishCard = ({ dish, onClick, hidePriceInDailyMenu = false, isDailyMenuContext = false }: DishCardProps) => {
-  const hasDiscount = dish.discount_percentage > 0;
-  const finalPrice = hasDiscount ? dish.price * (1 - dish.discount_percentage / 100) : dish.price;
+const DishCard = ({ dish, categoryName, onClick }: DishCardProps) => {
+  const photo = hasPhoto(dish);
+  const hasDiscount = !!dish.discount_percentage && dish.discount_percentage > 0;
+  const description = dish.description.trim();
 
   return (
     <button
       onClick={onClick}
-      className="w-full text-left group flex gap-4 items-start py-4 border-b border-line"
+      className="text-left bg-white rounded-2xl border border-line overflow-hidden shadow-[0_1px_2px_hsl(var(--ink)/0.06)] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-deep transition-shadow flex flex-col"
     >
-      <div className="relative flex-shrink-0">
-        <img
-          src={dish.image}
-          alt={dish.name}
-          className="w-16 h-16 object-cover"
-          style={{ borderRadius: '50% 45% 50% 50% / 50% 50% 45% 50%' }}
-        />
-        {!dish.available && !isDailyMenuContext && (
-          <div
-            className="absolute inset-0 bg-ink/60 flex items-center justify-center"
-            style={{ borderRadius: '50% 45% 50% 50% / 50% 50% 45% 50%' }}
-          >
-            <span className="text-[8px] text-paper font-semibold uppercase tracking-wide text-center leading-tight px-1">
-              No disp.
+      {photo && <img src={dish.image} alt="" loading="lazy" className="w-full aspect-[5/3] object-cover" />}
+      <div className="p-4 flex flex-col gap-2 flex-1">
+        <div className="flex items-start gap-3">
+          {!photo && (
+            <span
+              aria-hidden
+              className="shrink-0 w-10 h-10 rounded-full bg-paper border border-line grid place-items-center font-serif text-lg text-terracotta"
+            >
+              {categoryName.charAt(0)}
             </span>
-          </div>
-        )}
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-baseline gap-2">
-          <h3 className="font-serif text-lg text-ink group-hover:text-terracotta transition-colors">
-            {dish.name}
-          </h3>
-          <span className="flex-1 border-b border-dotted border-line -translate-y-1" />
-          {!hidePriceInDailyMenu && (
-            hasDiscount ? (
-              <span className="flex items-baseline gap-1.5 flex-shrink-0">
-                <span className="text-xs text-ink/40 line-through">€{dish.price.toFixed(2)}</span>
-                <span className="text-terracotta font-medium tabular-nums">€{finalPrice.toFixed(2)}</span>
-              </span>
-            ) : (
-              <span className="text-terracotta font-medium tabular-nums flex-shrink-0">
-                €{dish.price.toFixed(2)}
-              </span>
-            )
           )}
+          <h4 className="font-serif text-xl leading-tight text-ink">{dish.name}</h4>
         </div>
-        <p className="text-sm text-ink/60 mt-1 line-clamp-2">{dish.description}</p>
+        {description && description !== dish.name && (
+          <p className="text-sm text-ink/75 line-clamp-2">{description}</p>
+        )}
+        <div className="mt-auto pt-1 flex justify-end items-baseline gap-2">
+          {hasDiscount && (
+            <span className="text-sm text-ink/70 line-through tabular-nums">{formatPrice(dish.price)}</span>
+          )}
+          <span className="text-terracotta-deep font-semibold text-lg tabular-nums">{formatPrice(finalPrice(dish))}</span>
+        </div>
       </div>
     </button>
   );

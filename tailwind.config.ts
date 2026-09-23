@@ -26,6 +26,7 @@ export default {
 				paper: 'hsl(var(--paper))',
 				ink: 'hsl(var(--ink))',
 				terracotta: 'hsl(var(--terracotta))',
+				'terracotta-deep': 'hsl(var(--terracotta-deep))',
 				olive: 'hsl(var(--olive))',
 				line: 'hsl(var(--line))',
 				border: 'hsl(var(--border))',

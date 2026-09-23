@@ -1,7 +1,7 @@
-// PROTOTIPO — devuelve el id de la sección visible, para resaltar su chip/tab.
 import { useEffect, useState } from 'react';
 
-export const useScrollSpy = (ids: string[], offsetPx = 160) => {
+// Devuelve el id de la última sección cuyo borde superior ya pasó por debajo de offsetPx.
+export const useScrollSpy = (ids: string[], offsetPx: number) => {
   const [active, setActive] = useState<string | null>(ids[0] ?? null);
 
   useEffect(() => {
@@ -21,8 +21,8 @@ export const useScrollSpy = (ids: string[], offsetPx = 160) => {
   return active;
 };
 
-// Desplaza a una sección dejando hueco para la cabecera fija y la barra sticky.
-export const scrollToSection = (id: string, offsetPx = 150) => {
+// Desplaza a una sección dejando hueco para la cabecera fija y la barra de categorías.
+export const scrollToSection = (id: string, offsetPx: number) => {
   const el = document.getElementById(id);
   if (!el) return;
   window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offsetPx, behavior: 'smooth' });
