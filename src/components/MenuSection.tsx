@@ -5,6 +5,8 @@ import DailyMenuView from './DailyMenuView';
 import { Dish } from '@/types/menu';
 import { useMenuItems } from '@/hooks/useMenuItems';
 import { supabase } from '@/integrations/supabase/client';
+import { useSearchParams } from 'react-router-dom';
+import MenuPrototype from './menu-prototype/MenuPrototype';
 
 type Filter = 'all' | 'appetizer' | 'main' | 'dessert' | 'daily';
 
@@ -22,7 +24,15 @@ const CATEGORY_GROUP_LABEL: Record<'appetizer' | 'main' | 'dessert', string> = {
   dessert: 'Postres',
 };
 
+// PROTOTIPO: en desarrollo, ?variant=A|B|C muestra las variantes de carta con cards.
 const MenuSection = () => {
+  const [searchParams] = useSearchParams();
+  const variant = searchParams.get('variant');
+  if (import.meta.env.DEV && variant) return <MenuPrototype variant={variant} />;
+  return <MenuSectionActual />;
+};
+
+const MenuSectionActual = () => {
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [filter, setFilter] = useState<Filter>('all');
   const { dishes, loading } = useMenuItems();
